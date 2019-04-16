@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="109px" height="109px" viewBox="0 0 109 109" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54 (76480) - https://sketchapp.com -->
+    <title>circle1</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Artboard" transform="translate(-9.000000, -9.000000)" fill-rule="nonzero" stroke-width="10">
+            <g id="circle1" transform="translate(14.000000, 14.000000)">
+                <circle id="Oval" stroke="#BBDEFB" cx="49.5" cy="49.5" r="49.5"></circle>
+                <path d="M49.5,99 C63.2803052,99 75.7454116,93.3689646 84.7198367,84.2823763 C93.5493488,75.3425121 99,63.0577899 99,49.5 C99,40.738023 96.7234625,32.5077599 92.7296111,25.368434 C89.9165664,20.3398937 86.2515617,15.8525677 81.9300039,12.1018627 C73.2436238,4.56290326 61.9046735,0 49.5,0 C34.5705772,0 21.1848433,6.60931757 12.1091545,17.0615964 C4.56584558,25.7490657 0,37.0913277 0,49.5" id="Oval" stroke="#1976D2" transform="translate(49.500000, 49.500000) rotate(-180.000000) translate(-49.500000, -49.500000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

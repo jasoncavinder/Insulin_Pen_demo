@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            xmlns:tools="http://schemas.android.com/tools"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            tools:background="@color/surfaceLightColor">
+
+
+    <include layout="@layout/ic_account_circle" android:layout_width="64dp" android:layout_height="64dp"
+             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+             android:id="@+id/account_circle"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_name"
+            app:layout_constraintTop_toTopOf="@id/account_circle"
+            app:layout_constraintStart_toEndOf="@+id/account_circle" android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp" android:layout_marginTop="8dp"
+            android:text="John Doe" android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/surfaceTextColor"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_location" app:layout_constraintStart_toEndOf="@+id/account_circle"
+            android:layout_marginStart="16dp" android:layout_marginLeft="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/account_circle" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/user_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:layout_marginBottom="8dp" android:text="San Francisco, CA"
+            android:textColor="@color/surfaceTextColor"/>
+    <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp" app:srcCompat="@drawable/ic_bluetooth_black_24dp"
+            android:id="@+id/connection"
+            android:tint="@color/primaryColor"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView2" android:layout_marginTop="8dp"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_battery_80_black_24dp"
+            android:id="@+id/imageView2" android:tint="@color/primaryColor"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginTop="8dp"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_import_export_black_24dp"
+            android:id="@+id/imageView3"
+            android:tint="@color/primaryColor" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/connection" android:layout_marginTop="8dp"/>
+    <androidx.constraintlayout.widget.Barrier android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                       android:id="@+id/barrier" app:barrierDirection="right"
+                                                       app:constraint_referenced_ids="user_name,user_location"
+                                                       tools:layout_editor_absoluteX="411dp"/>
+    <TextView
+            android:text="Welcome John Doe! With type 2 diabetes, the body either doesn't produce enough insulin, or it resists insulin. Treatments include diet, exercise, medication and insulin therapy."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_profile_summary"
+            android:minLines="4" app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/barrier2"/>
+    <androidx.constraintlayout.widget.Barrier android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                       android:id="@+id/barrier2" app:barrierDirection="bottom"
+                                       app:constraint_referenced_ids="account_circle,connection"
+                                       tools:layout_editor_absoluteY="658dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

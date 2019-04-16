@@ -1,0 +1,85 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            xmlns:tools="http://schemas.android.com/tools"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            tools:background="@color/surfaceLightColor">
+
+    <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp" app:srcCompat="@drawable/ic_mail_outline_24dp"
+            android:id="@+id/imageView"
+            android:tint="@color/primaryColor" app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/barrier3"/>
+    <TextView
+            android:text="Messages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_messages" app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintEnd_toStartOf="@+id/icon_message_toggle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/surfaceTextColor"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"/>
+    <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp" app:srcCompat="@drawable/less_unfold_24dp"
+            android:id="@+id/icon_message_toggle"
+            android:tint="@color/primaryColor" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp" android:clickable="true" android:focusable="auto"
+            app:layout_constraintBottom_toTopOf="@+id/barrier3"/>
+    <androidx.constraintlayout.widget.Barrier android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                       android:id="@+id/barrier3" app:barrierDirection="bottom"
+                                       app:constraint_referenced_ids="imageView,title_messages,icon_message_toggle"
+                                       tools:layout_editor_absoluteY="658dp"/>
+    <TextView
+            android:text="From:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/label_from"
+            app:layout_constraintEnd_toStartOf="@id/message_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toTopOf="@+id/barrier3" android:layout_margin="8dp" android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+    <TextView
+            android:text="Dr. Lauren"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/message_from"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toTopOf="@+id/barrier3" android:maxLines="1"
+            android:layout_margin="8dp" app:layout_constraintStart_toEndOf="@id/label_from"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" android:textStyle="bold"/>
+    <TextView
+            android:text="Don't forget to ..... \n Also your tests look good!"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/message_content"
+            android:minLines="4" app:layout_constraintTop_toBottomOf="@+id/message_from"
+            app:layout_constraintEnd_toStartOf="@id/next_message" app:layout_constraintStart_toEndOf="@id/prev_message"
+            android:gravity="center_vertical" android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp" android:layout_marginRight="8dp"/>
+    <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp" app:srcCompat="@drawable/ic_chevron_left_black_24dp"
+            android:id="@+id/prev_message"
+            app:layout_constraintTop_toTopOf="@+id/message_content"
+            app:layout_constraintBottom_toBottomOf="@+id/message_content" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="16dp" android:layout_marginStart="16dp"
+            android:tint="@color/surfaceColor"/>
+    <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp" app:srcCompat="@drawable/ic_chevron_right_black_24dp"
+            android:layout_marginRight="16dp" android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/next_message"
+            app:layout_constraintTop_toTopOf="@+id/message_content"
+            app:layout_constraintBottom_toBottomOf="@+id/message_content"
+            android:tint="@color/primaryColor"/>
+    <androidx.constraintlayout.widget.Group android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                     android:id="@+id/group_message_display"
+                                     app:constraint_referenced_ids="next_message,prev_message,label_from,message_from,message_content"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+    <TextView
+            android:id="@+id/action_bar_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textAllCaps="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#fff"
+            android:textStyle="bold" android:layout_toRightOf="@id/action_bar_nav_left" android:layout_toLeftOf="@id/action_bar_nav_right"
+            android:layout_toEndOf="@id/action_bar_nav_left" android:layout_toStartOf="@id/action_bar_nav_right"
+            android:gravity="center|center_horizontal"
+            tools:text="@string/title_activity_main" android:foregroundGravity="center"/>
+
+    <ImageView
+            android:id="@+id/action_bar_nav_left"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_account_circle_foreground_24dp" android:contentDescription="@string/to_profile_page"
+            android:layout_alignParentStart="true" android:layout_marginStart="8dp" android:focusable="true"/>
+
+    <ImageView
+            android:id="@+id/action_bar_nav_right"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:background="@null"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_history_24dp" android:contentDescription="@string/to_dose_history"
+            android:focusable="true" android:layout_marginEnd="6dp" android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            xmlns:tools="http://schemas.android.com/tools"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            tools:context="FingerprintLoginFragment"
+                                            android:id="@+id/constraintLayout">
+    <TextView
+            android:text="@string/confirm_fingerprint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_finger_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintBottom_toTopOf="@+id/button_fingerprint"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_chainStyle="packed"/>
+    <ImageView
+            android:src="@drawable/ic_fingerprint_black_24dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/button_fingerprint"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/text_finger_direct"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:contentDescription="@string/fingerprint_icon"
+            app:layout_constraintTop_toBottomOf="@+id/text_finger_title"
+            app:layout_constraintBottom_toTopOf="@+id/button_cancel_finger"
+            android:layout_marginTop="32dp" android:layout_marginRight="16dp" android:layout_marginBottom="32dp"
+            android:layout_marginEnd="16dp" android:clickable="true"/>
+    <TextView
+            android:text="@string/touch_sensor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="@+id/button_fingerprint"
+            app:layout_constraintBottom_toBottomOf="@+id/button_fingerprint"
+            android:id="@+id/text_finger_direct"
+            app:layout_constraintStart_toEndOf="@+id/button_fingerprint"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+    />
+    <Button
+            android:text="@android:string/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_cancel_finger"
+            style="@style/Widget.AppCompat.Button" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/button_use_pass"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintTop_toBottomOf="@+id/button_fingerprint"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+            android:text="@string/use_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_use_pass"
+            style="@style/Widget.AppCompat.Button.Colored"
+            app:layout_constraintStart_toEndOf="@+id/button_cancel_finger"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/button_cancel_finger"
+            app:layout_constraintTop_toTopOf="@+id/button_cancel_finger"
+    />
+</androidx.constraintlayout.widget.ConstraintLayout>

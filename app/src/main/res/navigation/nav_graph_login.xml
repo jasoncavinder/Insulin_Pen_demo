@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph_login"
+            app:startDestination="@id/mainLoggedOutFragment">
+    <action android:id="@+id/action_nav_graph_pop" app:popUpTo="@id/nav_graph_login" app:popUpToInclusive="true"/>
+    <fragment android:id="@+id/mainLoggedOutFragment"
+              android:name="com.jasoncavinder.insulinpen_demo.LoginMainFragment"
+              android:label="fragment_main_logged_out" tools:layout="@layout/fragment_login_main">
+        <action android:id="@+id/action_mainLoggedOutFragment_to_fingerprintLoginFragment"
+                app:destination="@+id/fingerprintLoginFragment"/>
+        <action android:id="@+id/action_mainLoggedOutFragment_to_createUserFragment"
+                app:destination="@id/dest_createUserFragment"/>
+    </fragment>
+    <fragment android:id="@+id/fingerprintLoginFragment"
+              android:name="com.jasoncavinder.insulinpen_demo.FingerprintLoginFragment"
+              android:label="fragment_login_fingerprint" tools:layout="@layout/fragment_login_fingerprint">
+        <deepLink android:id="@+id/deepLink" app:uri="insulen-pen://login" android:autoVerify="true"/>
+        <action android:id="@+id/action_fingerprintLoginFragment_to_loginUserPassFragment"
+                app:destination="@id/loginUserPassFragment"/>
+        <action android:id="@+id/action_fingerprintLoginFragment_to_placeholder2" app:destination="@id/placeholder2"/>
+        <action android:id="@+id/action_fingerprintLoginFragment_pop" app:popUpTo="@id/fingerprintLoginFragment"
+                app:popUpToInclusive="true"/>
+    </fragment>
+    <action android:id="@+id/action_global_fingerprintLoginFragment" app:destination="@id/fingerprintLoginFragment"/>
+    <fragment android:id="@+id/loginUserPassFragment"
+              android:name="com.jasoncavinder.insulinpen_demo.LoginUserPassFragment"
+              android:label="fragment_login_user_pass" tools:layout="@layout/fragment_login_user_pass">
+        <action android:id="@+id/action_loginUserPassFragment_to_placeholder2" app:destination="@id/placeholder2"/>
+        <action android:id="@+id/action_loginUserPassFragment_pop" app:popUpTo="@id/loginUserPassFragment"
+                app:popUpToInclusive="true"/>
+    </fragment>
+    <action android:id="@+id/action_global_cancelLogin" app:popUpTo="@+id/mainLoggedOutFragment"
+            app:destination="@+id/mainLoggedOutFragment"/>
+    <fragment android:id="@+id/dest_createUserFragment" android:name="com.jasoncavinder.insulinpen_demo.CreateUserFragment"
+              android:label="fragment_main_create_user" tools:layout="@layout/fragment_home_create_user">
+        <deepLink android:id="@+id/deepLink2" app:uri="insulin-pen://new-user" android:autoVerify="true"/>
+        <action android:id="@+id/action_dest_createUserFragment_pop" app:popUpTo="@id/dest_createUserFragment"
+                app:popUpToInclusive="true"/>
+        <action android:id="@+id/action_dest_createUserFragment_to_placeholder22" app:destination="@id/placeholder2"/>
+    </fragment>
+    <fragment android:id="@+id/placeholder2" android:label="Signing in">
+        <action android:id="@+id/action_placeholder2_to_mainActivity" app:destination="@id/mainActivity"/>
+    </fragment>
+    <action android:id="@+id/action_global_main" app:popUpTo="@id/nav_graph_login"
+            app:launchSingleTop="true"/>
+    <activity android:id="@+id/mainActivity" android:name="com.jasoncavinder.insulinpen_demo.MainActivity"
+              android:label="activity_main" tools:layout="@layout/activity_main">
+        <deepLink android:id="@+id/deepLink3" app:uri="insulin-pen://home" android:autoVerify="true"/>
+    </activity>
+    <action android:id="@+id/action_global_home" app:destination="@id/mainActivity"
+            app:popUpTo="@id/nav_graph_login" app:popUpToInclusive="true" app:launchSingleTop="true"/>
+
+</navigation>

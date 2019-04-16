@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- Blues -->
+    <color name="primaryColor">#1976D2</color>
+    <color name="primaryLightColor">#2196F3</color>
+    <color name="primaryDarkColor">#0d47a1</color>
+
+    <color name="accentColor">#FBBF35</color>
+    <color name="secondaryColor">#FBBF35</color>
+    <color name="secondaryLightColor">#fbe53d</color>
+    <color name="secondaryDarkColor">#f37f22</color>
+
+    <color name="surfaceColor">#E3F2FD</color>
+    <color name="surfaceLightColor">#FFFFFF</color>
+    <color name="surfaceDarkColor">#F5F5F5</color>
+
+    <color name="primaryTextColor">#FFFFFF</color>
+    <color name="secondaryTextColor">#3C3C3C</color>
+    <color name="surfaceTextColor">#1976D2</color>
+
+    <color name="iconsColor">#FFFFFF</color>
+    <color name="divider">#C2C2C2</color>
+
+    <color name="primaryColor_50">#E3F2FD</color>
+    <color name="primaryColor_100">#BBDEFB</color>
+    <color name="primaryColor_200">#90caf9</color>
+    <color name="primaryColor_300">#64B5F6</color>
+    <color name="primaryColor_400">#42a5f5</color>
+    <color name="primaryColor_500">#2196F3</color>
+    <color name="primaryColor_600">#1e88e5</color>
+    <color name="primaryColor_700">#1976d2</color>
+    <color name="primaryColor_800">#1565c0</color>
+    <color name="primaryColor_900">#0d47a1</color>
+
+    <color name="secondaryColor_50">#fffde7</color>
+    <color name="secondaryColor_100">#fff8c5</color>
+    <color name="secondaryColor_200">#fff49f</color>
+    <color name="secondaryColor_300">#ffef79</color>
+    <color name="secondaryColor_400">#feea5a</color>
+    <color name="secondaryColor_500">#fbe53d</color>
+    <color name="secondaryColor_600">#fed63d</color>
+    <color name="secondaryColor_700">#FBBF35</color>
+    <color name="secondaryColor_800">#f8a72e</color>
+    <color name="secondaryColor_900">#f37f22</color>
+
+    <color name="surfaceColor_50">#ffffff</color>
+    <color name="surfaceColor_100">#FAFAFA</color>
+    <color name="surfaceColor_200">#f5f5f5</color>
+    <color name="surfaceColor_300">#f0f0f0</color>
+    <color name="surfaceColor_400">#dedede</color>
+    <color name="surfaceColor_500">#c2c2c2</color>
+    <color name="surfaceColor_600">#979797</color>
+    <color name="surfaceColor_700">#818181</color>
+    <color name="surfaceColor_800">#606060</color>
+    <color name="surfaceColor_900">#3c3c3c</color>
+
+    <color name="black_overlay">#66000000</color>
+</resources>

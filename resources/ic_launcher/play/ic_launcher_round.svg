@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54 (76480) - https://sketchapp.com -->
+    <title>play/ic_launcher_round</title>
+    <desc>Created with Sketch.</desc>
+    <g id="play/ic_launcher_round" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon" fill-rule="nonzero">
+            <rect id="Rectangle" fill="#212121" x="0" y="0" width="512" height="512" rx="256"></rect>
+            <path d="M248,0 L248,512" id="Line" stroke="#373532" stroke-width="15"></path>
+            <circle id="Oval" stroke="#FFB74D" stroke-width="15" cx="387" cy="256" r="73"></circle>
+        </g>
+    </g>
+</svg>

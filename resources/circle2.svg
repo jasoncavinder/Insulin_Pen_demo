@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="109px" height="109px" viewBox="0 0 109 109" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54 (76480) - https://sketchapp.com -->
+    <title>circle2</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Artboard" transform="translate(-9.000000, -9.000000)" fill-rule="nonzero" stroke-width="10">
+            <g id="circle2" transform="translate(14.000000, 14.000000)">
+                <circle id="Oval" stroke="#90CAF9" cx="49.5" cy="49.5" r="49.5"></circle>
+                <path d="M43.3979336,99 C57.3109363,99 69.8832888,93.2599943 78.8760552,84.0189188 C87.5534573,75.1019155 92.8979336,62.9250924 92.8979336,49.5 C92.8979336,40.738023 90.6213961,32.5077599 86.6275447,25.368434 C83.8144999,20.3398937 80.1494953,15.8525677 75.8279374,12.1018627 C67.1415574,4.56290326 55.8026071,-1.42108547e-14 43.3979336,-1.42108547e-14 C25.1725368,-1.42108547e-14 10.706559,8.45614467 1.42108547e-14,25.368434" id="Oval" stroke="#1976D2" transform="translate(46.448967, 49.500000) rotate(-180.000000) translate(-46.448967, -49.500000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>
