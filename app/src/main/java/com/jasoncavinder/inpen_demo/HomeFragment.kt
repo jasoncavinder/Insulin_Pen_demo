@@ -1,4 +1,4 @@
-package com.jasoncavinder.insulinpen_demo
+package com.jasoncavinder.inpen_demo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.jasoncavinder.insulinpen_demo.ui.UserViewModel
+import com.jasoncavinder.inpen_demo.ui.UserViewModel
 
 
 class HomeFragment : Fragment() {

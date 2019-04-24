@@ -1,17 +1,16 @@
-package com.jasoncavinder.insulinpen_demo
+package com.jasoncavinder.inpen_demo
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
-import com.jasoncavinder.insulinpen_demo.dummy.DummyContent
-import com.jasoncavinder.insulinpen_demo.dummy.DummyContent.DummyItem
+import com.jasoncavinder.inpen_demo.dummy.DummyContent
+import com.jasoncavinder.inpen_demo.dummy.DummyContent.DummyItem
 
 /**
  * A fragment representing a list of Items.

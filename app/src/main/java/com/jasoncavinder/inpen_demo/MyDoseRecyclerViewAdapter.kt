@@ -1,4 +1,4 @@
-package com.jasoncavinder.insulinpen_demo
+package com.jasoncavinder.inpen_demo
 
 
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.jasoncavinder.insulinpen_demo.DoseHistoryFragment.OnListFragmentInteractionListener
-import com.jasoncavinder.insulinpen_demo.dummy.DummyContent.DummyItem
+import com.jasoncavinder.inpen_demo.DoseHistoryFragment.OnListFragmentInteractionListener
+import com.jasoncavinder.inpen_demo.dummy.DummyContent.DummyItem
 import kotlinx.android.synthetic.main.fragment_dose_item.view.*
 
 /**

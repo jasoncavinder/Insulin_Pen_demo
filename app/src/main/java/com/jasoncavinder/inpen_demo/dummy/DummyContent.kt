@@ -1,4 +1,4 @@
-package com.jasoncavinder.insulinpen_demo.dummy
+package com.jasoncavinder.inpen_demo.dummy
 
 import java.util.*
 

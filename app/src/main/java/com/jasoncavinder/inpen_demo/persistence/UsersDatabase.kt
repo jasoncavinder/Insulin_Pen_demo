@@ -1,4 +1,4 @@
-package com.jasoncavinder.insulinpen_demo.persistence
+package com.jasoncavinder.inpen_demo.persistence
 
 import android.content.Context
 import androidx.room.Database

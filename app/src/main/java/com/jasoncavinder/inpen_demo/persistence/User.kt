@@ -1,4 +1,4 @@
-package com.jasoncavinder.insulinpen_demo.persistence
+package com.jasoncavinder.inpen_demo.persistence
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

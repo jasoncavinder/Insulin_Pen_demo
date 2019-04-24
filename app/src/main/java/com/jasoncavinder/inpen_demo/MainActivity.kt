@@ -1,4 +1,4 @@
-package com.jasoncavinder.insulinpen_demo
+package com.jasoncavinder.inpen_demo
 
 import android.os.Build
 import android.os.Bundle
@@ -13,8 +13,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
-import com.jasoncavinder.insulinpen_demo.ui.UserViewModel
-import com.jasoncavinder.insulinpen_demo.ui.UserViewModel.AuthenticationState.*
+import com.jasoncavinder.inpen_demo.ui.UserViewModel
+import com.jasoncavinder.inpen_demo.ui.UserViewModel.AuthenticationState.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 

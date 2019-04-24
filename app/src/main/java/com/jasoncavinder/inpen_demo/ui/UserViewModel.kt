@@ -1,13 +1,13 @@
-package com.jasoncavinder.insulinpen_demo.ui
+package com.jasoncavinder.inpen_demo.ui
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.jasoncavinder.insulinpen_demo.persistence.UserRepository
-import com.jasoncavinder.insulinpen_demo.persistence.UserRepository.Existence.*
-import com.jasoncavinder.insulinpen_demo.ui.UserViewModel.AuthenticationState.*
+import com.jasoncavinder.inpen_demo.persistence.UserRepository
+import com.jasoncavinder.inpen_demo.persistence.UserRepository.Existence.*
+import com.jasoncavinder.inpen_demo.ui.UserViewModel.AuthenticationState.*
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 

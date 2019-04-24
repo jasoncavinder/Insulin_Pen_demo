@@ -1,4 +1,4 @@
-package com.jasoncavinder.insulinpen_demo
+package com.jasoncavinder.inpen_demo
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

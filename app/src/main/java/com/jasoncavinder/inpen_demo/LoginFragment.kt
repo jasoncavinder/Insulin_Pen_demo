@@ -1,4 +1,4 @@
-package com.jasoncavinder.insulinpen_demo
+package com.jasoncavinder.inpen_demo
 
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
@@ -14,8 +14,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.jasoncavinder.insulinpen_demo.ui.UserViewModel
-import com.jasoncavinder.insulinpen_demo.ui.UserViewModel.AuthenticationState.INVALID_AUTHENTICATION
+import com.jasoncavinder.inpen_demo.ui.UserViewModel
+import com.jasoncavinder.inpen_demo.ui.UserViewModel.AuthenticationState.INVALID_AUTHENTICATION
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 
