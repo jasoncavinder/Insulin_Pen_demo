@@ -1,110 +1,130 @@
 package com.jasoncavinder.insulinpen_demo
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.appcompat.widget.Toolbar
-import androidx.navigation.Navigation
-import androidx.constraintlayout.widget.Barrier
-import android.view.ContextThemeWrapper
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_home_create_user.view.*
+import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
+import com.jasoncavinder.insulinpen_demo.ui.UserViewModel
+import kotlinx.android.synthetic.main.fragment_create_user.view.*
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [CreateUserFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [CreateUserFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class CreateUserFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
-    private var activityHasActionBar = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-
-        if (activity is AppCompatActivity) (activity as AppCompatActivity).supportActionBar?.let { activityHasActionBar = true }
-
+    companion object {
+        fun newInstance() = CreateUserFragment()
     }
+
+    private val userViewModel: UserViewModel by activityViewModels()
+    private lateinit var navController: NavController
+
+    private lateinit var firstName: Editable
+    private lateinit var lastName: Editable
+    private lateinit var email: Editable
+    private lateinit var password: Editable
+    private lateinit var confirm: Editable
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // create ContextThemeWrapper from MainActivity context with AppTheme style
-        val contextThemeWrapper = ContextThemeWrapper(activity,R.style.AppTheme)
-        // Inflate the layout for this fragment
-        val localInflater = inflater.cloneInContext(contextThemeWrapper)
-
-        val view = localInflater.inflate(R.layout.fragment_home_create_user, container, false)
-
-        view.back_button.setOnClickListener(
-            Navigation.createNavigateOnClickListener(
-                R.id.action_dest_createUserFragment_pop, null))
-        view.button_create_user.setOnClickListener(
-            Navigation.createNavigateOnClickListener(
-                R.id.action_global_home,null))
-
-//        if (!activityHasActionBar) {
-//            val act = (activity as AppCompatActivity)
-//            act.setSupportActionBar(view.toolbar)
-//            act.supportActionBar?.setTitle(R.string.title_fragment_create_user)
-//            act.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//            view.toolbar.visibility = ViewGroup.VISIBLE
-//
-//
-//        } else view.toolbar.visibility = ViewGroup.GONE
-
-        if (activityHasActionBar) view.mainToolbar.visibility = ViewGroup.GONE
-
-        return view
-
+        return inflater.inflate(R.layout.fragment_create_user, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
+        navController = findNavController()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException("$context must implement OnFragmentInteractionListener")
+        firstName = view.edit_text_first_name.text
+        lastName = view.edit_text_last_name.text
+        email = view.edit_text_email.text
+        password = view.edit_text_password.text
+        confirm = view.edit_text_confirm.text
+
+        userViewModel.mediator.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(view, it.toString(), Snackbar.LENGTH_INDEFINITE).show()
+        })
+
+        view.button_cancel.setOnClickListener { cancel() }
+
+        view.button_create_user.setOnClickListener {
+            if (firstName.toString().isBlank()
+                || lastName.toString().isBlank()
+            )
+                respond("Please enter your full name.")
+            else if (email.toString().isBlank()) respond("Please enter your email address.")
+            else if (password.toString().isBlank()
+                || confirm.toString().isBlank()
+            )
+                respond("Please enter and confirm your password.")
+            else if (password.toString() != confirm.toString())
+                respond("Your password doesn't match.\nPlease try again.")
+            else {
+                userViewModel.createUserAndLogin(
+                    email.toString(),
+                    password.toString(),
+                    firstName.toString(),
+                    lastName.toString()
+                )
+            }
         }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, OnBackPressedCallback {
+            cancel()
+            true
+        })
+
 
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-
+    private fun respond(msg: String) {
+        this.view?.let {
+            Snackbar.make(it, msg, Snackbar.LENGTH_LONG).show()
+        }
     }
+
+    private fun cancel() {
+        hideKeyboard()
+        userViewModel.userCancelledRegistration()
+        navController.popBackStack(R.id.createUserFragment, true)
+    }
+
+    private fun hideKeyboard() {
+        val view = this.view
+        view?.let { v ->
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(v.windowToken, 0)
+        }
+    }
+
+//    // TODO: Rename method, update argument and hook method into UI event
+//    fun onButtonPressed(uri: Uri) {
+//        listener?.onFragmentInteraction(uri)
+//    }
+
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        if (context is OnFragmentInteractionListener) {
+//            listener = context
+//        } else {
+//            throw RuntimeException("$context must implement OnFragmentInteractionListener")
+//        }
+//
+//    }
+
+//    override fun onDetach() {
+//        super.onDetach()
+//        listener = null
+//
+//    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -116,26 +136,26 @@ class CreateUserFragment : Fragment() {
      * (http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
+//    interface OnFragmentInteractionListener {
+//        // TODO: Update argument type and name
+//        fun onFragmentInteraction(uri: Uri)
+//    }
 
 
+//    companion object {
+//        /**
+//         * Use this factory method to create a new instance of
+//         * this fragment using the provided parameters.
+//         *
+//         * @return A new instance of fragment CreateUserFragment.
+//         */
+//        // TODO: Rename and change types and number of parameters
+//        @JvmStatic
+//        fun newInstance() =
+//            CreateUserFragment().apply {
+//                arguments = Bundle().apply {
+//                }
+//            }
+//    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment CreateUserFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance() =
-            CreateUserFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
-    }
 }

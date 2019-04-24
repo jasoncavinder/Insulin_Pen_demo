@@ -4,34 +4,35 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph_main" app:startDestination="@id/homeFragment">
 
     <fragment android:id="@+id/profile">
-        <action android:id="@+id/action_profile_to_payment" app:destination="@id/payment"/>
-        <action android:id="@+id/action_profile_to_addPen" app:destination="@id/addPen"/>
         <action android:id="@+id/action_profile_to_updateProfile" app:destination="@id/updateProfile"/>
-        <action android:id="@+id/action_profile_to_changeReporting" app:destination="@id/changeReporting"/>
+        <action android:id="@+id/action_profile_to_payment" app:destination="@id/payment"/>
     </fragment>
     <fragment android:id="@+id/homeFragment" android:name="com.jasoncavinder.insulinpen_demo.HomeFragment"
               android:label="fragment_home" tools:layout="@layout/fragment_home">
         <action android:id="@+id/action_homeFragment_to_profile" app:destination="@id/profile"/>
-        <action android:id="@+id/action_homeFragment_to_payment" app:destination="@id/payment"/>
-        <action android:id="@+id/action_homeFragment_to_addPen" app:destination="@id/addPen"/>
-        <action android:id="@+id/action_homeFragment_to_updateProfile" app:destination="@id/updateProfile"/>
-        <action android:id="@+id/action_homeFragment_to_doseHistory" app:destination="@id/doseHistoryAndWarnings"/>
-        <action android:id="@+id/action_homeFragment_to_reporting" app:destination="@id/reporting"/>
         <action android:id="@+id/action_homeFragment_to_penInfo" app:destination="@id/penInfo"/>
+        <action android:id="@+id/action_homeFragment_to_reporting" app:destination="@id/reporting"/>
     </fragment>
     <fragment android:id="@+id/payment"/>
     <fragment android:id="@+id/addPen"/>
     <fragment android:id="@+id/updateProfile"/>
     <fragment android:id="@+id/doseHistoryAndWarnings" android:name="com.jasoncavinder.insulinpen_demo.DoseHistoryFragment"
-              android:label="fragment_dose_list" tools:layout="@layout/fragment_dose_list">
-        <action android:id="@+id/action_doseHistoryAndWarnings_to_penInfo" app:destination="@id/penInfo"
-        />
-    </fragment>
+              android:label="fragment_dose_list" tools:layout="@layout/fragment_dose_list"/>
     <fragment android:id="@+id/reporting">
         <action android:id="@+id/action_reporting_to_changeReporting" app:destination="@id/changeReporting"/>
+        <action android:id="@+id/action_reporting_to_doseHistoryAndWarnings"
+                app:destination="@id/doseHistoryAndWarnings"/>
     </fragment>
     <fragment android:id="@+id/penInfo">
         <action android:id="@+id/action_penInfo_to_addPen" app:destination="@id/addPen"/>
     </fragment>
     <fragment android:id="@+id/changeReporting"/>
+    <fragment android:id="@+id/createUserFragment" android:name="com.jasoncavinder.insulinpen_demo.CreateUserFragment"
+              android:label="New Account" tools:layout="@layout/fragment_create_user"/>
+    <fragment android:id="@+id/loginFragment" android:name="com.jasoncavinder.insulinpen_demo.LoginFragment"
+              android:label="Login" tools:layout="@layout/fragment_login">
+        <action android:id="@+id/action_loginFragment_to_createUserFragment"
+                app:destination="@id/createUserFragment"/>
+    </fragment>
+    <action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment"/>
 </navigation>

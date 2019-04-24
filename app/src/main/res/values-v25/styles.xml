@@ -11,6 +11,17 @@
 
         <item name="fontFamily">@font/anodina_regular</item>
 
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+    </style>
+    <style name="AppTheme.LoginEditText">
+        <item name="colorControlActivated">@color/primaryColor</item>
+    </style>
+    <style name="AppTheme.LoginControls">
+        <item name="colorButtonNormal">@color/surfaceColor_400</item>
+        <item name="colorControlHighlight">@color/primaryColor</item>
+        <item name="colorAccent">@color/secondaryTextColor</item>
     </style>
     <!--<style name="TextAppearance.AppTheme.Title" parent="TextAppearance.AppCompat.Title">-->
         <!-- TODO: -->
@@ -65,8 +76,14 @@
 
 </resources>
 
-    
-    
+
+        <!--@style/Widget.AppCompat.EditText   Widget.AppCompat.EditText:  Inherits from: @style/Base.Widget.AppCompat.EditText:     android:android:background = ?attr/editTextBackground-->
+
+        <!--Inherits from: @android:style/Widget.Material.EditText:  Inherits from: @android:style/Widget.EditText:     android:background = ?attr/editTextBackground-->
+
+        <!--    android:breakStrategy = simple     android:clickable = true     android:defaultFocusHighlightEnabled = false     android:focusable = true     android:focusableInTouchMode = true     android:gravity = center_vertical     android:hyphenationFrequency = normal     android:textAppearance = ?attr/textAppearanceMediumInverse => @style/TextAppearance.Material.Medium.Inverse     android:textColor = ?attr/editTextColor => @color/primaryTextColor  Inherits from: @android:style/Widget:-->
+
+
         <!-- Copyright (C) 2014 The Android Open Source Project
              Licensed under the Apache License, Version 2.0 (the "License");
              you may not use this file except in compliance with the License.

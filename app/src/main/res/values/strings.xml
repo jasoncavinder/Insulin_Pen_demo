@@ -35,4 +35,5 @@
     <string name="title_activity_dummy">dummy</string>
     <string name="to_profile_page">See your profile</string>
     <string name="to_dose_history">See Dose History</string>
+    <string name="invalid_credentials">Email/Password combination is not valid.</string>
 </resources>

@@ -1,21 +1,19 @@
 package com.jasoncavinder.insulinpen_demo
 
-import androidx.recyclerview.widget.RecyclerView
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
-
+import androidx.recyclerview.widget.RecyclerView
 import com.jasoncavinder.insulinpen_demo.DoseHistoryFragment.OnListFragmentInteractionListener
 import com.jasoncavinder.insulinpen_demo.dummy.DummyContent.DummyItem
-
 import kotlinx.android.synthetic.main.fragment_dose_item.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
  * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
+ * TODO: Replace the implementation with code for your persistence type.
  */
 class MyDoseRecyclerViewAdapter(
     private val mValues: List<DummyItem>,
