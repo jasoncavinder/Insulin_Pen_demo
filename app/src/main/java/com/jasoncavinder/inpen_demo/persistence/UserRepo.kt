@@ -21,7 +21,7 @@ class UserRepository(application: Application) {
     val MAYBE = Existence.MAYBE
 
     init {
-        val db = UsersDatabase.getDatabase(application)!!
+        val db = InPenAppDatabase.getDatabase(application)!!
         userDao = db.userDao()
         localUsers = userDao.countUsers()
         userID = null

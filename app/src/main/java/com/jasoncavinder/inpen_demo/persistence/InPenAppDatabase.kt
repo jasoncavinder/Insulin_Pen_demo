@@ -4,33 +4,40 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
-// From sample
-//import androidx.sqlite.db.SupportSQLiteDatabase
-//import android.os.AsyncTask
-
-
-@Database(entities = [User::class], version = 2)
-abstract class UsersDatabase : RoomDatabase() {
+@Database(
+    entities = [
+        User::class,
+        Message::class,
+        Provider::class,
+        Pen::class,
+        PenData::class,
+        Alert::class,
+        Dose::class
+    ], version = 4
+)
+@TypeConverters(Converters::class)
+abstract class InPenAppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
 
     companion object {
         // marking the instance as volatile to ensure atomic access to the variable
         @Volatile
-        private var INSTANCE: UsersDatabase? = null
+        private var INSTANCE: InPenAppDatabase? = null
 
-        internal fun getDatabase(context: Context): UsersDatabase? {
-            return INSTANCE ?: synchronized(UsersDatabase::class.java) {
+        internal fun getDatabase(context: Context): InPenAppDatabase? {
+            return INSTANCE ?: synchronized(InPenAppDatabase::class.java) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
 
 //            if (INSTANCE == null) {
-//                synchronized(UsersDatabase::class.java) {
+//                synchronized(InPenAppDatabase::class.java) {
 //                    if (INSTANCE == null) {
 //                        INSTANCE = Room.databaseBuilder(
 //                            context.applicationContext,
-//                            UsersDatabase::class.java, "user.db"
+//                            InPenAppDatabase::class.java, "user.db"
 //                        )
 //                            // Wipes and rebuilds instead of migrating if no Migration object.
 //                            // Migration is not part of this codelab.
@@ -47,8 +54,9 @@ abstract class UsersDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                UsersDatabase::class.java, "user.db"
+                InPenAppDatabase::class.java, "user.db"
             )
+                .fallbackToDestructiveMigration()
                 .build()
     }
 }
@@ -66,7 +74,7 @@ abstract class UsersDatabase : RoomDatabase() {
 //        }
 //    }
 
-//    private class PopulateDbAsync internal constructor(db: UsersDatabase) : AsyncTask<Void, Void, Void>() {
+//    private class PopulateDbAsync internal constructor(db: InPenAppDatabase) : AsyncTask<Void, Void, Void>() {
 //
 //        private val mDao: UserDao
 //
