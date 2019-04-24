@@ -36,4 +36,5 @@
                 app:destination="@id/createUserFragment"/>
     </fragment>
     <action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment"/>
+    <action android:id="@+id/action_nav_fail_safe" app:popUpTo="@id/nav_graph_main" app:popUpToInclusive="true"/>
 </navigation>

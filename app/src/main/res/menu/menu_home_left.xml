@@ -7,6 +7,5 @@
           android:id="@+id/profile_settings"
           android:title="Profile"
           app:showAsAction="always"
-          android:enabled="true"
-    />
+          android:enabled="true"/>
 </menu>

@@ -1,12 +1,7 @@
 package com.jasoncavinder.inpen_demo
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceFragmentCompat
-import com.jasoncavinder.inpen_demo.ui.UserViewModel
 
 
 class ProfileFragment : PreferenceFragmentCompat() {
@@ -15,23 +10,16 @@ class ProfileFragment : PreferenceFragmentCompat() {
         fun newInstance() = ProfileFragment()
     }
 
-    private lateinit var viewModel: UserViewModel
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.profile_settings, rootKey)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
-    }
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        return inflater.inflate(R.layout.fragment_profile, container, false)
+//    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
 }

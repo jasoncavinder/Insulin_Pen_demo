@@ -2,12 +2,14 @@ package com.jasoncavinder.inpen_demo
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ActionMenuView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -113,12 +115,44 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
                 .setAction("Action", null).show()
         }
 
+
+    }
+
+
+    private fun onMenuItemClicked(item: MenuItem?): Boolean {
+        navController.navigate(
+            // TODO: Add remaining menuItem/navigation combinations
+            when (item?.itemId) {
+                R.id.profile_settings -> R.id.action_homeFragment_to_profile
+                else -> R.id.action_nav_fail_safe
+            }
+        )
+        return true
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        updateToolbar(title, leftMenu, rightMenu)
+//        updateToolbar(title, leftMenu, rightMenu)
+
+        titleTextView.text = title
+        leftMenuView.menu.clear()
+        menuInflater.inflate(leftMenu, leftMenuView.menu)
+        rightMenuView.menu.clear()
+        menuInflater.inflate(rightMenu, rightMenuView.menu)
+
+        leftMenuView.menu.forEach { menuItem ->
+            menuItem.setOnMenuItemClickListener { item ->
+                onMenuItemClicked(item)
+            }
+        }
+
         return true
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        updateToolbar(title, leftMenu, rightMenu)
+//
+//        return true
+//    }
 
     enum class DecorStyle { NORMAL, FULL_SCREEN_AMBER, NORMAL_NO_FAB }
 
@@ -150,11 +184,16 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
     }
 
     override fun updateToolbar(title: String, left_menu: Int, right_menu: Int) {
-        titleTextView.text = title
-        leftMenuView.menu.clear()
-        menuInflater.inflate(left_menu, leftMenuView.menu)
-        rightMenuView.menu.clear()
-        menuInflater.inflate(right_menu, rightMenuView.menu)
+        this.title = title
+        this.leftMenu = left_menu
+        this.rightMenu = right_menu
+
+        onPrepareOptionsMenu(menu = null)
+//        titleTextView.text = title
+//        leftMenuView.menu.clear()
+//        menuInflater.inflate(left_menu, leftMenuView.menu)
+//        rightMenuView.menu.clear()
+//        menuInflater.inflate(right_menu, rightMenuView.menu)
     }
 
 //    override fun updateToolbar(title: String, leftIcon: Int?, leftAction: Int?, rightIcon: Int?, rightAction: Int?) {
