@@ -15,6 +15,12 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
     </style>
+    <style name="AppTheme.ActionBar">
+
+    </style>
+    <style name="AppTheme.Light">
+
+    </style>
     <style name="AppTheme.LoginEditText">
         <item name="colorControlActivated">@color/primaryColor</item>
     </style>
@@ -70,7 +76,7 @@
     <item name="android:fontFamily">@font/anodina_bold</item>
     <!--<item name="android:backgroundTint">@color/primaryColor</item>-->
     <!--<item name="android:colorEdgeEffect">@color/surfaceLightColor</item>-->
-    <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
     <!--<item name="android:colorAccent">@color/primaryColor</item>-->
 </style>
 
@@ -763,7 +769,7 @@
     <!--<item name="tooltipBackgroundColor">@color/tooltip_background_dark</item>-->
 <!--</style>-->
 <!--&lt;!&ndash; Variant of the material (light) theme that has a solid (opaque) action bar-->
-     <!--with an inverse color profile. The dark action bar sharply stands out against-->
+        <!--with an inverse color profileFragment. The dark action bar sharply stands out against-->
      <!--the light content. &ndash;&gt;-->
 <!--<style name="Theme.Material.Light.DarkActionBar">-->
     <!--<item name="actionBarWidgetTheme">@null</item>-->

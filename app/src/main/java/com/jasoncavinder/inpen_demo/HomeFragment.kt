@@ -1,5 +1,6 @@
 package com.jasoncavinder.inpen_demo
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +14,23 @@ class HomeFragment : Fragment() {
 
     private val viewModel: UserViewModel by activityViewModels()
 
-//    var listener: updateToolbarListener? = null
+    private lateinit var updateToolbarListener: UpdateToolbarListener
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        updateToolbarListener.updateToolbar("At-a-Glance", R.menu.menu_home_left, R.menu.menu_home_right)
+
 //
 //        // setup toolbar
 ////        listener?.updateToolbar(
@@ -47,7 +57,24 @@ class HomeFragment : Fragment() {
 ////                    group_report_short,null,null,null) }
 //
 //
+
+        return view
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            updateToolbarListener = context as UpdateToolbarListener
+        } catch (castException: ClassCastException) {
+            /** The activity does not implement the listener. */
+        }
+    }
+
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        Log.d("menu","$menu")
+//        inflater.inflate(R.menu.menu_home_left, )
+//        inflater.inflate(R.menu.menu_home_right, (activity as AppCompatActivity).toolbar.menu_right.menu)
+//    }
 
     //    override fun onHiddenChanged(hidden: Boolean) {
 //        Toast.makeText(activity, "Loaded 'HomeFragment'",Toast.LENGTH_LONG).show()
@@ -67,7 +94,6 @@ class HomeFragment : Fragment() {
 //    interface updateToolbarListener {
 //        fun updateToolbar(title: String, leftIcon: Int?, leftAction: Int?, rightIcon: Int?, rightAction: Int?)
 //    }
-
 
 
     //    // TODO: Rename method, update argument and hook method into UI event

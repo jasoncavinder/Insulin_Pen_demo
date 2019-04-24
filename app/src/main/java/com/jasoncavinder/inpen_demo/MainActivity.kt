@@ -1,52 +1,77 @@
 package com.jasoncavinder.inpen_demo
 
-import android.os.Build
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.widget.ActionMenuView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jasoncavinder.inpen_demo.ui.UserViewModel
 import com.jasoncavinder.inpen_demo.ui.UserViewModel.AuthenticationState.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UpdateToolbarListener {
 
     private lateinit var userViewModel: UserViewModel
 
     private lateinit var navController: NavController
 
+    lateinit var leftMenuView: ActionMenuView
+    lateinit var rightMenuView: ActionMenuView
+    lateinit var titleTextView: TextView
+    lateinit var toolbar: ConstraintLayout
+    private var leftMenu = R.menu.menu_home_left
+    private var rightMenu = R.menu.menu_home_right
+    private var title = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val contentView: View = findViewById(android.R.id.content)
-
-        userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
-
-
         navController = findNavController(R.id.nav_host_main)
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        findViewById<Toolbar>(R.id.toolbar)
-            .setupWithNavController(navController, appBarConfiguration)
+
+        leftMenuView = findViewById(R.id.menu_left)
+        rightMenuView = findViewById(R.id.menu_right)
+        titleTextView = findViewById(R.id.title)
+        toolbar = findViewById(R.id.toolbar)
+
+        /* Couldn't get two ActionMenuViews working inside one toolbar... So much lost sleep on Google
+        // Setup toolbar
 //        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 //        setSupportActionBar(toolbar)
+//
+//        supportActionBar?.setDisplayShowHomeEnabled(false)
+//        supportActionBar?.setDisplayShowTitleEnabled(false)
+//        supportActionBar?.setHomeButtonEnabled(false)
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.loginFragment -> redecorate(DecorStyle.FULL_SCREEN_AMBER)
-                R.id.createUserFragment -> redecorate(DecorStyle.FULL_SCREEN_AMBER)
-                else -> redecorate(DecorStyle.NORMAL)
-            }
-        }
+//        val inflater = LayoutInflater.from(this)
+//        val customView = inflater.inflate(R.layout.custom_toolbar, toolbar)
+//        supportActionBar?.customView = customView
+//        supportActionBar?.setDisplayShowCustomEnabled(true)
+
+//        toolbarTitleView = findViewById(R.id.toolbar_title)
+//        leftMenuView = findViewById(R.id.menu_left)
+//        rightMenuView = findViewById(R.id.menu_right)
+//        toolbarTitle = customView.findViewById<TextView>(R.id.toolbar_title).text
+//        leftMenu = customView.findViewById<ActionMenuView>(R.id.menu_left).menu
+//        rightMenu = customView.findViewById<ActionMenuView>(R.id.menu_right).menu
+
+
+//        toolbar.setupWithNavController(navController, AppBarConfiguration(navController.graph))
+        */
+
+        // Setup data
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
+
         userViewModel.authenticationState.observe(this, Observer {
             //            Snackbar.make(contentView, "Auth: ${it.toString()}", Snackbar.LENGTH_LONG).show()
             when (it) {
@@ -70,30 +95,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-//        userViewModel.user.observe(this, Observer {
-//            Snackbar.make(contentView, "User: ${userViewModel.user.value.toString()}", Snackbar.LENGTH_LONG).show()
-//        })
 
-//        setSupportActionBar(toolbar)
-//        setupActionBarWithNavController(findNavController(R.id.nav_host_main))
-//        toolbar.setNavigationIcon(R.drawable.ic_account_circle_foreground_24dp)
 
-//        supportActionBar?.setHomeButtonEnabled(false)
-//        supportActionBar?.setDisplayShowHomeEnabled(false)
-//        supportActionBar?.setDisplayShowTitleEnabled(false)
-//        actionBar?.setDisplayShowHomeEnabled(false)
-//        actionBar?.setDisplayShowTitleEnabled(false)
+        // Setup navigation
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.loginFragment -> redecorate(DecorStyle.FULL_SCREEN_AMBER)
+                R.id.createUserFragment -> redecorate(DecorStyle.FULL_SCREEN_AMBER)
+                else -> redecorate(DecorStyle.NORMAL)
+            }
+        }
 
-        // Setup Toolbar
-//        val customToolbarView = LayoutInflater.from(this)
-//            .inflate(R.layout.custom_toolbar, null)
-//        customToolbarView.findViewById<TextView>(R.id.action_bar_title_text).text = getString(R.string.title_activity_main)
-//        customToolbarView.findViewById<ImageView>(R.id.action_bar_nav_left)
-//            .setOnClickListener { goLeft() }
-//        customToolbarView.findViewById<ImageView>(R.id.nav_right)
-//            .setOnClickListener { goRight() }
-//        supportActionBar?.customView = customToolbarView
-//        supportActionBar?.setDisplayShowCustomEnabled(true)
 
         // Setup Fast Action Button
         fab.setOnClickListener { view ->
@@ -101,11 +113,11 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
 
-//        (nav_host_main.view?.let { Navigation.findNavController(it) })
-//            .addOnDestinationChangedListener { controller, destination, arguments ->  }
+    }
 
-//        Toast.makeText(this, supportActionBar?.displayOptions.toString(), Toast.LENGTH_LONG).show()
-
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        updateToolbar(title, leftMenu, rightMenu)
+        return true
     }
 
     enum class DecorStyle { NORMAL, FULL_SCREEN_AMBER, NORMAL_NO_FAB }
@@ -117,34 +129,33 @@ class MainActivity : AppCompatActivity() {
                 fab.hide()
 //                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 //                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                     window.statusBarColor = ContextCompat.getColor(this, R.color.accentColor)
-                } else {
-                    window.statusBarColor = ContextCompat.getColor(this, R.color.secondaryColor_900)
-                }
             }
             DecorStyle.NORMAL_NO_FAB -> {
                 toolbar.visibility = View.VISIBLE
                 fab.hide()
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     window.decorView.systemUiVisibility =
                         window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-                }
                 window.statusBarColor = ContextCompat.getColor(this, R.color.primaryDarkColor)
             }
             DecorStyle.NORMAL -> {
                 toolbar.visibility = View.VISIBLE
                 fab.show()
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     window.decorView.systemUiVisibility =
                         window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-                }
                 window.statusBarColor = ContextCompat.getColor(this, R.color.primaryDarkColor)
             }
         }
     }
 
+    override fun updateToolbar(title: String, left_menu: Int, right_menu: Int) {
+        titleTextView.text = title
+        leftMenuView.menu.clear()
+        menuInflater.inflate(left_menu, leftMenuView.menu)
+        rightMenuView.menu.clear()
+        menuInflater.inflate(right_menu, rightMenuView.menu)
+    }
 
 //    override fun updateToolbar(title: String, leftIcon: Int?, leftAction: Int?, rightIcon: Int?, rightAction: Int?) {
 //        fun swapIn(icon: ImageView, src: Int?, action: Int?) {

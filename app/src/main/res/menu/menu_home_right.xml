@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.jasoncavinder.inpen_demo.MainActivity">
+    <!-- TODO: move hardcoded string-->
+    <item android:id="@+id/history"
+          android:title="History"
+          android:icon="@drawable/ic_history_24dp"
+          app:showAsAction="always"/>
+</menu>

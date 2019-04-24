@@ -14,8 +14,8 @@ android {
         applicationId "com.jasoncavinder.inpen_demo"
         minSdkVersion 24
         targetSdkVersion 28
-        versionCode 6
-        versionName '0.3.3'
+        versionCode 7
+        versionName '0.3.4'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -46,6 +46,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0-alpha04'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04'
+    implementation 'androidx.preference:preference:1.1.0-alpha04'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.1.0-alpha04'
     testImplementation 'junit:junit:4.13-beta-2'
 
