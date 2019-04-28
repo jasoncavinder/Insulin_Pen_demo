@@ -44,7 +44,7 @@ if you need reference, you can also check out this company's smart pen software:
 ## Built With
 
 * [Kotlin](http://kotlinlang.org) - Language
-* [Gradle](https://gradle.org) = Build Tool
+* [Gradle](https://gradle.org) - Build Tool
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Android Studio](https://developer.android.com/studio) - IDE
 
