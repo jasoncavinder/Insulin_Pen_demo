@@ -68,7 +68,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 - **When will this be done?**
     - ASAP, but it's hard to say.
-    - ![progress_bar](https://github.com/jasoncavinder/InPen_demo/raw/master/README/Progress.gif)
+      ![progress_bar](https://github.com/jasoncavinder/InPen_demo/raw/master/README/Progress.gif)
 
 ---
 
