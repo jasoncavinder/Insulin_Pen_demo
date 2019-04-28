@@ -1,7 +1,3 @@
-< a href="https://github.com/jasoncavinder"><img src="https://avatars2.githubusercontent.com/u/3366163?s=460&v=4" title="Jason Cavinder" alt="Jason Cavinder"></a>
-
-<!-- [![jasoncavinder](https://avatars2.githubusercontent.com/u/3366163?s=460&v=4)](https://github.com/jasoncavinder) -->
-
 # InPen (demo)
 
 > Contract ID `21949291` [*(UpWork)*](https://www.upwork.com/ab/f/contracts/21949291)
@@ -60,11 +56,9 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Team
 
-> Or Contributors/People
-
 | <a href="https://github.com/jasoncavinder" target="_blank">**Jason Cavinder**</a> | 
-| :---: |:---:| :---:|
-| [![Jason Cavinder](https://avatars1.githubusercontent.com/u/4284691?v=3&s=200)](https://github.com/jasoncavinder)    |
+| :---: |
+| [![Jason Cavinder](https://avatars2.githubusercontent.com/u/3366163?s=200&v=4)](https://github.com/jasoncavinder)    |
 | <a href="http://github.com/jasoncavinder" target="_blank">`github.com/jasoncavinder`</a> |
 | *Initial work* |
 
