@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="36dp"
-             android:layout_height="36dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="36dp"
+    android:layout_height="36dp">
 
     <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" app:srcCompat="@drawable/ic_account_circle_background_24dp"
-            android:id="@+id/background" android:tint="@color/surfaceColor"
-            android:cropToPadding="false"/>
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cropToPadding="false"
+        android:tint="@color/surfaceColor"
+        app:srcCompat="@drawable/ic_account_circle_background_24dp" />
+
     <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" app:srcCompat="@drawable/ic_account_circle_foreground_24dp"
-            android:id="@+id/foreground" android:tint="@color/surfaceTextColor" android:padding="6dp"/>
+        android:id="@+id/foreground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="6dp"
+        android:tint="@color/surfaceTextColor"
+        app:srcCompat="@drawable/ic_account_circle_foreground_24dp" />
 </FrameLayout>

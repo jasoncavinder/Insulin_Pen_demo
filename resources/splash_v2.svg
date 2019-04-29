@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="360px" height="640px" viewBox="0 0 360 640" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54 (76480) - https://sketchapp.com -->
+    <title>splash_v2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="49.9367089%" fx="50%" fy="49.9367089%" r="50%" id="radialGradient-1">
+            <stop stop-color="#1976D2" offset="0%"></stop>
+            <stop stop-color="#3C3C3C" stop-opacity="0.495520105" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="splash" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Background" fill="#3C3C3C" fill-rule="nonzero" x="0" y="-0.00467" width="360" height="640.00156"></rect>
+        <circle id="Oval" fill="url(#radialGradient-1)" fill-rule="nonzero" cx="180" cy="320" r="180"></circle>
+        <g id="Icon" transform="translate(116.000000, 256.000000)">
+            <g>
+                <rect id="Rectangle" fill="#3C3C3C" fill-rule="nonzero" x="0" y="0" width="128" height="128" rx="28.5"></rect>
+                <path d="M62,0 L62,128" id="Line" stroke="#606060" stroke-width="3.75" fill-rule="nonzero"></path>
+                <circle id="Oval" stroke="#F8A72E" stroke-width="3.75" fill-rule="nonzero" cx="96.75" cy="64" r="18.25"></circle>
+            </g>
+        </g>
+    </g>
+</svg>
