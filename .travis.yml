@@ -1,22 +1,34 @@
 language: android
+java: oraclejdk8 # We need this if your sdk version is 24
 
 android:
-
   components:
+    - platform-tools
+    - tools
     - build-tools-28.0.3
     - android-28
-    - extra-google-google_play_services
     - extra-google-m2repository
     - extra-jcenter-m2repository
-    - extra-mavenCentral-m2repository
+    - extra-mavenCentral-m2repository   
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
-
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-
+
+env:
+  global:
+    # install timeout in minutes (2 minutes by default)
+    - ADB_INSTALL_TIMEOUT=8
+
+# Run assemble and unit tests
+script:
+  - ./gradlew clean assembleDebug assembleRelease testDebug
+  - ./gradlew build
+  - cat /home/travis/build/YOURTRAVISUSERNAME/YOURPROJECTNAME/app/build/outputs/lint-results-debug.xml
+    
