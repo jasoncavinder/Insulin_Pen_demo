@@ -12,8 +12,8 @@ import com.jasoncavinder.inpen.demo.data.entities.message.Message
 import com.jasoncavinder.inpen.demo.data.entities.message.MessageDao
 import com.jasoncavinder.inpen.demo.data.entities.pen.Pen
 import com.jasoncavinder.inpen.demo.data.entities.pen.PenDao
-import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.PenDataDao
 import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.PenDataPoint
+import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.PenDataPointDao
 import com.jasoncavinder.inpen.demo.data.entities.provider.Provider
 import com.jasoncavinder.inpen.demo.data.entities.provider.ProviderDao
 import com.jasoncavinder.inpen.demo.data.entities.user.User
@@ -33,16 +33,17 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         get() = _parentJob + Dispatchers.Main
     private val scope = CoroutineScope(_coroutineContext)
 
-    private var sessionExpires: Long = 0L
+    private var _sessionExpires = 0L
+        get() = _sessionExpires.also { _sessionExpires = System.currentTimeMillis() + SESSION_TIME_MINUTES.times(60000L) }
 
     private fun extendSession() {
-        sessionExpires = System.currentTimeMillis() + SESSION_TIME_MINUTES.times(60000L)
+        _sessionExpires = System.currentTimeMillis() + SESSION_TIME_MINUTES.times(60000L)
     }
 
     val userDao: UserDao
     val providerDao: ProviderDao
     val penDao: PenDao
-    val penDataDao: PenDataDao
+    val penDataPointDao: PenDataPointDao
     val messageDao: MessageDao
     val doseDao: DoseDao
     val alertDao: AlertDao
@@ -75,12 +76,12 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     private val _dataFlowRepository: DataFlowRepository
 
     init {
-        sessionExpires = 0L
+        _sessionExpires = 0L
         AppDatabase.getInstance(application)
             .also { userDao = it.userDao() }
             .also { providerDao = it.providerDao() }
             .also { penDao = it.penDao() }
-            .also { penDataDao = it.penDataDao() }
+            .also { penDataPointDao = it.penDataPointDao() }
             .also { messageDao = it.messageDao() }
             .also { doseDao = it.doseDao() }
             .also { alertDao = it.alertDao() }
@@ -89,12 +90,12 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
             userDao, providerDao, penDao
         )
 
-        _dataFlowRepository = DataFlowRepository.getInstance(penDataDao, doseDao, messageDao, alertDao)
+        _dataFlowRepository = DataFlowRepository.getInstance(penDataPointDao, doseDao, messageDao, alertDao)
 
         _user.value = _userProfileRepository.user
         _provider.value = _userProfileRepository.provider
         _pen.value = _userProfileRepository.pen
-        _penDataPoints.value = _dataFlowRepository.penDataPointPoints
+        _penDataPoints.value = _dataFlowRepository.penDataPoints
         _doses.value = _dataFlowRepository.doses
         _messages.value = _dataFlowRepository.messages
         _alerts.value = _dataFlowRepository.alerts
@@ -114,6 +115,8 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     fun loadUser(userID: String) {
         _userProfileRepository.loadProfile(userID)
     }
+
+    fun isAuthenticated(): Boolean = _user.value != null && _sessionExpires < System.currentTimeMillis()
 
     override fun onCleared() {
         super.onCleared()

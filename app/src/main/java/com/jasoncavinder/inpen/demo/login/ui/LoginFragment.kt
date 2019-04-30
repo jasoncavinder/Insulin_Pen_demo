@@ -2,23 +2,23 @@ package com.jasoncavinder.inpen.demo.login.ui
 
 import android.app.Activity
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.jasoncavinder.inpen.demo.LoginActivity
+import com.jasoncavinder.inpen.demo.MainActivity
 import com.jasoncavinder.inpen.demo.data.LoginViewModel
 import com.jasoncavinder.inpen_demo.R
 import kotlinx.android.synthetic.main.fragment_login_login.*
@@ -82,11 +82,15 @@ class LoginFragment : Fragment() {
                 showLoginFailed(loginResult.error)
             }
             if (loginResult.success != null) {
-//  TODO:              updateUiWithUser(loginResult.success)
+                _loginViewModel.user.value?.userId?.let {
+                    activity?.setResult(
+                        Activity.RESULT_OK,
+                        Intent(activity, MainActivity::class.java)
+                            .putExtra("userID", it)
+                    )
+                    activity?.finish()
+                }
             }
-            activity?.setResult(Activity.RESULT_OK)
-
-            activity?.finish()
         })
 
         edit_text_email.afterTextChanged {
@@ -126,7 +130,7 @@ class LoginFragment : Fragment() {
 */
 
         button_cancel_login.setOnClickListener {
-//            this.hideKeyboard()
+            //            this.hideKeyboard()
             navController.navigateUp()
         }
 
@@ -153,8 +157,14 @@ class LoginFragment : Fragment() {
 
     }
 
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        activity?.intent?.getStringExtra("userID")?.let { edit_text_email.setText(it) }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
 //
 //        requireActivity().onBackPressedDispatcher.addCallback(
 //            this, // LifecycleOwner
@@ -166,7 +176,7 @@ class LoginFragment : Fragment() {
 //                }
 //            }
 //        )
-//    }
+    }
 //
 //    fun hideKeyboard() {
 //        val view = this.view

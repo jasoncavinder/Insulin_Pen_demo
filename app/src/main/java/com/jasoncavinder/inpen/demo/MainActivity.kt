@@ -1,5 +1,6 @@
 package com.jasoncavinder.inpen.demo
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        userProfileViewModel = UserProfileViewModel(application)
 
         navController = findNavController(R.id.nav_host_main)
 
@@ -126,19 +128,34 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            AUTHORIZE_USER -> when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.getStringExtra("userID")?.let {
+                        userProfileViewModel.loadUser(it)
+                    }
+                }
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 
-/* TODO: After this viewModel is working, finish this authentication forwarding
 
-        if (appAccess.isAuthorized())  {
-            // move on
+
+        if (!userProfileViewModel.isAuthenticated()) {
+            startActivityForResult(
+                Intent(this, LoginActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    .addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                    .putExtra("userID", userProfileViewModel.user.value?.userID ?: "")
+            , AUTHORIZE_USER)
         }
-        else startActivityForResult(
-            Intent(this, LoginActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                .putExtra(*/
+
 /* TODO *//*
 )
 

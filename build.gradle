@@ -36,6 +36,7 @@ buildscript {
         cardviewVersion = '1.0.0'
         fragmentVersion = '1.1.0-alpha07'
         gridlayoutVersion = '1.0.0'
+        playServicesVisionVersion = '17.0.2'
         preferenceVersion = '1.1.0-alpha04'
         testVersion = '1.2.0-alpha04'
     }
