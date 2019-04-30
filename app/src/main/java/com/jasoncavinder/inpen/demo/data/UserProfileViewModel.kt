@@ -1,7 +1,6 @@
 package com.jasoncavinder.inpen.demo.data
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jasoncavinder.inpen.demo.data.entities.alert.Alert
@@ -23,12 +22,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
-class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
-
+class UserProfileViewModel(application: Application) {
     private val SESSION_TIME_MINUTES: Int = 15
 
     private var _parentJob = Job()
-    // By default all the coroutines launched in this scope should be using the Main dispatcher
     private val _coroutineContext: CoroutineContext
         get() = _parentJob + Dispatchers.Main
     private val scope = CoroutineScope(_coroutineContext)
@@ -48,9 +45,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     val alertDao: AlertDao
 
     private val _user = MutableLiveData<User>()
-    //    private val _userMediator = MediatorLiveData<User>()
     val user: LiveData<User> = _user
-
 
     private val _provider = MutableLiveData<Provider>()
     val provider: LiveData<Provider> = _provider
@@ -61,11 +56,11 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     private val _penDataPoints = MutableLiveData<List<PenDataPoint>>()
     val penDataPoints: LiveData<List<PenDataPoint>> = _penDataPoints
 
-    private val _doses = MutableLiveData<List<Dose>>()
-    val doses: LiveData<List<Dose>> = _doses
-
     private val _messages = MutableLiveData<List<Message>>()
     val messages: LiveData<List<Message>> = _messages
+
+    private val _doses = MutableLiveData<List<Dose>>()
+    val doses: LiveData<List<Dose>> = _doses
 
     private val _alerts = MutableLiveData<List<Alert>>()
     val alerts: LiveData<List<Alert>> = _alerts
@@ -94,29 +89,9 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         _user.value = _userProfileRepository.user
         _provider.value = _userProfileRepository.provider
         _pen.value = _userProfileRepository.pen
-        _penDataPoints.value = _dataFlowRepository.penDataPointPoints
-        _doses.value = _dataFlowRepository.doses
-        _messages.value = _dataFlowRepository.messages
-        _alerts.value = _dataFlowRepository.alerts
-
-        _user.observeForever {
-            _user.value?.userID?.let { _dataFlowRepository.loadMessages(it) }
-            _user.value?.userID?.let { _dataFlowRepository.loadUserDoses(it) }
-        }
-
-        _pen.observeForever {
-            _pen.value?.penID?.let { _dataFlowRepository.loadDataPoints(it) }
-            _pen.value?.penID?.let { _dataFlowRepository.loadPenDoses(penID = it) }
-        }
-
     }
 
-    fun loadUser(userID: String) {
-        _userProfileRepository.loadProfile(userID)
-    }
+    private fun updateProfile(userID: String?) {
 
-    override fun onCleared() {
-        super.onCleared()
-        _parentJob.cancel()
     }
 }
