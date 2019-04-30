@@ -40,6 +40,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
@@ -88,6 +89,7 @@ dependencies {
 
     androidTestImplementation "androidx.test:runner:$rootProject.testVersion"
     testImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+    implementation "com.google.android.gms:play-services-vision:$rootProject.playServicesVisionVersion"
 
 
 //    implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"

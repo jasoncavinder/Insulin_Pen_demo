@@ -16,8 +16,8 @@ import com.jasoncavinder.inpen.demo.data.entities.message.Message
 import com.jasoncavinder.inpen.demo.data.entities.message.MessageDao
 import com.jasoncavinder.inpen.demo.data.entities.pen.Pen
 import com.jasoncavinder.inpen.demo.data.entities.pen.PenDao
-import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.PenDataDao
 import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.PenDataPoint
+import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.PenDataPointDao
 import com.jasoncavinder.inpen.demo.data.entities.provider.Provider
 import com.jasoncavinder.inpen.demo.data.entities.provider.ProviderDao
 import com.jasoncavinder.inpen.demo.data.entities.user.User
@@ -45,7 +45,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun messageDao(): MessageDao
     abstract fun providerDao(): ProviderDao
     abstract fun penDao(): PenDao
-    abstract fun penDataDao(): PenDataDao
+    abstract fun penDataPointDao(): PenDataPointDao
     abstract fun doseDao(): DoseDao
     abstract fun alertDao(): AlertDao
 
