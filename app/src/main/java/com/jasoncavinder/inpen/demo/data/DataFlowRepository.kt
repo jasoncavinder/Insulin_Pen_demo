@@ -26,7 +26,7 @@ class DataFlowRepository private constructor(
     var messages: List<Message>? = null
         private set
     var alerts: List<Alert>? = null
-        private set
+//        private set
 
     init {
 //        userID = null
@@ -35,22 +35,24 @@ class DataFlowRepository private constructor(
         penDataPointPoints = null
         doses = null
         messages = null
-        alerts = null
+        alerts = _alertDao.getData()  // get all alerts
+            // filter out irrelevant datapoint alerts
+            .filter { alert -> penDataPointPoints?.any { it.penID == alert.penID } ?: true }
+            // filter out irrelevant dose alerts
+            .filter { alert -> doses?.any { it.doseID == alert.doseID } ?: true }
+            // filter out irrelevant message alerts
+            .filter { alert -> messages?.any { it.messageID == alert.messageID } ?: true }
     }
 
     fun loadDataPoints(penID: String) = _penDataDao.getData(penID)
 
     fun loadMessages(userID: String) = _messageDao.getData(userID)
 
-    fun loadDoses(doseID: Int?, penID: String?) = _doseDao.getData(doseID = doseID ?: 0, penID = penID ?: "")
+    fun loadUserDoses(userID: String) = _doseDao.getData(userID = userID)
 
-    fun loadAlerts() = _alertDao.getData()  // get all alerts
-        // filter out irrelevant datapoint alerts
-        .filter { alert -> penDataPointPoints?.any { it.penID == alert.penID } ?: true }
-        // filter out irrelevant dose alerts
-        .filter { alert -> doses?.any { it.doseID == alert.doseID } ?: true }
-        // filter out irrelevant message alerts
-        .filter { alert -> messages?.any { it.messageID == alert.messageID } ?: true }
+    fun loadPenDoses(penID: String) = _doseDao.getData(penID = penID)
+
+    fun loadDose(doseID: Int) = _doseDao.getData(doseID = doseID)
 
     companion object {
 
@@ -67,5 +69,3 @@ class DataFlowRepository private constructor(
     }
 
 }
-
-
