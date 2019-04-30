@@ -7,8 +7,8 @@ import com.jasoncavinder.inpen.demo.data.entities.BaseDao
 @Dao
 abstract class DoseDao :
     BaseDao<Dose> {
-    @Query("SELECT * FROM doses WHERE dose_id = :doseID OR pen_id = :penID")
-    abstract fun getData(doseID: Int = 0, penID: String = ""): List<Dose>
+    @Query("SELECT * FROM doses WHERE user_id = :userID OR pen_id = :penID OR dose_id = :doseID")
+    abstract fun getData(userID: String? = "", penID: String = "", doseID: Int = 0): List<Dose>
 }
 
 
