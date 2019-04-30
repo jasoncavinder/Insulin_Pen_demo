@@ -65,9 +65,9 @@ class UserProfileViewModel(application: Application) {
     private val _alerts = MutableLiveData<List<Alert>>()
     val alerts: LiveData<List<Alert>> = _alerts
 
-
     private val _userProfileRepository: UserProfileRepository
 
+    private val _dataFlowRepository: DataFlowRepository
 
     init {
         sessionExpires = 0L
@@ -83,6 +83,8 @@ class UserProfileViewModel(application: Application) {
         _userProfileRepository = UserProfileRepository.getInstance(
             userDao, providerDao, penDao
         )
+
+        _dataFlowRepository = DataFlowRepository.getInstance(penDataDao, doseDao, messageDao, alertDao)
 
         _user.value = _userProfileRepository.user
         _provider.value = _userProfileRepository.provider

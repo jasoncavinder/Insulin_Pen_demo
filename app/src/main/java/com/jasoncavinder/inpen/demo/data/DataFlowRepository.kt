@@ -11,8 +11,8 @@ import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.PenDataPoint
 
 class DataFlowRepository private constructor(
     private val _penDataDao: PenDataDao,
-    private val _messageDao: MessageDao,
     private val _doseDao: DoseDao,
+    private val _messageDao: MessageDao,
     private val _alertDao: AlertDao
 ) {
 //    private var userID: String? = null
@@ -51,6 +51,21 @@ class DataFlowRepository private constructor(
         .filter { alert -> doses?.any { it.doseID == alert.doseID } ?: true }
         // filter out irrelevant message alerts
         .filter { alert -> messages?.any { it.messageID == alert.messageID } ?: true }
+
+    companion object {
+
+        @Volatile
+        private var instance: DataFlowRepository? = null
+
+        fun getInstance(
+            penDataPointDao: PenDataDao, doseDao: DoseDao, messageDao: MessageDao, alertDao: AlertDao
+        ) = instance ?: synchronized(this) {
+            instance ?: DataFlowRepository(
+                penDataPointDao, doseDao, messageDao, alertDao
+            ).also { instance = it }
+        }
+    }
+
 }
 
 
