@@ -1,9 +1,8 @@
 package com.jasoncavinder.inpen.demo
 
+import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -44,6 +43,7 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        userProfileViewModel = UserProfileViewModel(application)
 
         navController = findNavController(R.id.nav_host_main)
 
@@ -126,28 +126,44 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            AUTHORIZE_USER -> when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.getStringExtra("userID")?.let {
+                        userProfileViewModel.loadUser(it)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+
+        checkAuthentication()
+    }
+
+/*
     override fun onResume() {
         super.onResume()
 
-/* TODO: After this viewModel is working, finish this authentication forwarding
-
-        if (appAccess.isAuthorized())  {
-            // move on
-        }
-        else startActivityForResult(
-            Intent(this, LoginActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                .putExtra(*/
-/* TODO *//*
-)
-
-//        when {
-//            _loginStatus.getString("userID", null) == null ||
-//                    _loginStatus.getLong("lastTime", 0) < System.currentTimeMillis() - 900000 ->
-//                startActivity(Intent(this, LoginActivity::class.java))
-//        }
+        checkAuthentication()
+    }
 */
+
+    private fun checkAuthentication() {
+        if (!userProfileViewModel.isAuthenticated()) {
+            startActivityForResult(
+                Intent(this, LoginActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    .addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                    .putExtra("userID", userProfileViewModel.user.value?.userID ?: "")
+                , AUTHORIZE_USER
+            )
+        }
     }
 
     private fun onMenuItemClicked(item: MenuItem?): Boolean {

@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorAccent"
@@ -52,9 +53,10 @@
             android:textColor="?android:attr/textColorSecondary"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_first_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:layout_editor_absoluteX="106dp" />
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <EditText
             android:id="@+id/edit_text_first_name"
@@ -75,8 +77,11 @@
             android:textStyle="bold"
             android:theme="@style/AppTheme.LoginEditText"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_email"
-            app:layout_constraintTop_toBottomOf="@+id/text_headline"
-            tools:layout_editor_absoluteX="78dp" />
+            app:layout_constraintEnd_toStartOf="@+id/edit_text_last_name"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_headline" />
 
         <EditText
             android:id="@+id/edit_text_last_name"
@@ -97,9 +102,9 @@
             android:textStyle="bold"
             android:theme="@style/AppTheme.LoginEditText"
             app:layout_constraintBottom_toBottomOf="@id/edit_text_first_name"
-            app:layout_constraintEnd_toEndOf="@id/edit_text_email"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/edit_text_first_name"
+            app:layout_constraintStart_toEndOf="@+id/edit_text_first_name"
             app:layout_constraintTop_toTopOf="@+id/edit_text_first_name" />
 
         <EditText
@@ -121,8 +126,10 @@
             android:textStyle="bold"
             android:theme="@style/AppTheme.LoginEditText"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_first_name"
-            tools:layout_editor_absoluteX="78dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_first_name" />
 
         <EditText
             android:id="@+id/edit_text_password"
@@ -143,8 +150,10 @@
             android:textStyle="bold"
             android:theme="@style/AppTheme.LoginEditText"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_confirm"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_email"
-            tools:layout_editor_absoluteX="78dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_email" />
 
         <EditText
             android:id="@+id/edit_text_confirm"
@@ -164,12 +173,14 @@
             android:textStyle="bold"
             android:theme="@style/AppTheme.LoginEditText"
             app:layout_constraintBottom_toTopOf="@+id/text_terms"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_password"
-            tools:layout_editor_absoluteX="78dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
 
         <TextView
             android:id="@+id/text_terms"
-            android:layout_width="248dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="By creating an account you agree to our Terms of Service and Privacy Policy"
             android:textAlignment="center"
@@ -177,8 +188,10 @@
             android:textColor="?android:attr/textColorSecondary"
             android:textColorHighlight="?attr/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/button_cancel"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_confirm"
-            tools:layout_editor_absoluteX="78dp" />
+            app:layout_constraintEnd_toEndOf="@+id/barrier_right"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/barrier_left"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_confirm" />
 
         <Button
             android:id="@+id/button_create_user"
@@ -201,7 +214,25 @@
             android:text="Cancel"
             android:textColor="?attr/colorControlNormal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_terms"
-            tools:layout_editor_absoluteX="77dp" />
+            app:layout_constraintEnd_toStartOf="@+id/button_create_user"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_terms" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="text_headline,edit_text_password,button_cancel,edit_text_first_name,edit_text_confirm,edit_text_email,edit_text_last_name"
+            tools:layout_editor_absoluteX="411dp" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="text_headline,edit_text_password,button_create_user,edit_text_first_name,edit_text_confirm,edit_text_email,edit_text_last_name"
+            tools:layout_editor_absoluteX="411dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
