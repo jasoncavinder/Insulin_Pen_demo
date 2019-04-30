@@ -5,7 +5,6 @@ import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jasoncavinder.inpen.demo.data.entities.user.User
 import com.jasoncavinder.inpen.demo.login.LoggedInUser
 import com.jasoncavinder.inpen.demo.login.LoginFormState
 import com.jasoncavinder.inpen.demo.login.LoginResult
@@ -23,7 +22,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val _coroutineContext: CoroutineContext
         get() = _parentJob + Dispatchers.Main
     private val scope = CoroutineScope(_coroutineContext)
-
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -79,7 +77,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun isPasswordValid(password: String): Boolean {
-        return password.length >= 8;
+        return password.length >= 8
     }
 
     /**

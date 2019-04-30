@@ -1,12 +1,7 @@
 package com.jasoncavinder.inpen.demo.data
 
-import androidx.lifecycle.Transformations
-import com.jasoncavinder.inpen.demo.data.entities.alert.AlertDao
-import com.jasoncavinder.inpen.demo.data.entities.dose.DoseDao
-import com.jasoncavinder.inpen.demo.data.entities.message.MessageDao
 import com.jasoncavinder.inpen.demo.data.entities.pen.Pen
 import com.jasoncavinder.inpen.demo.data.entities.pen.PenDao
-import com.jasoncavinder.inpen.demo.data.entities.pendata.PenDataDao
 import com.jasoncavinder.inpen.demo.data.entities.provider.Provider
 import com.jasoncavinder.inpen.demo.data.entities.provider.ProviderDao
 import com.jasoncavinder.inpen.demo.data.entities.user.User
@@ -15,11 +10,7 @@ import com.jasoncavinder.inpen.demo.data.entities.user.UserDao
 class UserProfileRepository private constructor(
     private val _userDao: UserDao,
     private val _providerDao: ProviderDao,
-    private val _penDao: PenDao,
-    private val _penDataDao: PenDataDao,
-    private val _messageDao: MessageDao,
-    private val _doseDao: DoseDao,
-    private val _alertDao: AlertDao
+    private val _penDao: PenDao
 ) {
     private var userID: String? = null
 
@@ -69,14 +60,11 @@ class UserProfileRepository private constructor(
         private var instance: UserProfileRepository? = null
 
         fun getInstance(
-            userDao: UserDao, providerDao: ProviderDao, penDao: PenDao,
-            penDataDao: PenDataDao, messageDao: MessageDao, doseDao: DoseDao,
-            alertDao: AlertDao
+            userDao: UserDao, providerDao: ProviderDao, penDao: PenDao
         ) = instance ?: synchronized(this) {
             instance ?: UserProfileRepository(
-                userDao, providerDao, penDao, penDataDao, messageDao, doseDao, alertDao
+                userDao, providerDao, penDao
             ).also { instance = it }
         }
-
     }
 }

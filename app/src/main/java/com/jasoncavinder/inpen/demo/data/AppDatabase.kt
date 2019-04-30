@@ -16,8 +16,8 @@ import com.jasoncavinder.inpen.demo.data.entities.message.Message
 import com.jasoncavinder.inpen.demo.data.entities.message.MessageDao
 import com.jasoncavinder.inpen.demo.data.entities.pen.Pen
 import com.jasoncavinder.inpen.demo.data.entities.pen.PenDao
-import com.jasoncavinder.inpen.demo.data.entities.pendata.PenData
-import com.jasoncavinder.inpen.demo.data.entities.pendata.PenDataDao
+import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.PenDataDao
+import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.PenDataPoint
 import com.jasoncavinder.inpen.demo.data.entities.provider.Provider
 import com.jasoncavinder.inpen.demo.data.entities.provider.ProviderDao
 import com.jasoncavinder.inpen.demo.data.entities.user.User
@@ -34,10 +34,10 @@ import com.jasoncavinder.inpen.demo.utilities.DATABASE_NAME
         Message::class,
         Provider::class,
         Pen::class,
-        PenData::class,
+        PenDataPoint::class,
         Alert::class,
         Dose::class
-    ], version = 15, exportSchema = false
+    ], version = 17, exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

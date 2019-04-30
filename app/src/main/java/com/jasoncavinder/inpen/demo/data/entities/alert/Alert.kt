@@ -14,12 +14,12 @@ import java.util.*
 )
 data class Alert(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "alert_id") val alert_id: Int,
+    @ColumnInfo(name = "alert_id") val alertID: Int,
     @ColumnInfo(name = "ts") val ts: Calendar,
     @ColumnInfo(name = "type") val type: String, // string should match table name of related data
-    @ColumnInfo(name = "message_id") val data_id: Int? = null,
-    @ColumnInfo(name = "pen_id") val pen_id: String? = null,
-    @ColumnInfo(name = "dose_id") val dose_id: Int? = null,
+    @ColumnInfo(name = "message_id") val messageID: Int? = null,
+    @ColumnInfo(name = "pen_id") val penID: String? = null,
+    @ColumnInfo(name = "dose_id") val doseID: Int? = null,
     @ColumnInfo(name = "summary") val summary: String?,
     @ColumnInfo(name = "acknowledged") val acknowledged: Boolean,
     @ColumnInfo(name = "cleared") val cleared: Boolean

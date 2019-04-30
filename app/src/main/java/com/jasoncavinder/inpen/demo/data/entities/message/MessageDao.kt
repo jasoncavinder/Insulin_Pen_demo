@@ -7,8 +7,8 @@ import com.jasoncavinder.inpen.demo.data.entities.BaseDao
 @Dao
 abstract class MessageDao :
     BaseDao<Message> {
-    @Query("SELECT * FROM messages")
-    abstract fun getData(): List<Message>
+    @Query("SELECT * FROM messages WHERE user_id = :user_id")
+    abstract fun getData(user_id: String): List<Message>
 }
 
 

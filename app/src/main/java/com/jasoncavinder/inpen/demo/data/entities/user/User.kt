@@ -33,5 +33,5 @@ data class User(
     @ColumnInfo(name = "avatar") var avatar: Bitmap? = null,
     @ColumnInfo(name = "picture") var picture: Bitmap? = null,
     @ColumnInfo(name = "provider_id") var providerID: String? = null,
-    @ColumnInfo(name = "pen_id") var penID: String? = null
+    @ColumnInfo(name = "penID") var penID: String? = null
 )

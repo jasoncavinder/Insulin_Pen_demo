@@ -5,7 +5,7 @@ import android.graphics.Bitmap.CompressFormat
 import android.graphics.BitmapFactory
 import android.util.Base64
 import androidx.room.TypeConverter
-import com.jasoncavinder.inpen.demo.data.entities.pendata.DataPointType
+import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.DataPointType
 import java.io.ByteArrayOutputStream
 import java.util.*
 

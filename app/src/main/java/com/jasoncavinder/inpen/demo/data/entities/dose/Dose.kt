@@ -20,10 +20,11 @@ import java.util.*
 )
 data class Dose(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "dose_id") val dose_id: Int,
-    @ColumnInfo(name = "scheduled_ts") val scheduled_ts: Calendar?,
-    @ColumnInfo(name = "scheduled_amount") val scheduled_amount: Float?,
-    @ColumnInfo(name = "given_ts") val given_ts: Calendar?,
-    @ColumnInfo(name = "given_amount") val given_amount: Float?,
-    @ColumnInfo(name = "pen_id") val pen_id: String
+    @ColumnInfo(name = "dose_id") val doseID: Int,
+    @ColumnInfo(name = "scheduled_ts") val scheduledTime: Calendar?,
+    @ColumnInfo(name = "scheduled_amount") val scheduledAmount: Float?,
+    @ColumnInfo(name = "given_ts") val givenTime: Calendar?,
+    @ColumnInfo(name = "given_amount") val givenAmount: Float?,
+    @ColumnInfo(name = "user_id") val userID: String,
+    @ColumnInfo(name = "pen_id") val penID: String
 )

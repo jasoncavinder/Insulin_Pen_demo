@@ -1,4 +1,4 @@
-package com.jasoncavinder.inpen.demo.data.entities.pendata
+package com.jasoncavinder.inpen.demo.data.entities.pendatapoint
 
 import androidx.room.*
 import com.jasoncavinder.inpen.demo.data.entities.dose.Dose
@@ -25,14 +25,14 @@ import java.util.*
         Index(value = ["dose_id"])
     ]
 )
-data class PenData(
+data class PenDataPoint(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "data_point_id") val data_point_id: Int,
-    @ColumnInfo(name = "pen_id") val pen_id: String,
-    @ColumnInfo(name = "dp_ts") val ts: Calendar,
-    @ColumnInfo(name = "dp_type") val dp_type: DataPointType,
+    @ColumnInfo(name = "data_point_id") val dataPointID: Int,
+    @ColumnInfo(name = "pen_id") val penID: String,
+    @ColumnInfo(name = "dp_ts") val dpTime: Calendar,
+    @ColumnInfo(name = "dp_type") val dpType: DataPointType,
     @ColumnInfo(name = "data") val temp: Float?,     // may be temp, dose amount, etc
-    @ColumnInfo(name = "time") val target_ts: Calendar?,
-    @ColumnInfo(name = "dose_id") val dose_id: Int?,
+    @ColumnInfo(name = "time") val targetTime: Calendar?,
+    @ColumnInfo(name = "dose_id") val doseID: Int?,
     @ColumnInfo(name = "elapsed") val elapsed: Long?
 )
