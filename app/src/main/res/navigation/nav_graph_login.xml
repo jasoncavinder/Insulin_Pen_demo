@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/addPenFragment"
-        android:name="com.jasoncavinder.inpen_demo.AddPenFragment"
+        android:name="com.jasoncavinder.inpen.demo.login.ui.AddPenFragment"
         tools:layout="@layout/fragment_add_pen">
         <action
             android:id="@+id/action_placeholder_to_placeholder2"
@@ -49,6 +49,6 @@
     </fragment>
     <fragment
         android:id="@+id/addProviderFragment"
-        android:name="com.jasoncavinder.inpen_demo.AddProviderFragment"
+        android:name="com.jasoncavinder.inpen.demo.login.ui.AddProviderFragment"
         tools:layout="@layout/fragment_add_provider" />
 </navigation>

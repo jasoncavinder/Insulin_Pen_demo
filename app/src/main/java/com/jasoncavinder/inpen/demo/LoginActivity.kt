@@ -1,9 +1,9 @@
 package com.jasoncavinder.inpen.demo
 
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -162,3 +162,18 @@ class LoginActivity : AppCompatActivity() {
 //        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 //    })
 //}
+
+/**
+ * Extension function to simplify setting an afterTextChanged action to EditText components.
+ */
+fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {
+            afterTextChanged.invoke(editable.toString())
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+    })
+}

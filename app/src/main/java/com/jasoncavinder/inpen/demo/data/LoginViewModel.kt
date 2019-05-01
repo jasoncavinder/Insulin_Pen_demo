@@ -5,10 +5,7 @@ import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jasoncavinder.inpen.demo.login.LoggedInUser
-import com.jasoncavinder.inpen.demo.login.LoginFormState
-import com.jasoncavinder.inpen.demo.login.LoginResult
-import com.jasoncavinder.inpen.demo.login.Result
+import com.jasoncavinder.inpen.demo.login.*
 import com.jasoncavinder.inpen_demo.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +22,12 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
+
+    private val _createUserForm = MutableLiveData<CreateUserFormState>()
+    val createUserFormState: LiveData<CreateUserFormState> = _createUserForm
+
+    private val _createUserResult = MutableLiveData<CreateUserResult>()
+    val createUserResult: LiveData<CreateUserResult> = _createUserResult
 
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
@@ -61,6 +64,9 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     fun logout() = _loginRepository.logout()
 
+    fun createUser(firstName: String, LastName: String, email: String, password: String, confirm: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     fun loginDataChanged(email: String, password: String) {
         if (!isEmailValid(email)) {
@@ -70,6 +76,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         } else {
             _loginForm.value = LoginFormState(isDataValid = true)
         }
+    }
+
+    fun createUserDataChanged(firstName: String, lastName: String, email: String, password: String, confirm: String) {
+        TODO("Not implemented")
     }
 
     private fun isEmailValid(username: String): Boolean {
