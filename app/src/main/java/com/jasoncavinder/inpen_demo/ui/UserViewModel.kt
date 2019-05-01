@@ -6,7 +6,7 @@
 //import com.jasoncavinder.inpen_demo.ui.UserViewModel.AuthenticationState.*
 //import com.jasoncavinder.inpen_demo.ui.ui.LoginFormState
 //import com.jasoncavinder.inpen_demo.ui.ui.LoginResult
-//import com.jasoncavinder.inpen_demo.ui.ui.SignUpFormState
+//import com.jasoncavinder.inpen_demo.ui.ui.CreateUserFormState
 //
 //class UserViewModel() : ViewModel() {
 //
@@ -15,8 +15,8 @@
 //    private val _loginForm = MutableLiveData<LoginFormState>()
 //    val loginFormState: LiveData<LoginFormState> = _loginForm
 //
-//    private val _signupForm = MutableLiveData<SignUpFormState>()
-//    val signupFormState: LiveData<SignUpFormState> = _signupForm
+//    private val _signupForm = MutableLiveData<CreateUserFormState>()
+//    val signupFormState: LiveData<CreateUserFormState> = _signupForm
 //
 //    private val _loginResult = MutableLiveData<LoginResult>()
 //    val loginResult: LiveData<LoginResult> = _loginResult

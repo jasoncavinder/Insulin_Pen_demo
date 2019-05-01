@@ -7,43 +7,14 @@
     android:layout_height="match_parent"
     android:background="?attr/colorAccent"
     android:fillViewport="true"
-    tools:context=".ui.login.CreateUserFragment">
+    tools:context="com.jasoncavinder.inpen.demo.login.ui.CreateUserFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/createUserLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
-        <!--<androidx.appcompat.widget.Toolbar-->
-        <!--android:id="@+id/toolbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="?attr/actionBarSize"-->
-        <!--android:minHeight="?attr/actionBarSize"-->
-        <!--android:background="?attr/colorPrimary"-->
-        <!--android:elevation="4dp"-->
-        <!--android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
-        <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
-        <!--android:visibility="visible"-->
-        <!--app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent" app:layout_consdtraintHorizontal_bias="1.0">-->
-        <!--<ImageView-->
-        <!--android:src="?attr/actionModeCloseDrawable"-->
-        <!--android:layout_width="32dp"-->
-        <!--android:layout_height="32dp" tools:layout_editor_absoluteY="-33dp"-->
-        <!--tools:layout_editor_absoluteX="32dp" android:id="@+id/back_button" android:clickable="true"-->
-        <!--app:srcCompat="?attr/actionModeCloseDrawable" android:tint="@color/primaryTextColor"/>-->
-        <!--<TextView-->
-        <!--android:text="Welcome"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"-->
-        <!--app:layout_constraintEnd_toEndOf="parent" android:id="@+id/textView2"-->
-        <!--android:layout_marginLeft="64dp" android:layout_marginRight="96dp"-->
-        <!--android:gravity="center_horizontal" android:textColor="?attr/colorBackgroundFloating"-->
-        <!--android:fontFamily="@font/anodina_bold" android:textSize="24sp"-->
-        <!--android:textColorHint="@color/primaryTextColor"/>-->
 
-        <!--</androidx.appcompat.widget.Toolbar>-->
         <TextView
             android:id="@+id/text_headline"
             android:layout_width="wrap_content"
@@ -200,6 +171,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:backgroundTint="?attr/colorControlNormal"
+            android:enabled="false"
             android:text="Continue"
             app:layout_constraintBottom_toBottomOf="@+id/button_cancel"
             app:layout_constraintEnd_toEndOf="parent"
@@ -234,5 +206,26 @@
             app:barrierDirection="right"
             app:constraint_referenced_ids="text_headline,edit_text_password,button_create_user,edit_text_first_name,edit_text_confirm,edit_text_email,edit_text_last_name"
             tools:layout_editor_absoluteX="411dp" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_form_create_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="text_headline,edit_text_first_name,edit_text_last_name,edit_text_password,edit_text_email,button_cancel,edit_text_confirm,button_create_user,text_terms"
+            tools:visibility="visible" />
+
+        <ProgressBar
+            android:id="@+id/loading_bar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

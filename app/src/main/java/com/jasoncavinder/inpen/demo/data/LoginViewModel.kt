@@ -5,14 +5,9 @@ import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.jasoncavinder.inpen.demo.login.LoggedInUser
-import com.jasoncavinder.inpen.demo.login.LoginFormState
-import com.jasoncavinder.inpen.demo.login.LoginResult
-import com.jasoncavinder.inpen.demo.login.Result
-import com.jasoncavinder.inpen_demo.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import com.jasoncavinder.inpen.demo.R
+import com.jasoncavinder.inpen.demo.login.*
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
@@ -25,6 +20,12 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
+
+    private val _createUserForm = MutableLiveData<CreateUserFormState>()
+    val createUserFormState: LiveData<CreateUserFormState> = _createUserForm
+
+    private val _createUserResult = MutableLiveData<CreateUserResult>()
+    val createUserResult: LiveData<CreateUserResult> = _createUserResult
 
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
@@ -48,28 +49,59 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun login(email: String, password: String) {
+        GlobalScope.launch {
+            val result = _loginRepository.login(email, password)
 
-        val result = _loginRepository.login(email, password)
-
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = result.data.asView())
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+            if (result is Result.Success) {
+                _loginResult.postValue(LoginResult(success = result.data.asView()))
+            } else {
+                _loginResult.postValue(LoginResult(error = R.string.login_failed))
+            }
         }
     }
 
     fun logout() = _loginRepository.logout()
 
+    fun createUser(firstName: String, lastName: String, email: String, password: String, confirm: String) {
+        GlobalScope.launch {
+            val result = _loginRepository.createUser(firstName, lastName, email, password)
+
+            when (result) {
+                is Result.Success -> _createUserResult.postValue(CreateUserResult(success = result.data.asView()))
+                else -> _createUserResult.postValue(CreateUserResult(error = R.string.create_user_failed))
+            }
+        }
+    }
 
     fun loginDataChanged(email: String, password: String) {
         if (!isEmailValid(email)) {
-            _loginForm.value = LoginFormState(emailError = R.string.invalid_username)
+            _loginForm.value = LoginFormState(emailError = R.string.invalid_email)
         } else if (!isPasswordValid(password)) {
             _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
         } else {
             _loginForm.value = LoginFormState(isDataValid = true)
         }
+    }
+
+    fun createUserDataChanged(firstName: String, lastName: String, email: String, password: String, confirm: String) {
+        when {
+            !isNameValid(firstName) ->
+                _createUserForm.value = CreateUserFormState(firstNameError = R.string.invalid_first_name)
+            !isNameValid(lastName) ->
+                _createUserForm.value = CreateUserFormState(lastNameError = R.string.invalid_last_name)
+            !isEmailValid(email) ->
+                _createUserForm.value = CreateUserFormState(emailError = R.string.invalid_email)
+            !isPasswordValid(password) ->
+                _createUserForm.value = CreateUserFormState(passwordError = R.string.invalid_password)
+            !isConfirmValid(password, confirm) ->
+                _createUserForm.value = CreateUserFormState(confirmError = R.string.invalid_confirm)
+            else ->
+                _createUserForm.value = CreateUserFormState(isDataValid = true)
+        }
+    }
+
+    private fun isNameValid(name: String): Boolean {
+        return name.isNotEmpty()
     }
 
     private fun isEmailValid(username: String): Boolean {
@@ -78,6 +110,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun isPasswordValid(password: String): Boolean {
         return password.length >= 8
+    }
+
+    private fun isConfirmValid(password: String, confirm: String): Boolean {
+        return password == confirm
     }
 
     /**

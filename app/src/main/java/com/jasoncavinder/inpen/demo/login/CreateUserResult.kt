@@ -1,6 +1,6 @@
 package com.jasoncavinder.inpen.demo.login
 
-data class LoginResult(
-    val success: LoggedInUserView? = null,
+data class CreateUserResult(
+    val success: CreatedUserView? = null,
     val error: Int? = null
 )

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.jasoncavinder.inpen_demo.R
+import com.jasoncavinder.inpen.demo.R
 import kotlinx.android.synthetic.main.fragment_login_welcome.view.*
 
 
@@ -30,10 +30,10 @@ class WelcomeFragment : Fragment() {
         navController = findNavController()
 
         view.button_signup.setOnClickListener {
-            navController.navigate(com.jasoncavinder.inpen_demo.R.id.action_welcomeFragment_to_createUserFragment)
+            navController.navigate(com.jasoncavinder.inpen.demo.R.id.action_welcomeFragment_to_createUserFragment)
         }
         view.button_signin.setOnClickListener {
-            navController.navigate(com.jasoncavinder.inpen_demo.R.id.action_welcomeFragment_to_loginFragment)
+            navController.navigate(com.jasoncavinder.inpen.demo.R.id.action_welcomeFragment_to_loginFragment)
         }
 
     }

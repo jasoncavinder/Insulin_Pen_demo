@@ -10,15 +10,6 @@ import java.io.ByteArrayOutputStream
 import java.util.*
 
 class Converters {
-    //    @TypeConverter
-//    fun fromOptional(value: Optional<Any>) {
-//        // TODO:
-//    }
-//
-//    @TypeConverter
-//    fun toOptional(value: LiveData<User>): Optional<LiveData<User>>{
-//        return Optional.of(value)
-//    }
     @TypeConverter
     fun calendarToDatestamp(calendar: Calendar): Long = calendar.timeInMillis
 
