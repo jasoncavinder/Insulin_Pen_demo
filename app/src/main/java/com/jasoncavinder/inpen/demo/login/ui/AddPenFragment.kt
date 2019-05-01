@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.jasoncavinder.inpen_demo.R
+import com.jasoncavinder.inpen.demo.R
 import kotlinx.android.synthetic.main.fragment_add_pen.*
 import java.util.*
 

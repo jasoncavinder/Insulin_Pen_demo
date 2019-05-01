@@ -37,7 +37,7 @@ import com.jasoncavinder.inpen.demo.utilities.DATABASE_NAME
         PenDataPoint::class,
         Alert::class,
         Dose::class
-    ], version = 17, exportSchema = false
+    ], version = 18, exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

@@ -2,10 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.jasoncavinder.inpen_demo.com.jasoncavinder.inpen.demo.MainActivity">
-    <!-- TODO: move hardcoded string-->
+
     <item
         android:id="@+id/history"
         android:icon="@drawable/ic_history_24dp"
-        android:title="History"
+        android:title="@string/history"
         app:showAsAction="always" />
 </menu>

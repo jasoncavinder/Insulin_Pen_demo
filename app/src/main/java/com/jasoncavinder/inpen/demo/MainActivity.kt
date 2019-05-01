@@ -16,7 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.jasoncavinder.inpen.demo.data.UserProfileViewModel
 import com.jasoncavinder.inpen.demo.utilities.AppAccess
 import com.jasoncavinder.inpen.demo.utilities.UpdateToolbarListener
-import com.jasoncavinder.inpen_demo.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 

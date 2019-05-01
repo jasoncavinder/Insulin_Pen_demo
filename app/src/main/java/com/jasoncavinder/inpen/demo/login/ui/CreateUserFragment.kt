@@ -28,7 +28,8 @@ class CreateUserFragment : Fragment() {
     private lateinit var _navController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(com.jasoncavinder.inpen_demo.R.layout.fragment_login_create_user, container, false) }
+        return inflater.inflate(com.jasoncavinder.inpen.demo.R.layout.fragment_login_create_user, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,7 +68,7 @@ class CreateUserFragment : Fragment() {
             loading_bar.visibility = View.GONE
             createUserResult.error?.let { showCreateUserFailed(createUserResult.error) }
             createUserResult.success?.let {
-                TODO("Not Implemented")
+                Toast.makeText(context, "Created User: $it", Toast.LENGTH_LONG).show()
             }
         })
 

@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.jasoncavinder.inpen.demo.data.LoginViewModel
-import com.jasoncavinder.inpen_demo.R
 
 
 class LoginActivity : AppCompatActivity() {

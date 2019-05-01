@@ -1,27 +1,26 @@
 package com.jasoncavinder.inpen.demo.data.entities
 
-import androidx.lifecycle.LiveData
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Update
 
 interface BaseDao<T> {
-    @Insert
-    fun insert(obj: T)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun insert(obj: T): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertReplace(obj: T)
+    fun insertReplace(obj: T): Long
 
-    @Insert
-    fun insert(vararg obj: T)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun insert(vararg obj: T): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertReplace(obj: List<T>)
+    fun insertReplace(obj: List<T>): List<Long>
 
     @Update
-    fun update(obj: T)
+    fun update(obj: T): Int
 
     @Delete
-    fun delete(obj: T)
+    fun delete(obj: T): Int
 }

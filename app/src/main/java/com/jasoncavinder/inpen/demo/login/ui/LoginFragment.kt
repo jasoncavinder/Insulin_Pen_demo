@@ -17,9 +17,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.jasoncavinder.inpen.demo.MainActivity
+import com.jasoncavinder.inpen.demo.R
 import com.jasoncavinder.inpen.demo.data.LoginViewModel
 import com.jasoncavinder.inpen.demo.utilities.afterTextChanged
-import com.jasoncavinder.inpen_demo.R
 import kotlinx.android.synthetic.main.fragment_login_login.*
 
 
