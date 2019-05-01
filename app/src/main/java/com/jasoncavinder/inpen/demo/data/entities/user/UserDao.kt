@@ -16,13 +16,7 @@ abstract class UserDao : BaseDao<User> {
     abstract fun getUser(userID: String): LiveData<User>
 
     @Query("SELECT * FROM users WHERE email = :email AND password = :password")
-    abstract fun login(email: String, password: String): LiveData<User>
-
-    @Query("SELECT * FROM users")
-    abstract fun login(): LiveData<List<User>>
-
-    @Query("SELECT * FROM users WHERE email = :email")
-    abstract fun login(email: String): LiveData<List<User>>
+    abstract fun login(email: String, password: String): User?
 
     @Query("UPDATE users SET modified = :now WHERE user_id = :userID")
     abstract fun logout(userID: String, now: Long = System.currentTimeMillis())

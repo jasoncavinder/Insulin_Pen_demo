@@ -32,13 +32,7 @@ class LoginRepository private constructor(private val _userDao: UserDao) {
     }
 
     fun login(e: String, p: String): Result<LoggedInUser> {
-        val testResult1 = _userDao.login()
-        Log.d("LoginRepository", "login() returns:\n$testResult1\n${testResult1.value}")
-        val testResult2 = _userDao.login(email = e)
-        Log.d("LoginRepository", "login(e) returns:\n$testResult2\n${testResult2.value}")
-        val debugResult = _userDao.login(e, HashUtils.sha512(p))
-        Log.d("LoginRepository", "login(e, p) returns $debugResult\n${debugResult.value}")
-        val result = _userDao.login(e, HashUtils.sha512(p)).value.run {
+        val result = _userDao.login(e, HashUtils.sha512(p)).run {
             Log.d("Login Repository", "login() result.value = $this")
             when (this) {
                 null -> Result.Error(IOException("Invalid email or password.\n Please try again."))
