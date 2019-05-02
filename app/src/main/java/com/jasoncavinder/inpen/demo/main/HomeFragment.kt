@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.jasoncavinder.inpen.demo.R
 import com.jasoncavinder.inpen.demo.utilities.UpdateToolbarListener
 
-//import com.jasoncavinder.inpen.demo.ui.UserViewModel
+//import com.jasoncavinder.inpen.demo.onboarding.ui.UserViewModel
 
 
 class HomeFragment : Fragment() {

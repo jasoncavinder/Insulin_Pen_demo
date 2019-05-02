@@ -1,4 +1,4 @@
-package com.jasoncavinder.inpen.demo.login.ui
+package com.jasoncavinder.inpen.demo.onboarding.ui
 
 import android.content.Context
 import android.net.Uri

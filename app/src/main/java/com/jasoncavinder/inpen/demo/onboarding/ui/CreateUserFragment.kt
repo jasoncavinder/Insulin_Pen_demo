@@ -1,4 +1,4 @@
-package com.jasoncavinder.inpen.demo.login.ui
+package com.jasoncavinder.inpen.demo.onboarding.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -29,7 +29,7 @@ class CreateUserFragment : Fragment() {
     private lateinit var _navController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(com.jasoncavinder.inpen.demo.R.layout.fragment_login_create_user, container, false)
+        return inflater.inflate(R.layout.fragment_login_create_user, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

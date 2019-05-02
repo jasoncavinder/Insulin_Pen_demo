@@ -39,6 +39,7 @@ buildscript {
         playServicesVisionVersion = '17.0.2'
         preferenceVersion = '1.1.0-alpha04'
         testVersion = '1.2.0-alpha04'
+        legacySupportVersion = '1.0.0'
     }
     repositories {
         google()

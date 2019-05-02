@@ -32,7 +32,7 @@
         tools:layout="@layout/fragment_login_login" />
     <fragment
         android:id="@+id/createUserFragment"
-        android:name="com.jasoncavinder.inpen.demo.login.ui.CreateUserFragment"
+        android:name="com.jasoncavinder.inpen.demo.onboarding.ui.CreateUserFragment"
         android:label="fragment_create_user"
         tools:layout="@layout/fragment_login_create_user" >
         <action
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/addPenFragment"
-        android:name="com.jasoncavinder.inpen.demo.login.ui.AddPenFragment"
+        android:name="com.jasoncavinder.inpen.demo.onboarding.ui.AddPenFragment"
         tools:layout="@layout/fragment_add_pen">
         <action
             android:id="@+id/action_addPenFragment_to_addProviderFragment"
@@ -49,6 +49,6 @@
     </fragment>
     <fragment
         android:id="@+id/addProviderFragment"
-        android:name="com.jasoncavinder.inpen.demo.login.ui.AddProviderFragment"
+        android:name="com.jasoncavinder.inpen.demo.onboarding.ui.AddProviderFragment"
         tools:layout="@layout/fragment_add_provider" />
 </navigation>

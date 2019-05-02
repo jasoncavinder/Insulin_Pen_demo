@@ -1,0 +1,626 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 19,
+    "identityHash": "ae4e1a9fb9fe2325a299b9235e36d7c5",
+    "entities": [
+      {
+        "tableName": "users",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` TEXT NOT NULL, `created` INTEGER NOT NULL, `modified` INTEGER NOT NULL, `email` TEXT NOT NULL, `password` TEXT NOT NULL, `first_name` TEXT NOT NULL, `last_name` TEXT NOT NULL, `avatar` TEXT, `picture` TEXT, `provider_id` TEXT, `penID` TEXT, PRIMARY KEY(`user_id`), FOREIGN KEY(`provider_id`) REFERENCES `providers`(`provider_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "userID",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created",
+            "columnName": "created",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "modified",
+            "columnName": "modified",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email",
+            "columnName": "email",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "password",
+            "columnName": "password",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstName",
+            "columnName": "first_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastName",
+            "columnName": "last_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "avatar",
+            "columnName": "avatar",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "picture",
+            "columnName": "picture",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "providerID",
+            "columnName": "provider_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "penID",
+            "columnName": "penID",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "user_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_users_email",
+            "unique": true,
+            "columnNames": [
+              "email"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_users_email` ON `${TABLE_NAME}` (`email`)"
+          },
+          {
+            "name": "index_users_user_id",
+            "unique": true,
+            "columnNames": [
+              "user_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_users_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          },
+          {
+            "name": "index_users_provider_id",
+            "unique": false,
+            "columnNames": [
+              "provider_id"
+            ],
+            "createSql": "CREATE  INDEX `index_users_provider_id` ON `${TABLE_NAME}` (`provider_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "providers",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "provider_id"
+            ],
+            "referencedColumns": [
+              "provider_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "messages",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`message_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `user_id` TEXT NOT NULL, `provider_id` TEXT NOT NULL, `from` INTEGER NOT NULL, `content` TEXT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `users`(`user_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`provider_id`) REFERENCES `providers`(`provider_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "messageID",
+            "columnName": "message_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeStamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userID",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "providerID",
+            "columnName": "provider_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "from",
+            "columnName": "from",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "content",
+            "columnName": "content",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "message_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_messages_message_id",
+            "unique": true,
+            "columnNames": [
+              "message_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_messages_message_id` ON `${TABLE_NAME}` (`message_id`)"
+          },
+          {
+            "name": "index_messages_user_id_provider_id",
+            "unique": false,
+            "columnNames": [
+              "user_id",
+              "provider_id"
+            ],
+            "createSql": "CREATE  INDEX `index_messages_user_id_provider_id` ON `${TABLE_NAME}` (`user_id`, `provider_id`)"
+          },
+          {
+            "name": "index_messages_provider_id",
+            "unique": false,
+            "columnNames": [
+              "provider_id"
+            ],
+            "createSql": "CREATE  INDEX `index_messages_provider_id` ON `${TABLE_NAME}` (`provider_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "users",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "user_id"
+            ]
+          },
+          {
+            "table": "providers",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "provider_id"
+            ],
+            "referencedColumns": [
+              "provider_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "providers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`provider_id` TEXT NOT NULL, `name` TEXT NOT NULL, `position` TEXT, `rating` REAL, `photo` TEXT, `intro` TEXT, `copay` REAL, `languages` TEXT, `education` TEXT, PRIMARY KEY(`provider_id`))",
+        "fields": [
+          {
+            "fieldPath": "provider_id",
+            "columnName": "provider_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rating",
+            "columnName": "rating",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "photo",
+            "columnName": "photo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "intro",
+            "columnName": "intro",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "copay",
+            "columnName": "copay",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "languages",
+            "columnName": "languages",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "education",
+            "columnName": "education",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "provider_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_providers_provider_id",
+            "unique": true,
+            "columnNames": [
+              "provider_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_providers_provider_id` ON `${TABLE_NAME}` (`provider_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "pens",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`pen_id` TEXT NOT NULL, `name` TEXT, `type` TEXT NOT NULL, `version` TEXT NOT NULL, PRIMARY KEY(`pen_id`))",
+        "fields": [
+          {
+            "fieldPath": "penID",
+            "columnName": "pen_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "pen_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_pens_pen_id",
+            "unique": true,
+            "columnNames": [
+              "pen_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_pens_pen_id` ON `${TABLE_NAME}` (`pen_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "pen_data_points",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`data_point_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `pen_id` TEXT NOT NULL, `dp_ts` INTEGER NOT NULL, `dp_type` TEXT NOT NULL, `data` REAL, `time` INTEGER, `dose_id` INTEGER, `elapsed` INTEGER, FOREIGN KEY(`pen_id`) REFERENCES `pens`(`pen_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`dose_id`) REFERENCES `doses`(`dose_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "dataPointID",
+            "columnName": "data_point_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "penID",
+            "columnName": "pen_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dpTime",
+            "columnName": "dp_ts",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dpType",
+            "columnName": "dp_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "temp",
+            "columnName": "data",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "targetTime",
+            "columnName": "time",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "doseID",
+            "columnName": "dose_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "elapsed",
+            "columnName": "elapsed",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "data_point_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_pen_data_points_data_point_id",
+            "unique": true,
+            "columnNames": [
+              "data_point_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_pen_data_points_data_point_id` ON `${TABLE_NAME}` (`data_point_id`)"
+          },
+          {
+            "name": "index_pen_data_points_pen_id",
+            "unique": false,
+            "columnNames": [
+              "pen_id"
+            ],
+            "createSql": "CREATE  INDEX `index_pen_data_points_pen_id` ON `${TABLE_NAME}` (`pen_id`)"
+          },
+          {
+            "name": "index_pen_data_points_dose_id",
+            "unique": false,
+            "columnNames": [
+              "dose_id"
+            ],
+            "createSql": "CREATE  INDEX `index_pen_data_points_dose_id` ON `${TABLE_NAME}` (`dose_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "pens",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "pen_id"
+            ],
+            "referencedColumns": [
+              "pen_id"
+            ]
+          },
+          {
+            "table": "doses",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "dose_id"
+            ],
+            "referencedColumns": [
+              "dose_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "alerts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alert_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ts` INTEGER NOT NULL, `type` TEXT NOT NULL, `message_id` INTEGER, `pen_id` TEXT, `dose_id` INTEGER, `summary` TEXT, `acknowledged` INTEGER NOT NULL, `cleared` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "alertID",
+            "columnName": "alert_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ts",
+            "columnName": "ts",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "messageID",
+            "columnName": "message_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "penID",
+            "columnName": "pen_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "doseID",
+            "columnName": "dose_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "summary",
+            "columnName": "summary",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "acknowledged",
+            "columnName": "acknowledged",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cleared",
+            "columnName": "cleared",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "alert_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_alerts_alert_id",
+            "unique": true,
+            "columnNames": [
+              "alert_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_alerts_alert_id` ON `${TABLE_NAME}` (`alert_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "doses",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`dose_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `scheduled_ts` INTEGER, `scheduled_amount` REAL, `given_ts` INTEGER, `given_amount` REAL, `user_id` TEXT NOT NULL, `pen_id` TEXT NOT NULL, FOREIGN KEY(`pen_id`) REFERENCES `pens`(`pen_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "doseID",
+            "columnName": "dose_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scheduledTime",
+            "columnName": "scheduled_ts",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "scheduledAmount",
+            "columnName": "scheduled_amount",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "givenTime",
+            "columnName": "given_ts",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "givenAmount",
+            "columnName": "given_amount",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userID",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "penID",
+            "columnName": "pen_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "dose_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_doses_dose_id",
+            "unique": true,
+            "columnNames": [
+              "dose_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_doses_dose_id` ON `${TABLE_NAME}` (`dose_id`)"
+          },
+          {
+            "name": "index_doses_pen_id",
+            "unique": false,
+            "columnNames": [
+              "pen_id"
+            ],
+            "createSql": "CREATE  INDEX `index_doses_pen_id` ON `${TABLE_NAME}` (`pen_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "pens",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "pen_id"
+            ],
+            "referencedColumns": [
+              "pen_id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ae4e1a9fb9fe2325a299b9235e36d7c5\")"
+    ]
+  }
+}

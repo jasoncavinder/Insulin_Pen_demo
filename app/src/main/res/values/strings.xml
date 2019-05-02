@@ -27,7 +27,8 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="barcode_setup_error">Could not setup barcode detector!</string>
-    <string name="added_pen">Connection successful. Continue\\n(Pen ID: %s)</string>
+    <string name="found_pen">Found insulin pen.\nID# %s</string>
+    <string name="continue_btn">Continue</string>
     <string name="profile">Profile</string>
     <string name="history">History</string>
     <string name="invalid_first_name">Please enter your first name</string>

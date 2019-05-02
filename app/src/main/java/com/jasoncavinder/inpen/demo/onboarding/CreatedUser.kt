@@ -1,4 +1,4 @@
-package com.jasoncavinder.inpen.demo.login
+package com.jasoncavinder.inpen.demo.onboarding
 
 data class CreatedUser(
     val userID: String,

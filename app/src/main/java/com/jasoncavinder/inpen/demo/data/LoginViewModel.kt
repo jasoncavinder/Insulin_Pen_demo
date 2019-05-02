@@ -6,7 +6,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jasoncavinder.inpen.demo.R
-import com.jasoncavinder.inpen.demo.login.*
+import com.jasoncavinder.inpen.demo.login.LoggedInUser
+import com.jasoncavinder.inpen.demo.login.LoginFormState
+import com.jasoncavinder.inpen.demo.login.LoginResult
+import com.jasoncavinder.inpen.demo.login.Result
+import com.jasoncavinder.inpen.demo.onboarding.CreateUserFormState
+import com.jasoncavinder.inpen.demo.onboarding.CreateUserResult
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -69,7 +74,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             val result = _loginRepository.createUser(firstName, lastName, email, password)
 
             when (result) {
-                is Result.Success -> _createUserResult.postValue(CreateUserResult(success = result.data.asView()))
+                is Result.Success -> _createUserResult.postValue(
+                    CreateUserResult(
+                        success = result.data.asView()
+                    )
+                )
                 else -> _createUserResult.postValue(CreateUserResult(error = R.string.create_user_failed))
             }
         }
@@ -88,15 +97,20 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     fun createUserDataChanged(firstName: String, lastName: String, email: String, password: String, confirm: String) {
         when {
             !isNameValid(firstName) ->
-                _createUserForm.value = CreateUserFormState(firstNameError = R.string.invalid_first_name)
+                _createUserForm.value =
+                    CreateUserFormState(firstNameError = R.string.invalid_first_name)
             !isNameValid(lastName) ->
-                _createUserForm.value = CreateUserFormState(lastNameError = R.string.invalid_last_name)
+                _createUserForm.value =
+                    CreateUserFormState(lastNameError = R.string.invalid_last_name)
             !isEmailValid(email) ->
-                _createUserForm.value = CreateUserFormState(emailError = R.string.invalid_email)
+                _createUserForm.value =
+                    CreateUserFormState(emailError = R.string.invalid_email)
             !isPasswordValid(password) ->
-                _createUserForm.value = CreateUserFormState(passwordError = R.string.invalid_password)
+                _createUserForm.value =
+                    CreateUserFormState(passwordError = R.string.invalid_password)
             !isConfirmValid(password, confirm) ->
-                _createUserForm.value = CreateUserFormState(confirmError = R.string.invalid_confirm)
+                _createUserForm.value =
+                    CreateUserFormState(confirmError = R.string.invalid_confirm)
             else ->
                 _createUserForm.value = CreateUserFormState(isDataValid = true)
         }

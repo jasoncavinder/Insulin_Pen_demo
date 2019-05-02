@@ -3,9 +3,9 @@ package com.jasoncavinder.inpen.demo.data
 import android.util.Log
 import com.jasoncavinder.inpen.demo.data.entities.user.User
 import com.jasoncavinder.inpen.demo.data.entities.user.UserDao
-import com.jasoncavinder.inpen.demo.login.CreatedUser
 import com.jasoncavinder.inpen.demo.login.LoggedInUser
 import com.jasoncavinder.inpen.demo.login.Result
+import com.jasoncavinder.inpen.demo.onboarding.CreatedUser
 import com.jasoncavinder.inpen.demo.utilities.HashUtils
 import java.io.IOException
 
@@ -54,7 +54,16 @@ class LoginRepository private constructor(private val _userDao: UserDao) {
         ).run {
             when (this) {
                 null -> Result.Error(IOException("Failed to create account. Does your account already exist?"))
-                else -> Result.Success(CreatedUser(userID, email, firstName, lastName, providerID, penID))
+                else -> Result.Success(
+                    CreatedUser(
+                        userID,
+                        email,
+                        firstName,
+                        lastName,
+                        providerID,
+                        penID
+                    )
+                )
             }
         }
     }

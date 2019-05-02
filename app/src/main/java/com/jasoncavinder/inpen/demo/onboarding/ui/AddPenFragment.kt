@@ -1,8 +1,7 @@
-package com.jasoncavinder.inpen.demo.login.ui
+package com.jasoncavinder.inpen.demo.onboarding.ui
 
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -139,38 +138,61 @@ class AddPenFragment : Fragment() {
     }
 */
 
-    private val TAG by lazy { AddPenFragment::class.java.simpleName }
+//    private val TAG by lazy { AddPenFragment::class.java.simpleName }
 
-    var uuid = UUID.randomUUID().toString()
+    private var uuid = UUID.randomUUID().toString()
+
+    fun simulateBarcodeScan() {
+        camera_view.stopPlayback()
+        camera_view.setVideoPath("android.resource://" + activity!!.packageName + "/" + R.raw.simulate_barcode_scan)
+        camera_view.setOnPreparedListener { it.isLooping = false }
+        camera_view.start()
+        camera_view.setOnCompletionListener {
+            text_scan_status.text = getString(R.string.found_pen).format(uuid.substring(0, 12))
+            button_add_pen.text = getString(R.string.continue_btn)
+            button_add_pen.isEnabled = true
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(com.jasoncavinder.inpen.demo.R.layout.fragment_add_pen, container, false)
-
-        return view
+        return inflater.inflate(R.layout.fragment_add_pen, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    @SuppressLint("InflateParams")
+    override fun onResume() {
+        super.onResume()
 
-        Log.d(TAG, "camera_view: $camera_view")
-        Log.d(TAG, "packageName: $activity" + ".${activity?.packageName}")
-        Log.d(TAG, "sim_bar_scn: ${R.raw.simulate_barcode_scan}")
-        val simVidPath = "android.resource://" + activity!!.packageName + "/" + R.raw.simulate_barcode_scan
-        Log.d(TAG, "simVidPath:  $simVidPath")
-        val simVidUri = Uri.parse(simVidPath)
-        Log.d(TAG, "uri(parsed): $simVidUri")
-        camera_view.setVideoURI(simVidUri)
-        simulate_scan.setOnClickListener {
-            camera_view.setOnCompletionListener {
-                button_add_pen.text = getString(R.string.added_pen).format(uuid)
-                button_add_pen.isEnabled = true
-            }
-            camera_view.start()
+        camera_view?.setVideoPath("android.resource://" + activity!!.packageName + "/" + R.raw.simulate_camera)
+        camera_view?.setOnPreparedListener { it.isLooping = true }
+        camera_view?.start()
+
+        fab_demo_actions.setOnClickListener {
+
+            /*
+            BottomSheetDialog(requireContext())
+                .apply {
+                    setContentView(
+                        layoutInflater.inflate(
+                            R.layout.demo_actions_add_pen,
+                            null
+                        )
+                    )
+                }
+                .show()
+            val viewManager = LinearLayoutManager(context)
+            val viewAdapter = DemoActionMenuAdapter(demoActionsList)
+            val recyclerView = requireActivity().findViewById<RecyclerView>(R.id.demo_actions_recycler)
+                .apply {
+                    setHasFixedSize(true)
+                    layoutManager = viewManager
+                    adapter = viewAdapter
+                }
+*/
         }
-
     }
 
-    /*
+
+/*
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -184,5 +206,4 @@ class AddPenFragment : Fragment() {
         }
     }
 */
-
 }

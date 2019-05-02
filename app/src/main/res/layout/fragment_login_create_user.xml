@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorAccent"
     android:fillViewport="true"
-    tools:context="com.jasoncavinder.inpen.demo.login.ui.CreateUserFragment">
+    tools:context="com.jasoncavinder.inpen.demo.onboarding.ui.CreateUserFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/createUserLayout"
