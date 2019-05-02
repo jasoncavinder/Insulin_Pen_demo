@@ -36,7 +36,7 @@
         android:label="fragment_create_user"
         tools:layout="@layout/fragment_login_create_user" >
         <action
-            android:id="@+id/action_createUserFragment_to_placeholder"
+            android:id="@+id/action_createUserFragment_to_addPenFragment"
             app:destination="@id/addPenFragment" />
     </fragment>
     <fragment
@@ -44,7 +44,7 @@
         android:name="com.jasoncavinder.inpen.demo.login.ui.AddPenFragment"
         tools:layout="@layout/fragment_add_pen">
         <action
-            android:id="@+id/action_placeholder_to_placeholder2"
+            android:id="@+id/action_addPenFragment_to_addProviderFragment"
             app:destination="@id/addProviderFragment" />
     </fragment>
     <fragment

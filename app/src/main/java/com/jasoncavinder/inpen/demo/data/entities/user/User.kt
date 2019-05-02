@@ -1,6 +1,5 @@
 package com.jasoncavinder.inpen.demo.data.entities.user
 
-import android.graphics.Bitmap
 import androidx.room.*
 import com.jasoncavinder.inpen.demo.data.entities.provider.Provider
 import java.util.*
@@ -30,8 +29,8 @@ data class User(
     @ColumnInfo(name = "password") var password: String,
     @ColumnInfo(name = "first_name") var firstName: String,
     @ColumnInfo(name = "last_name") var lastName: String,
-    @ColumnInfo(name = "avatar") var avatar: Bitmap? = null,
-    @ColumnInfo(name = "picture") var picture: Bitmap? = null,
+    @ColumnInfo(name = "avatar") var avatar: String? = null,
+    @ColumnInfo(name = "picture") var picture: String? = null,
     @ColumnInfo(name = "provider_id") var providerID: String? = null,
     @ColumnInfo(name = "penID") var penID: String? = null
 )

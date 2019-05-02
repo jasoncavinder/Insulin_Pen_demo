@@ -16,6 +16,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     // By default all the coroutines launched in this scope should be using the Main dispatcher
     private val _coroutineContext: CoroutineContext
         get() = _parentJob + Dispatchers.Main
+
     private val scope = CoroutineScope(_coroutineContext)
 
     private val _loginForm = MutableLiveData<LoginFormState>()
@@ -42,8 +43,9 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
 
     init {
-        val wordsDao = AppDatabase.getInstance(application).userDao()
-        _loginRepository = LoginRepository.getInstance(wordsDao)
+        val usersDao = AppDatabase.getInstance(application, scope).userDao()
+        _loginRepository = LoginRepository.getInstance(usersDao)
+
         localUsers = _loginRepository.localUsers()
         _user.value = _loginRepository.user
     }

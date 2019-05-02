@@ -77,7 +77,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
 
     init {
         _sessionExpires = 0L
-        AppDatabase.getInstance(application)
+        AppDatabase.getInstance(application, this.scope)
             .also { userDao = it.userDao() }
             .also { providerDao = it.providerDao() }
             .also { penDao = it.penDao() }

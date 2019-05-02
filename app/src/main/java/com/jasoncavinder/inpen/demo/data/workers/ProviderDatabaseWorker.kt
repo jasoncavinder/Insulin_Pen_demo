@@ -26,13 +26,13 @@ class ProviderDatabaseWorker(
                 JsonReader(inputStream.reader()).use { jsonReader ->
                     val providerType = object : TypeToken<List<Provider>>() {}.type
                     val providerList: List<Provider> = Gson().fromJson(jsonReader, providerType)
-                    val database = AppDatabase.getInstance(applicationContext)
+                    val database = AppDatabase.getInstance(applicationContext, this)
                     database.providerDao().insertReplace(providerList)
 
                     Result.success()
                 }
             }
-
+            Log.d(TAG, "Filled database")
             Result.success()
         } catch (ex: Exception) {
             Log.e(TAG, "Error filling database", ex)

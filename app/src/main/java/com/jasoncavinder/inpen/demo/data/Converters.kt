@@ -1,12 +1,7 @@
 package com.jasoncavinder.inpen.demo.data
 
-import android.graphics.Bitmap
-import android.graphics.Bitmap.CompressFormat
-import android.graphics.BitmapFactory
-import android.util.Base64
 import androidx.room.TypeConverter
 import com.jasoncavinder.inpen.demo.data.entities.pendatapoint.DataPointType
-import java.io.ByteArrayOutputStream
 import java.util.*
 
 class Converters {
@@ -27,21 +22,26 @@ class Converters {
         return string?.let { DataPointType.valueOf(it) }
     }
 
-    @TypeConverter
-    fun bitmapToString(bitmap: Bitmap?): String? {
+/*    @TypeConverter
+    fun bitmapToBlob(bitmap: Bitmap?): Blob? {
         return bitmap?.run {
             val outputStream = ByteArrayOutputStream()
             compress(CompressFormat.PNG, 100, outputStream)
             Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
-        }
+        } as Blob
     }
 
     @TypeConverter
-    fun stringToBitmap(base64Str: String?): Bitmap? {
-        return base64Str?.run {
+    fun stringToBlob(string: String?): Blob? {
+        return string as Blob
+    }
+
+    @TypeConverter
+    fun blobToBitmap(base64Str: Blob?): Bitmap? {
+        return (base64Str as String?)?.run {
             Base64.decode(substring(indexOf(",") + 1), Base64.DEFAULT)
         }?.run {
             BitmapFactory.decodeByteArray(this, 0, size)
         }
-    }
+    }*/
 }

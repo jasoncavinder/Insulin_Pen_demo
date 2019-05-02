@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.jasoncavinder.inpen.demo.R
 import com.jasoncavinder.inpen.demo.data.LoginViewModel
 import com.jasoncavinder.inpen.demo.utilities.afterTextChanged
 import kotlinx.android.synthetic.main.fragment_login_create_user.*
@@ -68,7 +69,8 @@ class CreateUserFragment : Fragment() {
             loading_bar.visibility = View.GONE
             createUserResult.error?.let { showCreateUserFailed(createUserResult.error) }
             createUserResult.success?.let {
-                Toast.makeText(context, "Created User: $it", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Hello ${it.firstName}. Let's add your insulin pen.", Toast.LENGTH_LONG).show()
+                _navController.navigate(R.id.action_createUserFragment_to_addPenFragment)
             }
         })
 

@@ -1,6 +1,8 @@
 package com.jasoncavinder.inpen.demo.login.ui
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -137,12 +139,27 @@ class AddPenFragment : Fragment() {
     }
 */
 
+    private val TAG by lazy { AddPenFragment::class.java.simpleName }
+
     var uuid = UUID.randomUUID().toString()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_add_pen, container, false)
+        val view = inflater.inflate(com.jasoncavinder.inpen.demo.R.layout.fragment_add_pen, container, false)
 
-        camera_view.setVideoPath("android.resource://" + activity!!.packageName + "/" + R.raw.simulate_barcode_scan)
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        Log.d(TAG, "camera_view: $camera_view")
+        Log.d(TAG, "packageName: $activity" + ".${activity?.packageName}")
+        Log.d(TAG, "sim_bar_scn: ${R.raw.simulate_barcode_scan}")
+        val simVidPath = "android.resource://" + activity!!.packageName + "/" + R.raw.simulate_barcode_scan
+        Log.d(TAG, "simVidPath:  $simVidPath")
+        val simVidUri = Uri.parse(simVidPath)
+        Log.d(TAG, "uri(parsed): $simVidUri")
+        camera_view.setVideoURI(simVidUri)
         simulate_scan.setOnClickListener {
             camera_view.setOnCompletionListener {
                 button_add_pen.text = getString(R.string.added_pen).format(uuid)
@@ -150,7 +167,7 @@ class AddPenFragment : Fragment() {
             }
             camera_view.start()
         }
-        return view
+
     }
 
     /*
