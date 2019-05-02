@@ -1,6 +1,6 @@
 package com.jasoncavinder.inpen.demo.onboarding
 
 data class CreateUserResult(
-    val success: CreatedUserView? = null,
+    val success: CreatedUser? = null,
     val error: Int? = null
 )

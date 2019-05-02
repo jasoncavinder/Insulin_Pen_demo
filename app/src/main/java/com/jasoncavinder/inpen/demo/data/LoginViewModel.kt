@@ -1,17 +1,20 @@
 package com.jasoncavinder.inpen.demo.data
 
 import android.app.Application
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jasoncavinder.inpen.demo.R
+import com.jasoncavinder.inpen.demo.data.entities.pen.Pen
 import com.jasoncavinder.inpen.demo.login.LoggedInUser
 import com.jasoncavinder.inpen.demo.login.LoginFormState
 import com.jasoncavinder.inpen.demo.login.LoginResult
 import com.jasoncavinder.inpen.demo.login.Result
 import com.jasoncavinder.inpen.demo.onboarding.CreateUserFormState
 import com.jasoncavinder.inpen.demo.onboarding.CreateUserResult
+import com.jasoncavinder.inpen.demo.onboarding.CreatedUser
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -30,14 +33,22 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val _createUserForm = MutableLiveData<CreateUserFormState>()
     val createUserFormState: LiveData<CreateUserFormState> = _createUserForm
 
-    private val _createUserResult = MutableLiveData<CreateUserResult>()
-    val createUserResult: LiveData<CreateUserResult> = _createUserResult
-
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
+    private val _createUserResult = MutableLiveData<CreateUserResult>()
+    val createUserResult: LiveData<CreateUserResult> = _createUserResult
+
+    private val _addPenResult = MutableLiveData<Boolean>()
+    val addPenResult: LiveData<Boolean> = _addPenResult
+
     private val _user = MutableLiveData<LoggedInUser>()
     val user: LiveData<LoggedInUser> = _user
+
+    private val _newUser = MutableLiveData<CreatedUser>()
+    val newUser: LiveData<CreatedUser> = _newUser
+
+    var userID: String = ""
 
     private val _loginRepository: LoginRepository
     // Using LiveData and caching what getAlphabetizedWords returns has several benefits:
@@ -48,8 +59,16 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
 
     init {
-        val usersDao = AppDatabase.getInstance(application, scope).userDao()
-        _loginRepository = LoginRepository.getInstance(usersDao)
+        val userDao = AppDatabase.getInstance(application, scope).userDao()
+        val penDao = AppDatabase.getInstance(application, scope).penDao()
+        val providerDao = AppDatabase.getInstance(application, scope).providerDao()
+        val transactionDao = AppDatabase.getInstance(application, scope).transactionDao()
+        _loginRepository = LoginRepository.getInstance(
+            userDao = userDao,
+            penDao = penDao,
+            providerDao = providerDao,
+            transactionDao = transactionDao
+        )
 
         localUsers = _loginRepository.localUsers()
         _user.value = _loginRepository.user
@@ -69,16 +88,19 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     fun logout() = _loginRepository.logout()
 
-    fun createUser(firstName: String, lastName: String, email: String, password: String, confirm: String) {
+    fun createUser(firstName: String, lastName: String, email: String, password: String) {
         GlobalScope.launch {
             val result = _loginRepository.createUser(firstName, lastName, email, password)
 
             when (result) {
-                is Result.Success -> _createUserResult.postValue(
-                    CreateUserResult(
-                        success = result.data.asView()
+                is Result.Success -> {
+                    _createUserResult.postValue(
+                        CreateUserResult(
+                            success = result.data
+                        )
                     )
-                )
+                    _newUser.postValue(result.data)
+                }
                 else -> _createUserResult.postValue(CreateUserResult(error = R.string.create_user_failed))
             }
         }
@@ -132,13 +154,34 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         return password == confirm
     }
 
-    /**
-     * Launching a new coroutine to insert the data in a non-blocking way
-     */
-//    fun insert(word: Word) = scope.launch(Dispatchers.IO) {
-//        repository.insert(word)
-//    }
     fun isLoggedIn(): Boolean = _loginRepository.isLoggedIn
+
+    fun addPen(userId: String, pen: Pen) {
+        GlobalScope.launch {
+            val TAG = "Adding Pen"
+            Log.d(TAG, "entered coroutine. userId = $userId, penID = ${pen.penID}")
+            val updatedUser = _newUser.value
+            Log.d(TAG, "updatedUser = ${updatedUser?.userID}")
+            when (updatedUser) {
+                null -> _addPenResult.postValue(false)
+                else -> {
+                    val result = _loginRepository.addPenToUser(userId, pen)
+                    if (result) _newUser.postValue(
+                        CreatedUser(
+                            userID = updatedUser.userID,
+                            email = updatedUser.email,
+                            firstName = updatedUser.firstName,
+                            lastName = updatedUser.lastName,
+                            penID = pen.penID,
+                            providerID = updatedUser.providerID
+                        )
+                    )
+                    _addPenResult.postValue(result)
+                    this@LoginViewModel.userID = updatedUser.userID
+                }
+            }
+        }
+    }
 
     override fun onCleared() {
         super.onCleared()

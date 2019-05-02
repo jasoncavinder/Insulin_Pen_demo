@@ -13,7 +13,7 @@
 //import com.jasoncavinder.inpen_demo.dummy.DummyContent.DummyItem
 //
 ///**
-// * A fragment representing a list of Items.
+// * A fragment representing a demoActionList of Items.
 // * Activities containing this fragment MUST implement the
 // * [DoseHistoryFragment.OnListFragmentInteractionListener] interface.
 // */

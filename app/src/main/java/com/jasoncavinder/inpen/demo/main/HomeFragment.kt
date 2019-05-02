@@ -103,8 +103,8 @@ class HomeFragment : Fragment() {
 
 
     //    // TODO: Rename method, update argument and hook method into UI event
-//    fun onButtonPressed(uri: Uri) {
-//        listener?.onFragmentInteraction(uri)
+//    fun onFabClicked(uri: Uri) {
+//        listener?.showDemoActionsDialog(uri)
 //    }
 
 

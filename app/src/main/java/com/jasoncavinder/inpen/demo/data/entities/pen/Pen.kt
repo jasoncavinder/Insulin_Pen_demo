@@ -15,7 +15,7 @@ import java.util.*
 data class Pen(
     @PrimaryKey
     @ColumnInfo(name = "pen_id") val penID: String = UUID.randomUUID().toString(),
-    @ColumnInfo(name = "name") val name: String?,
-    @ColumnInfo(name = "type") val type: String,
-    @ColumnInfo(name = "version") val version: String
+    @ColumnInfo(name = "name") val name: String? = "My Insulin Pen",
+    @ColumnInfo(name = "type") val type: String? = "Smart Pen",
+    @ColumnInfo(name = "version") val version: String? = "Version 1.0"
 )

@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.jasoncavinder.inpen.demo.data.entities.TransactionDao
 import com.jasoncavinder.inpen.demo.data.entities.alert.Alert
 import com.jasoncavinder.inpen.demo.data.entities.alert.AlertDao
 import com.jasoncavinder.inpen.demo.data.entities.dose.Dose
@@ -38,7 +39,7 @@ import kotlinx.coroutines.CoroutineScope
         PenDataPoint::class,
         Alert::class,
         Dose::class
-    ], version = 20, exportSchema = true
+    ], version = 21, exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -49,6 +50,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun penDataPointDao(): PenDataPointDao
     abstract fun doseDao(): DoseDao
     abstract fun alertDao(): AlertDao
+    abstract fun transactionDao(): TransactionDao
 
     companion object {
         @Volatile

@@ -1,22 +1,129 @@
 package com.jasoncavinder.inpen.demo.onboarding.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.jasoncavinder.inpen.demo.R
+import com.jasoncavinder.inpen.demo.data.LoginViewModel
+import com.jasoncavinder.inpen.demo.data.entities.pen.Pen
+import com.jasoncavinder.inpen.demo.onboarding.CreatedUser
+import com.jasoncavinder.inpen.demo.ui.DemoAction
+import com.jasoncavinder.inpen.demo.ui.DemoActionListDialogFragment
 import kotlinx.android.synthetic.main.fragment_add_pen.*
 import java.util.*
+
+class AddPenFragment : Fragment(), DemoActionListDialogFragment.Listener {
+
+    companion object {
+        fun newInstance() = CreateUserFragment()
+    }
+
+    private lateinit var _loginViewModel: LoginViewModel
+    private lateinit var _navController: NavController
+
+    private var _uuid = UUID.randomUUID().toString()
+    private lateinit var _newUser: LiveData<CreatedUser>
+    private lateinit var _addPenResult: LiveData<Boolean>
+
+    /* BEGIN: Required for Demo Actions */
+    private var _demoActions = arrayListOf(
+        DemoAction("Simulate scanning barcode", this::_simulateBarcodeScan)
+    )
+
+    override fun onDemoActionClicked(position: Int) {
+        _demoActions[position].action()
+    }
+    /* END: Required for Demo Actions */
+
+    private fun _simulateBarcodeScan() {
+        camera_view.stopPlayback()
+        camera_view.setVideoPath("android.resource://" + requireActivity().packageName + "/" + R.raw.simulate_barcode_scan)
+        camera_view.setOnPreparedListener { it.isLooping = false }
+        camera_view.start()
+        camera_view.setOnCompletionListener {
+            _loginViewModel.addPen(_loginViewModel.createUserResult.value!!.success!!.userID, Pen(penID = _uuid))
+        }
+    }
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_add_pen, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        _navController = findNavController()
+
+        _loginViewModel = requireActivity().run { ViewModelProviders.of(this).get(LoginViewModel::class.java) }
+
+        _newUser = _loginViewModel.newUser
+
+        _addPenResult = _loginViewModel.addPenResult
+
+        button_skip.setOnClickListener { _navController.navigate(R.id.action_addPenFragment_to_addProviderFragment) }
+
+        _addPenResult.observe(this, Observer {
+            //            val addPenResult = it ?: return@Observer
+            when (it) {
+                false -> return@Observer
+                else -> {
+                    text_scan_status.text =
+                        getString(R.string.found_pen).format(_newUser.value?.userID?.substring(0, 12))
+                    button_add_pen.text = getString(R.string.continue_btn)
+                    button_add_pen.isEnabled = true
+                    button_add_pen.setOnClickListener { _navController.navigate(R.id.action_addPenFragment_to_addProviderFragment) }
+                }
+            }
+        })
+
+/*
+        _loginViewModel.createUserResult.observe(this, Observer {
+            val createUserResult = it ?: return@Observer
+
+            group_form_create_user.visibility = View.VISIBLE
+            loading_bar.visibility = View.GONE
+            createUserResult.error?.let { showCreateUserFailed(createUserResult.error) }
+            createUserResult.success?.let {
+                Toast.makeText(context, "Hello ${it.firstName}. Let's add your insulin pen.", Toast.LENGTH_LONG).show()
+                _navController.navigate(R.id.action_createUserFragment_to_addPenFragment)
+            }
+        })
+
+*/
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        camera_view?.setVideoPath("android.resource://" + activity!!.packageName + "/" + R.raw.simulate_camera)
+        camera_view?.setOnPreparedListener { it.isLooping = true }
+        camera_view?.start()
+
+        /* BEGIN: Required for Demo Actions */
+        fab_demo_actions.setOnClickListener {
+            DemoActionListDialogFragment.newInstance(_demoActions)
+                .show(childFragmentManager, "demoActionsDialog")
+        }
+        /* END: Required for Demo Actions */
+    }
+}
 
 
 //private val CAMERA_REQUEST_CODE: Int = 1001
 
 
-class AddPenFragment : Fragment() {
-
-/*  Camera, but decided to use simulation video for demo app
+/*  For camera, but decided to use simulation video for demo app
     private lateinit var cameraManager: CameraManager
     private var cameraFacing: Int = 0
     private lateinit var surfaceTextureListener: TextureView.SurfaceTextureListener
@@ -138,59 +245,26 @@ class AddPenFragment : Fragment() {
     }
 */
 
-//    private val TAG by lazy { AddPenFragment::class.java.simpleName }
-
-    private var uuid = UUID.randomUUID().toString()
-
-    fun simulateBarcodeScan() {
-        camera_view.stopPlayback()
-        camera_view.setVideoPath("android.resource://" + activity!!.packageName + "/" + R.raw.simulate_barcode_scan)
-        camera_view.setOnPreparedListener { it.isLooping = false }
-        camera_view.start()
-        camera_view.setOnCompletionListener {
-            text_scan_status.text = getString(R.string.found_pen).format(uuid.substring(0, 12))
-            button_add_pen.text = getString(R.string.continue_btn)
-            button_add_pen.isEnabled = true
-        }
+/*
+BottomSheetDialog(requireContext())
+    .apply {
+        setContentView(
+            layoutInflater.inflate(
+                R.layout.demo_actions_add_pen,
+                null
+            )
+        )
     }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_add_pen, container, false)
+    .show()
+val viewManager = LinearLayoutManager(context)
+val viewAdapter = DemoActionMenuAdapter(demoActionsList)
+val recyclerView = requireActivity().findViewById<RecyclerView>(R.id.demo_actions_recycler)
+    .apply {
+        setHasFixedSize(true)
+        layoutManager = viewManager
+        adapter = viewAdapter
     }
-
-    @SuppressLint("InflateParams")
-    override fun onResume() {
-        super.onResume()
-
-        camera_view?.setVideoPath("android.resource://" + activity!!.packageName + "/" + R.raw.simulate_camera)
-        camera_view?.setOnPreparedListener { it.isLooping = true }
-        camera_view?.start()
-
-        fab_demo_actions.setOnClickListener {
-
-            /*
-            BottomSheetDialog(requireContext())
-                .apply {
-                    setContentView(
-                        layoutInflater.inflate(
-                            R.layout.demo_actions_add_pen,
-                            null
-                        )
-                    )
-                }
-                .show()
-            val viewManager = LinearLayoutManager(context)
-            val viewAdapter = DemoActionMenuAdapter(demoActionsList)
-            val recyclerView = requireActivity().findViewById<RecyclerView>(R.id.demo_actions_recycler)
-                .apply {
-                    setHasFixedSize(true)
-                    layoutManager = viewManager
-                    adapter = viewAdapter
-                }
 */
-        }
-    }
-
 
 /*
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -206,4 +280,3 @@ class AddPenFragment : Fragment() {
         }
     }
 */
-}

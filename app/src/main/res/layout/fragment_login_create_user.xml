@@ -5,7 +5,6 @@
     android:id="@+id/scrollView2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorAccent"
     android:fillViewport="true"
     tools:context="com.jasoncavinder.inpen.demo.onboarding.ui.CreateUserFragment">
 
@@ -15,204 +14,206 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-        <TextView
-            android:id="@+id/text_headline"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/create_account"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/edit_text_first_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <EditText
-            android:id="@+id/edit_text_first_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autofillHints="AUTOFILL_HINT_NAME"
-            android:contentDescription="Please enter your first name"
-            android:ems="6"
-            android:hint="First Name"
-            android:inputType="textPersonName"
-            android:paddingStart="8dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
-            android:singleLine="true"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textColorHighlight="?attr/colorPrimary"
-            android:textStyle="bold"
-            android:theme="@style/AppTheme.LoginEditText"
-            app:layout_constraintBottom_toTopOf="@+id/edit_text_email"
-            app:layout_constraintEnd_toStartOf="@+id/edit_text_last_name"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_headline" />
-
-        <EditText
-            android:id="@+id/edit_text_last_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autofillHints="AUTOFILL_HINT_NAME"
-            android:contentDescription="Please enter your full name"
-            android:ems="6"
-            android:hint="Last Name"
-            android:inputType="textPersonName"
-            android:paddingStart="8dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
-            android:singleLine="true"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textColorHighlight="?attr/colorPrimary"
-            android:textStyle="bold"
-            android:theme="@style/AppTheme.LoginEditText"
-            app:layout_constraintBottom_toBottomOf="@id/edit_text_first_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/edit_text_first_name"
-            app:layout_constraintTop_toTopOf="@+id/edit_text_first_name" />
-
-        <EditText
-            android:id="@+id/edit_text_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autofillHints="AUTOFILL_HINT_EMAIL_ADDRESS"
-            android:contentDescription="Please enter your email address"
-            android:ems="12"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:paddingStart="8dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
-            android:singleLine="true"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textColorHighlight="?attr/colorPrimary"
-            android:textStyle="bold"
-            android:theme="@style/AppTheme.LoginEditText"
-            app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_first_name" />
-
-        <EditText
-            android:id="@+id/edit_text_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autofillHints="AUTOFILL_HINT_PASSWORD"
-            android:contentDescription="Choose a password"
-            android:ems="12"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:paddingStart="8dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
-            android:singleLine="true"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textColorHighlight="?attr/colorPrimary"
-            android:textStyle="bold"
-            android:theme="@style/AppTheme.LoginEditText"
-            app:layout_constraintBottom_toTopOf="@+id/edit_text_confirm"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_email" />
-
-        <EditText
-            android:id="@+id/edit_text_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autofillHints="AUTOFILL_HINT_PASSWORD"
-            android:contentDescription="Please confirm your password"
-            android:ems="12"
-            android:hint="Confirm Password"
-            android:inputType="textPassword"
-            android:paddingStart="8dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textColorHighlight="?attr/colorPrimary"
-            android:textStyle="bold"
-            android:theme="@style/AppTheme.LoginEditText"
-            app:layout_constraintBottom_toTopOf="@+id/text_terms"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
-
-        <TextView
-            android:id="@+id/text_terms"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="By creating an account you agree to our Terms of Service and Privacy Policy"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textColorHighlight="?attr/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/button_cancel"
-            app:layout_constraintEnd_toEndOf="@+id/barrier_right"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/barrier_left"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_confirm" />
-
-        <Button
-            android:id="@+id/button_create_user"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="?attr/colorControlNormal"
-            android:enabled="false"
-            android:text="Continue"
-            app:layout_constraintBottom_toBottomOf="@+id/button_cancel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button_cancel"
-            app:layout_constraintTop_toTopOf="@+id/button_cancel" />
-
-        <Button
-            android:id="@+id/button_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:textColor="?attr/colorControlNormal"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_create_user"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_terms" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="left"
-            app:constraint_referenced_ids="text_headline,edit_text_password,button_cancel,edit_text_first_name,edit_text_confirm,edit_text_email,edit_text_last_name"
-            tools:layout_editor_absoluteX="411dp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="right"
-            app:constraint_referenced_ids="text_headline,edit_text_password,button_create_user,edit_text_first_name,edit_text_confirm,edit_text_email,edit_text_last_name"
-            tools:layout_editor_absoluteX="411dp" />
+                <TextView
+                    android:id="@+id/text_headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_account"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/edit_text_first_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edit_text_first_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="AUTOFILL_HINT_NAME"
+                    android:contentDescription="Please enter your first name"
+                    android:ems="6"
+                    android:hint="First Name"
+                    android:inputType="textPersonName"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:singleLine="true"
+                    app:layout_constraintBottom_toTopOf="@+id/edit_text_email"
+                    app:layout_constraintEnd_toStartOf="@+id/edit_text_last_name"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_headline" />
+
+                <EditText
+                    android:id="@+id/edit_text_last_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="AUTOFILL_HINT_NAME"
+                    android:contentDescription="Please enter your full name"
+                    android:ems="6"
+                    android:hint="Last Name"
+                    android:inputType="textPersonName"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:singleLine="true"
+                    app:layout_constraintBottom_toBottomOf="@+id/edit_text_first_name"
+                    app:layout_constraintBottom_toTopOf="@+id/edit_text_email"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/edit_text_first_name"
+                    app:layout_constraintTop_toTopOf="@+id/edit_text_first_name" />
+
+                <EditText
+                    android:id="@+id/edit_text_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="AUTOFILL_HINT_EMAIL_ADDRESS"
+                    android:contentDescription="Please enter your email address"
+                    android:ems="12"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:singleLine="true"
+                    android:textColorHighlight="?attr/colorPrimary"
+                    app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_first_name" />
+
+                <EditText
+                    android:id="@+id/edit_text_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="AUTOFILL_HINT_PASSWORD"
+                    android:contentDescription="Choose a password"
+                    android:ems="12"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:singleLine="true"
+                    app:layout_constraintBottom_toTopOf="@+id/edit_text_confirm"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_email" />
+
+                <EditText
+                    android:id="@+id/edit_text_confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="AUTOFILL_HINT_PASSWORD"
+                    android:contentDescription="Please confirm your password"
+                    android:ems="12"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:singleLine="true"
+                    app:layout_constraintBottom_toTopOf="@+id/text_terms"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="right"
+                    app:constraint_referenced_ids="text_headline,edit_text_first_name,edit_text_last_name,edit_text_email,edit_text_password,button_create_user,edit_text_confirm"
+                    tools:layout_editor_absoluteX="334dp" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="left"
+                    app:constraint_referenced_ids="text_headline,edit_text_password,button_cancel,edit_text_first_name,edit_text_confirm,edit_text_email,edit_text_last_name"
+                    tools:layout_editor_absoluteX="78dp" />
+
+                <TextView
+                    android:id="@+id/text_terms"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="By creating an account you agree to our Terms of Service and Privacy Policy"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColorHighlight="?attr/colorPrimary"
+                    app:layout_constraintBottom_toTopOf="@+id/button_cancel"
+                    app:layout_constraintLeft_toRightOf="@id/barrier_left"
+                    app:layout_constraintRight_toLeftOf="@+id/barrier_right"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_confirm"
+                    tools:layout_editor_absoluteX="78dp" />
+
+                <Button
+                    android:id="@+id/button_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:textColor="?attr/colorControlNormal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/button_create_user"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_terms" />
+
+                <Button
+                    android:id="@+id/button_create_user"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="Continue"
+                    app:layout_constraintBottom_toBottomOf="@+id/button_cancel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/button_cancel"
+                    app:layout_constraintTop_toTopOf="@+id/button_cancel" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group_form_create_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            app:constraint_referenced_ids="text_headline,edit_text_first_name,edit_text_last_name,edit_text_password,edit_text_email,button_cancel,edit_text_confirm,button_create_user,text_terms"
+            app:constraint_referenced_ids="cardView"
             tools:visibility="visible" />
 
         <ProgressBar
@@ -227,5 +228,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

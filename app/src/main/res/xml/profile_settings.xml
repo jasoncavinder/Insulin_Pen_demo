@@ -33,7 +33,7 @@
     <!--android:entryValues="@android:array/emailAddressTypes" android:key="list_preference_1"/>-->
 
     <!--<MultiSelectListPreference-->
-    <!--android:title="Multi select list preference" android:defaultValue="@android:array/imProtocols"-->
+    <!--android:title="Multi select demoActionList preference" android:defaultValue="@android:array/imProtocols"-->
     <!--android:entries="@android:array/imProtocols" android:entryValues="@android:array/imProtocols"-->
     <!--android:key="multi_select_list_preference_1"/>-->
 

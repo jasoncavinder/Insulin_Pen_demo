@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Splash Screen -->
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_v2</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
@@ -10,16 +10,41 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+
+    <!-- Primary Theme -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
 
     </style>
 
-    <style name="AppTheme.Login">
-        <item name="colorPrimaryDark">@color/secondaryDarkColor</item>
-        <item name="background">@color/secondaryColor</item>
-        <item name="android:textStyle">bold</item>
-        <item name="colorAccent">@color/surfaceColor_900</item>
-        <item name="android:textColor">@color/surfaceColor_900</item>
+
+    <!-- Pre-login Theme-->
+    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- ripple effect -->
+        <item name="colorControlHighlight">@color/primaryColor</item>
+        <!-- status bar background -->
+        <item name="colorPrimaryDark">@color/secondaryColor</item>
+
+        <item name="android:colorBackground">@color/secondaryColor</item>
+
+        <!-- color for text fields -->
+        <item name="colorControlNormal">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+
+        <item name="android:textColorPrimary">@color/secondaryTextColor</item>
+
+
+        <item name="colorSecondary">@color/primaryColor</item>
+        <item name="android:textColorSecondary">@color/secondaryTextColor</item>
+        <!--makes status bar easier to read-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+
+        <!-- give a tint to the "negative" buttons -->
+        <!--<item name="colorButtonNormal">@color/primaryColor_50</item>-->
+
+        <!-- highlight color for text fields -->
+        <!--<item name="colorControlActivated">@color/primaryColor</item>-->
+
+        <!--<item name="editTextStyle">@style/LoginEditText</item>-->
     </style>
 
 
@@ -41,12 +66,7 @@
         <item name="textAllCaps">false</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/primaryTextColor</item>
-        <item name="theme">@style/AppTheme.LoginControls</item>
-    </style>
-
-    <style name="FillParent" parent="ThemeOverlay.AppCompat">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <!--<item name="theme">@style/AppTheme.LoginControls</item>-->
     </style>
 
 </resources>

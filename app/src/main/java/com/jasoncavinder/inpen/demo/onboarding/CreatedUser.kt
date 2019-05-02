@@ -7,6 +7,7 @@ data class CreatedUser(
     val lastName: String,
     val providerID: String? = null,
     val penID: String? = null
-) {
-    fun asView() = CreatedUserView(firstName, lastName, email)
-}
+)
+//{
+//    fun asView() = CreatedUserView(firstName, lastName, email)
+//}

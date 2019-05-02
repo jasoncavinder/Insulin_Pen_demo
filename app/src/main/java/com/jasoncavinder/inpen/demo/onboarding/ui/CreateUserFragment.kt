@@ -37,7 +37,7 @@ class CreateUserFragment : Fragment() {
 
         _navController = findNavController()
 
-        _loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        _loginViewModel = requireActivity().run { ViewModelProviders.of(this).get(LoginViewModel::class.java) }
 
         _loginViewModel.createUserFormState.observe(this, Observer {
             val createUserState = it ?: return@Observer
@@ -88,20 +88,6 @@ class CreateUserFragment : Fragment() {
         edit_text_password.apply { afterTextChanged { dataChanged() } }
         edit_text_confirm.apply { afterTextChanged { dataChanged() } }
 
-/*
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        _loginViewModel.login(
-                            edit_text_email.text.toString(),
-                            edit_text_pass.text.toString()
-                        )
-                }
-                false
-            }
-        }
-*/
-
         button_cancel.setOnClickListener {
             hideKeyboard()
             _navController.navigateUp()
@@ -114,8 +100,7 @@ class CreateUserFragment : Fragment() {
                 edit_text_first_name.text.toString(),
                 edit_text_last_name.text.toString(),
                 edit_text_email.text.toString(),
-                edit_text_password.text.toString(),
-                edit_text_confirm.text.toString()
+                edit_text_password.text.toString()
             )
             hideKeyboard()
         }

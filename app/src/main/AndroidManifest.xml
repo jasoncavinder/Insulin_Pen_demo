@@ -31,6 +31,7 @@
         <activity
             android:name="com.jasoncavinder.inpen.demo.LoginActivity"
             android:label="@string/title_activity_login"
+            android:theme="@style/LoginTheme"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
