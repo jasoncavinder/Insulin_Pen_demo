@@ -19,7 +19,11 @@ Temperature Alert
 Temperature alerts limit the chance of extreme heat or cold which could render your insulin ineffective.
 if you need reference, you can also check out this company's smart pen software: [companionmedical.com/inpen](https://www.companionmedical.com/inpen)
 
-![screenshot_1](https://github.com/jasoncavinder/InPen_demo/raw/master/README/Screenshot_1556449491.png)
+![Splash](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotSplash.png)
+![Welcome](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotWelcome.png)
+![Login](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotLogin.png)
+![Create Account](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddUser.png)
+![Add Pen](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddPen.png)
 
 ---
 
