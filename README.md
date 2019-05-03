@@ -17,7 +17,6 @@ Reporting
 Reporting lets you easily share your therapy summary with your care providers so you always see the big picture when adjusting your care plan.
 Temperature Alert
 Temperature alerts limit the chance of extreme heat or cold which could render your insulin ineffective.
-if you need reference, you can also check out this company's smart pen software: [companionmedical.com/inpen](https://www.companionmedical.com/inpen)
 
 ![Splash](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotSplash.png)
 ![Welcome](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotWelcome.png)
