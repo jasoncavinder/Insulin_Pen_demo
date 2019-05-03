@@ -93,3 +93,11 @@ This contract does not include support, however you can reach out to the author 
 [![Become a Patron!](https://github.com/jasoncavinder/InPen_demo/raw/master/README/become_a_patron_button@2x.png)](https://www.patreon.com/bePatron?u=3707292)
 
 ---
+
+## License
+
+This project is licenced to the client of Upwork contract #21949291. It is not licensed for public use. - see the [LICENSE.md](LICENSE.md) file for details
+
+- Copyright 2019 © <a href="http://github.com/jasoncavinder" target="_blank">Jason Cavinder</a>, All rights reserved.
+
+---
