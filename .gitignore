@@ -13,3 +13,5 @@
 .externalNativeBuild
 .idea/dbnavigator.xml
 .idea/vcs.xml
+app/schemas
+
