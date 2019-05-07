@@ -35,4 +35,7 @@
     <string name="invalid_last_name">Please enter your last name</string>
     <string name="invalid_confirm">Confirm password doesn\'t match password</string>
     <string name="create_user_failed">Failed to create user account</string>
+    <string name="connect_your_pen">Connect Your Pen</string>
+    <string name="error_adding_pen">Error adding pen: %s</string>
+    <string name="provider_photo_desc">Photo of this Provider</string>
 </resources>

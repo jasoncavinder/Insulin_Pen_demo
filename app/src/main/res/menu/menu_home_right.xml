@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.jasoncavinder.inpen_demo.com.jasoncavinder.inpen.demo.MainActivity">
+    tools:context="com.jasoncavinder.old_inpen_demo.com.jasoncavinder.inpen.demo.MainActivity">
 
     <item
         android:id="@+id/history"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.jasoncavinder.inpen.demo.login.ui.WelcomeFragment"
+        android:name="com.jasoncavinder.insulinpendemoapp.ui.login.WelcomeFragment"
         android:label="Welcome"
         tools:layout="@layout/fragment_login_welcome">
         <action
@@ -27,12 +27,12 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.jasoncavinder.inpen.demo.login.ui.LoginFragment"
+        android:name="com.jasoncavinder.insulinpendemoapp.ui.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login_login" />
     <fragment
         android:id="@+id/createUserFragment"
-        android:name="com.jasoncavinder.inpen.demo.onboarding.ui.CreateUserFragment"
+        android:name="com.jasoncavinder.insulinpendemoapp.ui.login.CreateUserFragment"
         android:label="fragment_create_user"
         tools:layout="@layout/fragment_login_create_user" >
         <action
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/addPenFragment"
-        android:name="com.jasoncavinder.inpen.demo.onboarding.ui.AddPenFragment"
+        android:name="com.jasoncavinder.insulinpendemoapp.todo.login.AddPenFragment"
         tools:layout="@layout/fragment_add_pen">
         <action
             android:id="@+id/action_addPenFragment_to_addProviderFragment"
@@ -49,6 +49,6 @@
     </fragment>
     <fragment
         android:id="@+id/addProviderFragment"
-        android:name="com.jasoncavinder.inpen.demo.onboarding.ui.AddProviderFragment"
+        android:name="com.jasoncavinder.insulinpendemoapp.todo.login.AddProviderFragment"
         tools:layout="@layout/fragment_add_provider" />
 </navigation>

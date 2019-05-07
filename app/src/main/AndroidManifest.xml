@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jasoncavinder.inpen.demo">
+    package="com.jasoncavinder.insulinpendemoapp">
 
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -13,6 +13,7 @@
 
 
     <application
+        android:name="com.jasoncavinder.insulinpendemoapp.DemoApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.jasoncavinder.inpen.demo.SplashActivity"
+            android:name="com.jasoncavinder.insulinpendemoapp.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,16 +30,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.jasoncavinder.inpen.demo.LoginActivity"
+            android:name="com.jasoncavinder.insulinpendemoapp.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/LoginTheme"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jasoncavinder.inpen.demo.MainActivity" />
+                android:value="com.jasoncavinder.insulinpendemoapp.todo.MainActivity" />
         </activity>
         <activity
-            android:name="com.jasoncavinder.inpen.demo.MainActivity"
+            android:name="com.jasoncavinder.insulinpendemoapp.todo.MainActivity"
             android:label="At a Glance"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize">

@@ -1,23 +1,26 @@
 [
   {
-    "providerID": "1E90212B-71D1-42A0-9063-2956A1A1FF49",
+    "id": "B15E7EDD-3E50-4962-AABE-C2E7283FD74B",
     "name": "Dr. Alice Zeta",
     "position": "Specialist",
     "rating": "4.9f",
-    "intro": "Best family practice in town",
+    "intro": "Best diabetes care in town",
     "copay": "29f",
-    "languages": "English",
-    "education": "PhD from Harvard Medical School",
-    "photo": "doctor_alice.jpg"
+    "languages": [
+      "English"
+    ],
+    "education": "PhD from Harvard Medical School"
   },
   {
-    "providerID": "35FEA741-8D9B-48DF-88CA-10B21BAB9732",
+    "id": "FEAFA75C-AABC-4934-A8AC-BE4072288D1F",
     "name": "Dr. Bob Yoddle",
     "position": "Family Care Physician",
     "rating": "4.8f",
     "intro": "Best family practice in town",
     "copay": "29f",
-    "languages": "English",
+    "languages": [
+      "English"
+    ],
     "education": "PhD from Purdue University",
     "photo": "doctor_bob.jpg"
   }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jasoncavinder.inpen.demo.MainActivity">
+    tools:context="com.jasoncavinder.old_inpen.demo.com.jasoncavinder.insulinpendemoapp.todo.MainActivity">
     <!-- TODO: move hardcoded string-->
 
     <TextView

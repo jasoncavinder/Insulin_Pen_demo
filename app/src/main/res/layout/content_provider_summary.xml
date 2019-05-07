@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel" />
+        <!--<variable name="providerPhotoFilename" type="String" /> &lt;!&ndash; or Int or R. ? ... TODO &ndash;&gt;-->
+        <!--<variable name="providerName" type="String" />-->
+        <!--<variable name="providerPosition" type="String" />-->
+        <!--<variable name="providerRating" type="Float" />-->
+        <!--<variable name="providerIntro" type="String" />-->
+        <!--<variable name="providerEducation" type="String" />-->
+        <!--<variable name="providerCopay" type="String" />-->
+        <!--<variable name="providerLanguages" type="String" />-->
+    </data>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context="com.jasoncavinder.insulinpendemoapp.todo.ui.ContentProviderSummary">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/provider_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/provider_photo"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:contentDescription="@string/provider_photo_desc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars[10]" />
+
+            <TextView
+                android:id="@+id/provider_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@{viewModel.provider.name}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintBottom_toTopOf="@+id/provider_position"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/provider_photo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread"
+                tools:text="Name Here, MD" />
+
+            <!--android:text="@{providerPosition}"-->
+            <TextView
+                android:id="@+id/provider_position"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintBottom_toTopOf="@+id/provider_rating"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/provider_photo"
+                app:layout_constraintTop_toBottomOf="@+id/provider_name"
+                tools:text="Super Doctor" />
+
+            <RatingBar
+                android:id="@+id/provider_rating"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/colorBackgroundFloating"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:progressTint="@color/secondaryColor"
+                android:rating="3.75"
+                android:stepSize=".25"
+                app:layout_constraintBottom_toTopOf="@+id/provider_intro"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/provider_photo"
+                app:layout_constraintTop_toBottomOf="@+id/provider_position" />
+
+            <!--android:text="@{providerIntro}"-->
+            <TextView
+                android:id="@+id/provider_intro"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/provider_photo"
+                tools:text="This is a little information about the medical provider. It should contain a few (2-3) short sentences." />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/provider_extended"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/text_education"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Education: "
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintBottom_toTopOf="@id/barrier_education"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!--android:text="@{providerEducation}"-->
+            <TextView
+                android:id="@+id/provider_education"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintBottom_toTopOf="@id/barrier_education"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/barrier_gutter"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="School of Hard Knocks - Triage Edition" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_education"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="provider_education,text_education"
+                tools:layout_editor_absoluteY="180dp" />
+
+            <TextView
+                android:id="@+id/text_copay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Copay: "
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintBottom_toTopOf="@+id/barrier_copay"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier_education" />
+
+            <!--android:text="@{providerCopay}"-->
+            <TextView
+                android:id="@+id/provider_copay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintBottom_toTopOf="@id/barrier_copay"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/barrier_gutter"
+                app:layout_constraintTop_toTopOf="@+id/barrier_education"
+                tools:text="$39" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_copay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="text_copay,provider_copay"
+                tools:layout_editor_absoluteY="180dp" />
+
+            <TextView
+                android:id="@+id/text_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Languages: "
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier_copay" />
+
+            <!--android:text="@{providerLanguages}"-->
+            <TextView
+                android:id="@+id/provider_languages"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/barrier_gutter"
+                app:layout_constraintTop_toTopOf="@id/barrier_copay"
+                tools:text="English, Esperanto, Swahili, Japanese, Hungarian, etc." />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_gutter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="right"
+                app:constraint_referenced_ids="text_copay,text_language,text_education"
+                tools:layout_editor_absoluteX="320dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</layout>
