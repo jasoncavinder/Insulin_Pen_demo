@@ -82,9 +82,7 @@ class AddProviderFragment : Fragment() {
                 lifecycleOwner = this@AddProviderFragment
             }
 
-        provider.observe(this, Observer { provider ->
-
-        })
+        provider.observe(this, Observer { })
 
         val view = fragmentAddProviderBinding.root
 
@@ -142,7 +140,6 @@ class AddProviderFragment : Fragment() {
                     text = getString(R.string.continue_btn)
                     setOnClickListener { setProvider() }
                 }
-
             }
 
             override fun onTick(millisUntilFinished: Long) {}

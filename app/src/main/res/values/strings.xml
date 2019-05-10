@@ -40,4 +40,7 @@
     <string name="connect_your_pen">Connect Your Pen</string>
     <string name="error_adding_pen">Error adding pen: %s</string>
     <string name="provider_photo_desc">Photo of this Provider</string>
+    <string name="label_education">Education:</string>
+    <string name="label_copay">Copay:</string>
+    <string name="label_languages">Languages:</string>
 </resources>

@@ -96,6 +96,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/provider_photo"
                 tools:text="This is a little information about the medical provider. It should contain a few (2-3) short sentences." />
+            <!--android:text="@{viewModel.provider.intro}"-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -113,7 +114,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Education: "
+                android:text="@string/label_education"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintBottom_toTopOf="@id/barrier_education"
@@ -150,7 +151,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Copay: "
+                android:text="@string/label_copay"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintBottom_toTopOf="@+id/barrier_copay"
@@ -187,7 +188,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Languages: "
+                android:text="@string/label_languages"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintBottom_toBottomOf="parent"
