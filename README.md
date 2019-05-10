@@ -23,6 +23,7 @@ Temperature alerts limit the chance of extreme heat or cold which could render y
 ![Login](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotLogin.png)
 ![Create Account](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddUser.png)
 ![Add Pen](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddPen.png)
+![Add Provider](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddProvider.png)
 
 ---
 
@@ -95,7 +96,7 @@ This contract does not include support, however you can reach out to the author 
 
 ## License
 
-This project is licenced to the client of Upwork contract #21949291. It is not licensed for public use. - see the [LICENSE.md](LICENSE.md) file for details
+This project is licenced to the client of Upwork contract #21949291. It is not licensed for public use. - see the [LICENSE](LICENSE) file for details
 
 - Copyright 2019 © <a href="http://github.com/jasoncavinder" target="_blank">Jason Cavinder</a>, All rights reserved.
 
