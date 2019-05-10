@@ -18,9 +18,7 @@ import com.jasoncavinder.insulinpendemoapp.repository.AppRepository
 import com.jasoncavinder.insulinpendemoapp.ui.login.CreateUserFormState
 import com.jasoncavinder.insulinpendemoapp.utilities.HashUtils
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -39,8 +37,6 @@ class CreateUserViewModel internal constructor(
         AppDatabase.getInstance(application).alertDao()
     )
 
-    val dummyValue = "asdf"
-
     private val _createUserForm = MutableLiveData<CreateUserFormState>()
     val createUserFormState: LiveData<CreateUserFormState> = _createUserForm
 
@@ -49,14 +45,13 @@ class CreateUserViewModel internal constructor(
 
     val addPenResult: LiveData<Result<Pen>> = repository.addPenResult
 
-    val changeProviderResult: LiveData<Result<User>> = repository.changeProviderResult
-
-    private var _providerList: LiveData<List<Provider>> = MutableLiveData<List<Provider>>()
+    private val _providerList = repository.getProviders()
 
     var provider: LiveData<Provider> = Transformations.switchMap(_providerList) {
         MutableLiveData<Provider>(it.shuffled().first())
     }
-        private set
+
+    val changeProviderResult: LiveData<Result<User>> = repository.changeProviderResult
 
     private fun isNameValid(name: String): Boolean {
         return name.isNotEmpty()
@@ -120,14 +115,14 @@ class CreateUserViewModel internal constructor(
         }
     }
 
-    fun findProvider() {
-        viewModelScope.launch {
-            withContext(Dispatchers.Default) {
-                delay(3000)
-                _providerList = repository.getProviders()
-            }
-        }
-    }
+//    fun findProvider() {
+//        viewModelScope.launch {
+//            withContext(Dispatchers.Default) {
+//                delay(3000)
+//                _providerList = repository.getProviders()
+//            }
+//        }
+//    }
 
 
     fun changeProvider(providerId: String, userId: String) {

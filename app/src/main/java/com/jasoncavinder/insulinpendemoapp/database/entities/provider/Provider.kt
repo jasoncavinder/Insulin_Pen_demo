@@ -28,5 +28,6 @@ data class Provider(
     val intro: String? = null,
     val copay: Float? = null,
     val languages: List<String>? = null,
-    val education: String? = null
+    val education: String? = null,
+    val photo: String? = null
 )

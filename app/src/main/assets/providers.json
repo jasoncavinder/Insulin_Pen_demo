@@ -1,6 +1,6 @@
 [
   {
-    "id": "B15E7EDD-3E50-4962-AABE-C2E7283FD74B",
+    "providerId": "B15E7EDD-3E50-4962-AABE-C2E7283FD74B",
     "name": "Dr. Alice Zeta",
     "position": "Specialist",
     "rating": "4.9f",
@@ -9,10 +9,11 @@
     "languages": [
       "English"
     ],
-    "education": "PhD from Harvard Medical School"
+    "education": "PhD from Harvard Medical School",
+    "photo": "doctor_alice.jpg"
   },
   {
-    "id": "FEAFA75C-AABC-4934-A8AC-BE4072288D1F",
+    "providerId": "FEAFA75C-AABC-4934-A8AC-BE4072288D1F",
     "name": "Dr. Bob Yoddle",
     "position": "Family Care Physician",
     "rating": "4.8f",

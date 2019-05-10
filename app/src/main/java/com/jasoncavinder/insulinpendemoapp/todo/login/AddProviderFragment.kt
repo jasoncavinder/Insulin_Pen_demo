@@ -44,7 +44,7 @@ class AddProviderFragment : Fragment() {
 
     lateinit var provider: LiveData<Provider>
 
-    private lateinit var providerSearchCountDownTimer: CountDownTimer
+    private var providerSearchCountDownTimer: CountDownTimer? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,16 +73,19 @@ class AddProviderFragment : Fragment() {
     ): View? {
 //        val view = inflater.inflate(com.jasoncavinder.insulinpendemoapp.R.layout.fragment_add_provider, container, false)
 
-        val fragmentAddProviderBinding: FragmentAddProviderBinding =
-            DataBindingUtil.inflate(
+        val fragmentAddProviderBinding =
+            DataBindingUtil.inflate<FragmentAddProviderBinding>(
                 inflater, R.layout.fragment_add_provider, container, false
-            )
-        fragmentAddProviderBinding.viewModel = createUserViewModel
+            ).apply {
+                viewModel = createUserViewModel
+                lifecycleOwner = this@AddProviderFragment
+            }
+
+        provider.observe(this, Observer { provider ->
+
+        })
 
         val view = fragmentAddProviderBinding.root
-
-        //here data must be an instance of the class MarsDataProvider
-        fragmentAddProviderBinding.viewModel = createUserViewModel
 
         return view
     }
@@ -101,11 +104,6 @@ class AddProviderFragment : Fragment() {
             }
         })
 
-        createUserViewModel.provider.observe(this, Observer {
-            progressBar.visibility = View.GONE
-            provider_summary.visibility = View.VISIBLE
-        })
-
         createUserViewModel.changeProviderResult.observe(this, Observer {
             when (it) {
                 is Result.Error -> text_provider_search_error.apply {
@@ -122,9 +120,22 @@ class AddProviderFragment : Fragment() {
 
         button_skip.setOnClickListener { nextStep() }
 
-        createUserViewModel.findProvider()
+        findprovider()
     }
 
+    private fun findprovider() {
+        providerSearchCountDownTimer = object : CountDownTimer(3000, 1000) {
+            override fun onFinish() {
+                progress_bar.visibility = View.GONE
+                provider_summary_display.visibility = View.VISIBLE
+//                button_skip.isEnabled = false
+                button_continue.isEnabled = true
+                button_continue.text = "Connect and Continue"
+            }
+
+            override fun onTick(millisUntilFinished: Long) {}
+        }.start()
+    }
 
     private fun nextStep() {
         requireActivity().setResult(
