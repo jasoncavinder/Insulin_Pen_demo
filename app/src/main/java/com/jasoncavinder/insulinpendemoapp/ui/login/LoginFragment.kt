@@ -81,8 +81,8 @@ class LoginFragment : Fragment() {
                 is Result.Success -> {
                     requireActivity().apply {
                         this.setResult(
-                            Activity.RESULT_OK, Intent(activity, MainActivity::class.java)
-                                .putExtra("userId", loginResult.data)
+                            Activity.RESULT_OK,
+                            Intent(activity, MainActivity::class.java)
                         )
                     }.finish()
                 }

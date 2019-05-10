@@ -147,10 +147,11 @@ class AddProviderFragment : Fragment() {
     }
 
     private fun nextStep() {
-        requireActivity().setResult(
-            Activity.RESULT_OK,
-            Intent(requireActivity(), MainActivity::class.java)
-        )
-        requireActivity().finish()
+        requireActivity().apply {
+            this.setResult(
+                Activity.RESULT_OK,
+                Intent(activity, MainActivity::class.java)
+            )
+        }.finish()
     }
 }

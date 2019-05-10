@@ -1,18 +1,24 @@
-//package com.jasoncavinder.inpen.demo.main
-//
+/*
+ * Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+ * This project is licenced to the client of Upwork contract #21949291. It is not
+ * licensed for public use. See the LICENSE.md file for details
+ */
+
+package com.jasoncavinder.insulinpendemoapp.todo.ui.main
+
 //import android.content.Context
 //import android.os.Bundle
 //import android.view.LayoutInflater
 //import android.view.View
 //import android.view.ViewGroup
-//import androidx.fragment.app.Fragment
+import androidx.fragment.app.Fragment
 //import com.jasoncavinder.inpen.demo.R
 //import com.jasoncavinder.insulinpendemoapp.todo.utilities.UpdateToolbarListener
 //
 ////import com.jasoncavinder.inpen.demo.onboarding.ui.UserViewModel
 //
 //
-//class HomeFragment : Fragment() {
+class HomeFragment : Fragment() {
 //
 ////    private val viewModel: UserViewModel by activityViewModels()
 //
@@ -127,4 +133,4 @@
 ////        }
 ////    }
 //
-//}
+}

@@ -75,6 +75,23 @@ class AppRepository private constructor(
         }
     }
 
+    suspend fun createUser(user: User): Result<String> {
+        withContext(IO) {
+            try {
+                this@AppRepository.user.id = userDao.createUser(user)
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception creating user", e)
+                this@AppRepository.user.id = ""
+            }
+        }
+        return when (this.user.isLoggedIn()) {
+            true -> Result.Success(this.user.id).apply {
+                this@AppRepository._loginResult.postValue(Result.Success(this.data))
+            }
+            false -> Result.Error(IOException("Could not create user. Does that account already exist?"))
+        }
+    }
+
     fun logout() {
         user.logout()
     }
@@ -99,22 +116,6 @@ class AppRepository private constructor(
 
     fun loadAlerts(userId: String) = alertDao.getUserAlerts(userId)
 
-
-    /* User Creation */
-    suspend fun createUser(user: User): Result<String> {
-        withContext(IO) {
-            try {
-                this@AppRepository.user.id = userDao.createUser(user)
-            } catch (e: Exception) {
-                Log.e(TAG, "Exception creating user", e)
-                this@AppRepository.user.id = ""
-            }
-        }
-        return when (this.user.isLoggedIn()) {
-            true -> Result.Success(this.user.id)
-            false -> Result.Error(IOException("Could not create user. Does that account already exist?"))
-        }
-    }
 
     suspend fun addPen(pen: Pen) {
         if (!(pen.userId == user.id))

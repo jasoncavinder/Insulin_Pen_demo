@@ -8,6 +8,7 @@ package com.jasoncavinder.insulinpendemoapp.ui.login
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,8 @@ import kotlinx.android.synthetic.main.fragment_login_welcome.*
 import kotlinx.android.synthetic.main.fragment_login_welcome.view.*
 
 class WelcomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
+
+    private val TAG by lazy { this::class.java.simpleName }
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var navController: NavController
@@ -54,10 +57,12 @@ class WelcomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.d(TAG, "Creating view")
         return inflater.inflate(R.layout.fragment_login_welcome, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG, "Entering 'onViewCreated'")
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
@@ -84,12 +89,12 @@ class WelcomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         view.button_signin.setOnClickListener {
             navController.navigate(R.id.action_welcomeFragment_to_loginFragment)
         }
-
+        Log.d(TAG, "Finished 'onCreateView'")
     }
 
     override fun onResume() {
         super.onResume()
-
+        Log.d(TAG, "Resuming")
         val backCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 when (backPressedTimer) {
@@ -124,7 +129,7 @@ class WelcomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                 .show(childFragmentManager, "demoActionsDialog")
         }
         /* END: Required for Demo Actions */
-
+        Log.d(TAG, "Resumed successfully")
     }
 
 
