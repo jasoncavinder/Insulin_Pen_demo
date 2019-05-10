@@ -9,3 +9,5 @@ package com.jasoncavinder.insulinpendemoapp.utilities
 const val DATABASE_NAME = "DemoAppDatabase"
 const val PROVIDER_DATA_FILENAME = "providers.json"
 const val DEFAULT_USER_TIMEOUT_MINUTES = 15
+
+const val AUTHORIZE_USER = 0
