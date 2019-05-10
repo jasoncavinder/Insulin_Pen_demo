@@ -20,8 +20,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jasoncavinder.insulinpendemoapp.R
-import com.jasoncavinder.insulinpendemoapp.todo.ui.DemoAction
-import com.jasoncavinder.insulinpendemoapp.todo.ui.DemoActionListDialogFragment
+import com.jasoncavinder.insulinpendemoapp.utilities.DemoAction
+import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragment
 import com.jasoncavinder.insulinpendemoapp.viewmodels.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login_welcome.*
 import kotlinx.android.synthetic.main.fragment_login_welcome.view.*
@@ -36,7 +36,10 @@ class WelcomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     /* BEGIN: Required for Demo Actions */
     private var _demoActions = arrayListOf(
-        DemoAction("Reset Database to Demo Defaults: (delete users, pens, etc)", this::resetData)
+        DemoAction(
+            "Reset Database to Demo Defaults: (delete users, pens, etc)",
+            this::resetData
+        )
     )
 
     override fun onDemoActionClicked(position: Int) {

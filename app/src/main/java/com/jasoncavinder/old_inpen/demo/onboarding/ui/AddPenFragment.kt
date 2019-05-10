@@ -14,8 +14,8 @@
 //import com.jasoncavinder.inpen.demo.data.LoginViewModel
 //import com.jasoncavinder.insulinpendemoapp.database.entities.pen.Pen
 //import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
-//import com.jasoncavinder.insulinpendemoapp.todo.ui.DemoAction
-//import com.jasoncavinder.insulinpendemoapp.todo.ui.DemoActionListDialogFragment
+//import com.jasoncavinder.insulinpendemoapp.utilities.DemoAction
+//import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragment
 //import kotlinx.android.synthetic.main.fragment_add_pen.*
 //import java.util.*
 //

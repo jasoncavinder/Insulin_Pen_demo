@@ -4,7 +4,7 @@
  * licensed for public use. See the LICENSE.md file for details
  */
 
-package com.jasoncavinder.insulinpendemoapp.todo.login
+package com.jasoncavinder.insulinpendemoapp.ui.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,8 +18,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.Pen
-import com.jasoncavinder.insulinpendemoapp.todo.ui.DemoAction
-import com.jasoncavinder.insulinpendemoapp.todo.ui.DemoActionListDialogFragment
+import com.jasoncavinder.insulinpendemoapp.utilities.DemoAction
+import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragment
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
 import kotlinx.android.synthetic.main.fragment_add_pen.*

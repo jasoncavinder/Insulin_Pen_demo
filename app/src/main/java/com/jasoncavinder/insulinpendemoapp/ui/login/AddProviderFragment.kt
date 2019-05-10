@@ -4,7 +4,7 @@
  * licensed for public use. See the LICENSE.md file for details
  */
 
-package com.jasoncavinder.insulinpendemoapp.todo.login
+package com.jasoncavinder.insulinpendemoapp.ui.login
 
 import android.app.Activity
 import android.content.Intent
@@ -24,7 +24,6 @@ import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 import com.jasoncavinder.insulinpendemoapp.databinding.FragmentAddProviderBinding
 import com.jasoncavinder.insulinpendemoapp.todo.MainActivity
-import com.jasoncavinder.insulinpendemoapp.ui.login.CreateUserFragment
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
 import kotlinx.android.synthetic.main.fragment_add_provider.*
@@ -43,8 +42,10 @@ class AddProviderFragment : Fragment() {
     private var userId = ""
 
     lateinit var provider: LiveData<Provider>
+        private set
+    private var providerId = ""
 
-    private lateinit var providerSearchCountDownTimer: CountDownTimer
+    private var providerSearchCountDownTimer: CountDownTimer? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,16 +74,19 @@ class AddProviderFragment : Fragment() {
     ): View? {
 //        val view = inflater.inflate(com.jasoncavinder.insulinpendemoapp.R.layout.fragment_add_provider, container, false)
 
-        val fragmentAddProviderBinding: FragmentAddProviderBinding =
-            DataBindingUtil.inflate(
+        val fragmentAddProviderBinding =
+            DataBindingUtil.inflate<FragmentAddProviderBinding>(
                 inflater, R.layout.fragment_add_provider, container, false
-            )
-        fragmentAddProviderBinding.viewModel = createUserViewModel
+            ).apply {
+                viewModel = createUserViewModel
+                lifecycleOwner = this@AddProviderFragment
+            }
+
+        provider.observe(this, Observer { provider ->
+
+        })
 
         val view = fragmentAddProviderBinding.root
-
-        //here data must be an instance of the class MarsDataProvider
-        fragmentAddProviderBinding.viewModel = createUserViewModel
 
         return view
     }
@@ -101,11 +105,6 @@ class AddProviderFragment : Fragment() {
             }
         })
 
-        createUserViewModel.provider.observe(this, Observer {
-            progressBar.visibility = View.GONE
-            provider_summary.visibility = View.VISIBLE
-        })
-
         createUserViewModel.changeProviderResult.observe(this, Observer {
             when (it) {
                 is Result.Error -> text_provider_search_error.apply {
@@ -122,9 +121,33 @@ class AddProviderFragment : Fragment() {
 
         button_skip.setOnClickListener { nextStep() }
 
-        createUserViewModel.findProvider()
+        findprovider()
     }
 
+    private fun setProvider() {
+        createUserViewModel.changeProvider(provider.value!!.providerId, userId)
+        nextStep()
+    }
+
+
+    fun findprovider() {
+        providerSearchCountDownTimer = object : CountDownTimer(3000, 1000) {
+            override fun onFinish() {
+                providerId = provider.value!!.providerId
+                progress_bar.visibility = View.GONE
+                provider_summary_display.visibility = View.VISIBLE
+//                button_skip.isEnabled = false
+                button_continue.apply {
+                    isEnabled = true
+                    text = getString(R.string.continue_btn)
+                    setOnClickListener { setProvider() }
+                }
+
+            }
+
+            override fun onTick(millisUntilFinished: Long) {}
+        }.start()
+    }
 
     private fun nextStep() {
         requireActivity().setResult(

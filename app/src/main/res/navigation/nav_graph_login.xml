@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/addPenFragment"
-        android:name="com.jasoncavinder.insulinpendemoapp.todo.login.AddPenFragment"
+        android:name="com.jasoncavinder.insulinpendemoapp.ui.login.AddPenFragment"
         tools:layout="@layout/fragment_add_pen">
         <action
             android:id="@+id/action_addPenFragment_to_addProviderFragment"
@@ -49,6 +49,6 @@
     </fragment>
     <fragment
         android:id="@+id/addProviderFragment"
-        android:name="com.jasoncavinder.insulinpendemoapp.todo.login.AddProviderFragment"
+        android:name="com.jasoncavinder.insulinpendemoapp.ui.login.AddProviderFragment"
         tools:layout="@layout/fragment_add_provider" />
 </navigation>

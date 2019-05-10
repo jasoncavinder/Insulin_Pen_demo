@@ -8,22 +8,14 @@
         <variable
             name="viewModel"
             type="com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel" />
-        <!--<variable name="providerPhotoFilename" type="String" /> &lt;!&ndash; or Int or R. ? ... TODO &ndash;&gt;-->
-        <!--<variable name="providerName" type="String" />-->
-        <!--<variable name="providerPosition" type="String" />-->
-        <!--<variable name="providerRating" type="Float" />-->
-        <!--<variable name="providerIntro" type="String" />-->
-        <!--<variable name="providerEducation" type="String" />-->
-        <!--<variable name="providerCopay" type="String" />-->
-        <!--<variable name="providerLanguages" type="String" />-->
+
     </data>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context="com.jasoncavinder.insulinpendemoapp.todo.ui.ContentProviderSummary">
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/provider_summary"
@@ -34,11 +26,11 @@
                 android:id="@+id/provider_photo"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginStart="8dp"
                 android:contentDescription="@string/provider_photo_desc"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@{viewModel.provider.photo}"
                 tools:srcCompat="@tools:sample/avatars[10]" />
 
             <TextView
@@ -57,13 +49,13 @@
                 app:layout_constraintVertical_chainStyle="spread"
                 tools:text="Name Here, MD" />
 
-            <!--android:text="@{providerPosition}"-->
             <TextView
                 android:id="@+id/provider_position"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:text="@{viewModel.provider.position}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 app:layout_constraintBottom_toTopOf="@+id/provider_rating"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +75,7 @@
                 android:isIndicator="true"
                 android:numStars="5"
                 android:progressTint="@color/secondaryColor"
-                android:rating="3.75"
+                android:rating="@{viewModel.provider.rating}"
                 android:stepSize=".25"
                 app:layout_constraintBottom_toTopOf="@+id/provider_intro"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +83,6 @@
                 app:layout_constraintStart_toEndOf="@+id/provider_photo"
                 app:layout_constraintTop_toBottomOf="@+id/provider_position" />
 
-            <!--android:text="@{providerIntro}"-->
             <TextView
                 android:id="@+id/provider_intro"
                 android:layout_width="0dp"
@@ -99,6 +90,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:text="@{viewModel.provider.intro}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +103,7 @@
             android:id="@+id/provider_extended"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:visibility="visible">
 
             <TextView
@@ -128,7 +120,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!--android:text="@{providerEducation}"-->
             <TextView
                 android:id="@+id/provider_education"
                 android:layout_width="0dp"
@@ -136,6 +127,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:text="@{viewModel.provider.education}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintBottom_toTopOf="@id/barrier_education"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -165,7 +157,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/barrier_education" />
 
-            <!--android:text="@{providerCopay}"-->
             <TextView
                 android:id="@+id/provider_copay"
                 android:layout_width="0dp"
@@ -173,6 +164,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:text='@{@string/currency(viewModel.provider.copay)}'
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintBottom_toTopOf="@id/barrier_copay"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -210,6 +202,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:text="@{viewModel.provider.languages}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

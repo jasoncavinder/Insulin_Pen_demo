@@ -4,7 +4,7 @@
  * licensed for public use. See the LICENSE.md file for details
  */
 
-package com.jasoncavinder.insulinpendemoapp.todo.ui
+package com.jasoncavinder.insulinpendemoapp.utilities
 
 import android.content.Context
 import android.os.Bundle
