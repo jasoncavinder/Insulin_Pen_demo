@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.jasoncavinder.insulinpendemoapp.todo.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 
@@ -21,8 +22,7 @@ class SplashActivity : AppCompatActivity() {
             systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
         }
 
-        // TODO: Switch back to Main Activity when Login Activity is complete
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
 //        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()

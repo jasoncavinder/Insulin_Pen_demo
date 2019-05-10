@@ -6,21 +6,16 @@
 
 package com.jasoncavinder.insulinpendemoapp.utilities
 
+//TODO: Finish if time permits.
 class FullReset {
 
     fun run(
         all: Boolean = false,
-        clearPhotos: Boolean = false,
         loadRawAssets: Boolean = false
     ) {
-        if (all || clearPhotos) clearPhotos()
         if (all || loadRawAssets) loadRawAssets()
 
 
-    }
-
-    fun clearPhotos() {
-        // TODO: Compose function to erase app internal storage
     }
 
     fun loadRawAssets() {

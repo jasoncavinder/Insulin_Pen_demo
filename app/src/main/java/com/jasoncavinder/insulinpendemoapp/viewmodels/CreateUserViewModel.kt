@@ -115,16 +115,6 @@ class CreateUserViewModel internal constructor(
         }
     }
 
-//    fun findProvider() {
-//        viewModelScope.launch {
-//            withContext(Dispatchers.Default) {
-//                delay(3000)
-//                _providerList = repository.getProviders()
-//            }
-//        }
-//    }
-
-
     fun changeProvider(providerId: String, userId: String) {
         viewModelScope.launch {
             withContext(IO) {
