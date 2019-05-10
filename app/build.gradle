@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+ * This project is licenced to the client of Upwork contract #21949291. It is not
+ * licensed for public use. See the LICENSE.md file for details
+ */
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -12,13 +18,13 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.jasoncavinder.inpen.demo"
+        applicationId "com.jasoncavinder.insulinpendemoapp"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
-        versionCode 9
-        versionName '0.4.1'
+        versionCode 10
+        versionName '0.5.1'
 
         javaCompileOptions {
             annotationProcessorOptions {

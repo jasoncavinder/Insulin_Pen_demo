@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+ * This project is licenced to the client of Upwork contract #21949291. It is not
+ * licensed for public use. See the LICENSE.md file for details
+ */
+
 //package com.jasoncavinder.inpen.demo
 //
 //import android.app.Activity
@@ -16,7 +22,7 @@
 //import com.jasoncavinder.inpen.demo.data.UserProfileViewModel
 //import com.jasoncavinder.insulinpendemoapp.LoginActivity
 //import com.jasoncavinder.insulinpendemoapp.todo.utilities.AppAccess
-//import com.jasoncavinder.insulinpendemoapp.todo.utilities.UpdateToolbarListener
+//import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
 //import kotlinx.android.synthetic.main.activity_main.*
 //
 //
@@ -170,7 +176,7 @@
 //        navController.navigate(
 //            // TODO: Add remaining menuItem/navigation combinations
 //            when (item?.itemId) {
-//                R.id.profile_settings -> R.id.action_homeFragment_to_profile
+//                R.id.menu_item_profile_settings -> R.id.action_homeFragment_to_profile
 //                else -> R.id.action_nav_fail_safe
 //            }
 //        )

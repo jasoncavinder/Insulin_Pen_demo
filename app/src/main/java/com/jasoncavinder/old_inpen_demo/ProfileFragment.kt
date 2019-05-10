@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+ * This project is licenced to the client of Upwork contract #21949291. It is not
+ * licensed for public use. See the LICENSE.md file for details
+ */
+
 //package com.jasoncavinder.inpen_demo
 //
 //import android.os.Bundle
@@ -11,7 +17,7 @@
 //    }
 //
 //    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-//        setPreferencesFromResource(R.xml.profile_settings, rootKey)
+//        setPreferencesFromResource(R.xml.menu_item_profile_settings, rootKey)
 //    }
 //
 ////    override fun onCreateView(

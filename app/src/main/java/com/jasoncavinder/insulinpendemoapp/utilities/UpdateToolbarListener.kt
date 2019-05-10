@@ -4,8 +4,10 @@
  * licensed for public use. See the LICENSE.md file for details
  */
 
-package com.jasoncavinder.insulinpendemoapp.todo.utilities
+package com.jasoncavinder.insulinpendemoapp.utilities
 
 interface UpdateToolbarListener {
-    fun updateToolbar(title: String, left_menu: Int, right_menu: Int)
+    fun updateToolbar(title: String, left_menu: Int, right_menu: Int, menu_actions: Map<Int, Int>)
 }
+
+//data class MenuItemAction(val menuItem: Int, val action: Int)

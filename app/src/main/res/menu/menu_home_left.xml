@@ -10,7 +10,7 @@
     tools:context="com.jasoncavinder.insulinpendemoapp.todo.MainActivity">
 
     <item
-        android:id="@+id/profile_settings"
+        android:id="@+id/menu_item_profile_settings"
         android:enabled="true"
         android:icon="@drawable/ic_person_24dp"
         android:title="@string/profile"

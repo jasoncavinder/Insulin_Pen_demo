@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY appname "InPen (demo)"><!ENTITY author "Jason Cavinder"><!ENTITY authorEmail "jason.cavinder@gmail.com"><!ENTITY authorPhone "+1-808-989-1186">]>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+  ~ This project is licenced to the client of Upwork contract #21949291. It is not
+  ~ licensed for public use. See the LICENSE.md file for details
+  -->
+
+<!DOCTYPE resources [<!ENTITY appname "InPen (demo)"><!ENTITY author "Jason Cavinder"><!ENTITY authorEmail "jason.cavinder@gmail.com"><!ENTITY authorPhone "+1-808-989-1186">]>
 <resources>
     <string name="app_name">&appname;</string>
 
@@ -43,4 +49,7 @@
     <string name="label_education">Education:</string>
     <string name="label_copay">Copay:</string>
     <string name="label_languages">Languages:</string>
+    <string name="add_provider_title">Connect With Your Doctor</string>
+    <string name="button_later">I\'ll do this later...</string>
+    <string name="button_searching_provider">Searching for provider</string>
 </resources>

@@ -52,6 +52,25 @@ class AppRepository private constructor(
     private val _changeProviderResult = MutableLiveData<Result<User>>()
     val changeProviderResult: LiveData<Result<User>> = _changeProviderResult
 
+    private val _loadProfileResult = MutableLiveData<Result<UserProfile>>()
+    val loadProfileResult: LiveData<Result<UserProfile>> = _loadProfileResult
+
+//    private val _userProfile = MediatorLiveData<UserProfile>()
+//    var userProfile: LiveData<UserProfile> = _userProfile
+//        private set
+
+    init {
+//        _userProfile.addSource(loginResult) {
+//            when (it) {
+//                is Result.Success -> {
+//                    val result = async {
+//
+//                    }.await()
+//                    _userProfile.postValue(userDao.getUserProfile(it.data))
+//                }
+//            }
+//        }
+    }
 
     fun checkLogin() {
         _loginResult.postValue(
@@ -161,22 +180,36 @@ class AppRepository private constructor(
         }
     }
 
-    suspend fun loadUserProfile(userId: String = user.id): LiveData<UserProfile>? {
-        return when {
-            (!(userId == user.id)) -> null
-            else -> {
-                var profile: LiveData<UserProfile>? = null
-                withContext(IO) {
-                    try {
-                        profile = userDao.getUserProfile(userId)
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Could not load user profile.", e)
-                    }
+
+    suspend fun loadUserProfile() {
+        _loadProfileResult.postValue(
+            withContext(IO) {
+                // user.id ?: return@withContext
+                try {
+                    return@withContext Result.Success(userDao.getUserProfile(user.id))
+                } catch (ex: IOException) {
+                    return@withContext Result.Error(Exception("Failed to load user profile", ex))
                 }
-                profile
             }
-        }
+        )
     }
+//    suspend fun loadUserProfile(): LiveData<Result<UserProfile>> {
+////        return when {
+////            (!(userId == user.id)) -> null
+////            else -> {
+////                var profile: LiveData<UserProfile>
+//                return withContext(IO) {
+////                    try {
+////                        profile = userDao.getUserProfile(user.id)
+////                    } catch (e: Exception) {
+////                        Log.e(TAG, "Could not load user profile.", e)
+////                    }
+//                    return@withContext userDao.getUserProfile(user.id)
+//                }
+////                profile
+////            }
+////        }
+//    }
 
     suspend fun resetDb() {
         withContext(IO) {

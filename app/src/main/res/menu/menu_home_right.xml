@@ -10,7 +10,7 @@
     tools:context="com.jasoncavinder.insulinpendemoapp.todo.MainActivity">
 
     <item
-        android:id="@+id/history"
+        android:id="@+id/menu_item_dose_history"
         android:icon="@drawable/ic_history_24dp"
         android:title="@string/history"
         app:showAsAction="always" />

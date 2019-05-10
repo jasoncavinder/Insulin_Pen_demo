@@ -6,16 +6,12 @@
 
 package com.jasoncavinder.insulinpendemoapp.todo
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.ActionMenuView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -23,10 +19,11 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.jasoncavinder.insulinpendemoapp.LoginActivity
 import com.jasoncavinder.insulinpendemoapp.R
-import com.jasoncavinder.insulinpendemoapp.todo.utilities.UpdateToolbarListener
 import com.jasoncavinder.insulinpendemoapp.todo.viewmodels.MainViewModel
 import com.jasoncavinder.insulinpendemoapp.utilities.AUTHORIZE_USER
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
+import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
+import kotlinx.android.synthetic.main.custom_toolbar.*
 
 
 class MainActivity : AppCompatActivity(), UpdateToolbarListener {
@@ -36,104 +33,16 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
 
     private lateinit var navController: NavController
 
-    lateinit var leftMenuView: ActionMenuView
-    lateinit var rightMenuView: ActionMenuView
-    lateinit var titleTextView: TextView
-    lateinit var toolbar: ConstraintLayout
+    private var titleText = ""
     private var leftMenu = R.menu.menu_home_left
     private var rightMenu = R.menu.menu_home_right
-    private var title = ""
+    private var menuActions = mapOf(
+        Pair(R.id.menu_item_profile_settings, R.id.action_nav_fail_safe),
+        Pair(R.id.menu_item_dose_history, R.id.action_nav_fail_safe)
+    )
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        navController = findNavController(R.id.nav_host_main)
-
-        _mainViewModel = ViewModelProviders
-            .of(this)
-            .get(MainViewModel::class.java)
-
-
-//        userViewModel.authenticationState.observe(this, Observer {
-//            //            Snackbar.make(contentView, "Auth: ${it.toString()}", Snackbar.LENGTH_LONG).show()
-//            when (it) {
-//                INVALID_AUTHENTICATION -> {
-////                    userViewModel.getProfile().observe().
-////                    Snackbar.make(contentView, userViewModel.getProfile(), Snackbar.LENGTH_LONG).show()
-//                }
-//                UNAUTHENTICATED -> {
-//                    navController.navigate(R.id.loginFragment)
-//                }
-//                REGISTERING -> {
-////                    navController.navigate(R.id.createUserFragment)
-//                }
-//                ATTEMPTING_AUTHENTICATION -> {
-//                }
-//                else -> {
-//                    navController.navigate(R.id.loginFragment)
-//                }
-//            }
-//        })
-
-        leftMenuView = findViewById(R.id.menu_left)
-        rightMenuView = findViewById(R.id.menu_right)
-        titleTextView = findViewById(R.id.title)
-        toolbar = findViewById(R.id.toolbar)
-
-        /* Couldn't get two ActionMenuViews working inside one toolbar... So much lost sleep on Google
-        // Setup toolbar
-//        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-//        setSupportActionBar(toolbar)
-//
-//        supportActionBar?.setDisplayShowHomeEnabled(false)
-//        supportActionBar?.setDisplayShowTitleEnabled(false)
-//        supportActionBar?.setHomeButtonEnabled(false)
-
-//        val inflater = LayoutInflater.from(this)
-//        val customView = inflater.inflate(R.layout.custom_toolbar, toolbar)
-//        supportActionBar?.customView = customView
-//        supportActionBar?.setDisplayShowCustomEnabled(true)
-
-//        toolbarTitleView = findViewById(R.id.toolbar_title)
-//        leftMenuView = findViewById(R.id.menu_left)
-//        rightMenuView = findViewById(R.id.menu_right)
-//        toolbarTitle = customView.findViewById<TextView>(R.id.toolbar_title).text
-//        leftMenu = customView.findViewById<ActionMenuView>(R.id.menu_left).menu
-//        rightMenu = customView.findViewById<ActionMenuView>(R.id.menu_right).menu
-
-
-//        toolbar.setupWithNavController(navController, AppBarConfiguration(navController.graph))
-        */
-
-
-/* TODO: Eliminate programmatic styling
-
-        // Setup navigation
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.loginFragment -> redecorate(DecorStyle.FULL_SCREEN_AMBER)
-                R.id.createUserFragment -> redecorate(DecorStyle.FULL_SCREEN_AMBER)
-                else -> redecorate(DecorStyle.NORMAL)
-            }
-        }
- */
-
-
-//        // Setup Fast Action Button
-//        fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Ask me about this later!", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//        }
-
-
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        _mainViewModel.loginResult.observe(this, Observer {
+    private inner class VerifyLogin : Observer<Result<String>> {
+        override fun onChanged(it: Result<String>?) {
             when (it) {
                 is Result.Error -> {
                     Log.d(TAG, "No login detected. Redirecting to Login")
@@ -143,12 +52,36 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
                             .addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION),
                         AUTHORIZE_USER
                     )
+                    _mainViewModel.loginResult.removeObservers(this@MainActivity)
                 }
                 is Result.Success -> {
                     Log.d(TAG, "Valid login detected. Continuing")
                 }
             }
-        })
+        }
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        _mainViewModel = ViewModelProviders
+            .of(this)
+            .get(MainViewModel::class.java)
+
+        navController = findNavController(R.id.nav_host_main)
+
+        // require login to access
+        _mainViewModel.loginResult.observe(this, VerifyLogin())
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        _mainViewModel.loginResult.observe(this, VerifyLogin())
 
     }
 
@@ -159,18 +92,18 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            AUTHORIZE_USER -> when (resultCode) {
-                Activity.RESULT_OK -> {
-                } // TODO
-                else -> {
-                } // TODO
-            }
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        when (requestCode) {
+//            AUTHORIZE_USER -> when (resultCode) {
+//                Activity.RESULT_OK -> {
+//                } // TODO
+//                else -> {
+//                } // TODO
+//            }
+//        }
+//    }
 
     override fun onResumeFragments() {
         super.onResumeFragments()
@@ -178,115 +111,45 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
         _mainViewModel.verifyLogin()
     }
 
-/*
-    override fun onResume() {
-        super.onResume()
+    private fun attachAction(menuItem: MenuItem) {
+        menuItem.setOnMenuItemClickListener {
 
-        checkAuthentication()
-    }
-*/
-
-    private fun onMenuItemClicked(item: MenuItem?): Boolean {
-        navController.navigate(
-            // TODO: Add remaining menuItem/navigation combinations
-            when (item?.itemId) {
-                R.id.profile_settings -> R.id.action_homeFragment_to_profile
-                else -> R.id.action_nav_fail_safe
+            menuActions[menuItem.itemId]?.let {
+                navController.navigate(it)
+                return@setOnMenuItemClickListener true
             }
-        )
-        return true
+            return@setOnMenuItemClickListener false
+        }
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-//        updateToolbar(title, leftMenu, rightMenu)
 
-        titleTextView.text = title
-        leftMenuView.menu.clear()
-        menuInflater.inflate(leftMenu, leftMenuView.menu)
-        rightMenuView.menu.clear()
-        menuInflater.inflate(rightMenu, rightMenuView.menu)
+        text_title.text = titleText
+        menu_left.menu.clear()
+        menuInflater.inflate(leftMenu, menu_left.menu)
+        menu_left.menu.forEach { attachAction(it) }
+        menu_right.menu.clear()
+        menuInflater.inflate(rightMenu, menu_right.menu)
+        menu_right.menu.forEach { attachAction(it) }
 
-        leftMenuView.menu.forEach { menuItem ->
-            menuItem.setOnMenuItemClickListener { item ->
-                onMenuItemClicked(item)
-            }
-        }
+
+//        menu_left.menu.forEach { menuItem ->
+//            menuItem.setOnMenuItemClickListener { item ->
+//                onMenuItemClicked(item)
+//            }
+//        }
 
         return true
     }
 
-    private fun verifyUser() {
-        return
-    }
-
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        updateToolbar(title, leftMenu, rightMenu)
-//
-//        return true
-//    }
-
-
-/* TODO: Eliminate programmatic styling
-
-    enum class DecorStyle { NORMAL, FULL_SCREEN_AMBER, NORMAL_NO_FAB }
-
-    private fun redecorate(style: DecorStyle) {
-        when (style) {
-            DecorStyle.FULL_SCREEN_AMBER -> {
-                toolbar.visibility = View.GONE
-                fab.hide()
-//                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    window.statusBarColor = ContextCompat.getColor(this, R.color.accentColor)
-            }
-            DecorStyle.NORMAL_NO_FAB -> {
-                toolbar.visibility = View.VISIBLE
-                fab.hide()
-                    window.decorView.systemUiVisibility =
-                        window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-                window.statusBarColor = ContextCompat.getColor(this, R.color.primaryDarkColor)
-            }
-            DecorStyle.NORMAL -> {
-                toolbar.visibility = View.VISIBLE
-                fab.show()
-                    window.decorView.systemUiVisibility =
-                        window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-                window.statusBarColor = ContextCompat.getColor(this, R.color.primaryDarkColor)
-            }
-        }
-    }
-*/
-
-    override fun updateToolbar(title: String, left_menu: Int, right_menu: Int) {
-        this.title = title
-        this.leftMenu = left_menu
-        this.rightMenu = right_menu
+    override fun updateToolbar(title: String, left_menu: Int, right_menu: Int, menu_actions: Map<Int, Int>) {
+        titleText = title
+        leftMenu = left_menu
+        rightMenu = right_menu
+        menuActions = menu_actions
 
         onPrepareOptionsMenu(menu = null)
-//        titleTextView.text = title
-//        leftMenuView.menu.clear()
-//        menuInflater.inflate(left_menu, leftMenuView.menu)
-//        rightMenuView.menu.clear()
-//        menuInflater.inflate(right_menu, rightMenuView.menu)
     }
-//    override fun updateToolbar(title: String, leftIcon: Int?, leftAction: Int?, rightIcon: Int?, rightAction: Int?) {
-//        fun swapIn(icon: ImageView, src: Int?, action: Int?) {
-//            if (icon.hasOnClickListeners()) icon.setOnClickListener {  }
-//            src?.let { icon.setImageResource(it) }
-//            action?.let {
-////                var navController = findNavController(R.id.nav_host_main)
-//                icon.setOnClickListener ( Navigation.createNavigateOnClickListener(action))
-//                icon.isClickable = true
-//            }
-//            icon.visibility = if (icon.hasOnClickListeners()) View.VISIBLE else View.INVISIBLE
-//        }
-//
-////        action_bar_title_text.text = title
-////        swapIn(action_bar_nav_left, leftIcon, leftAction)
-////        swapIn(action_bar_nav_right, rightIcon, rightAction)
-//    }
-
 
 }
 //view.back_button.setOnClickListener(

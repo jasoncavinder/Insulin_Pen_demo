@@ -82,6 +82,7 @@ class AddProviderFragment : Fragment() {
                 lifecycleOwner = this@AddProviderFragment
             }
 
+        // TODO: Can this be removed or moved?
         provider.observe(this, Observer { })
 
         val view = fragmentAddProviderBinding.root
