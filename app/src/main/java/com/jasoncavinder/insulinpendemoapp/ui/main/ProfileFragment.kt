@@ -19,12 +19,14 @@ import androidx.navigation.NavController
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.databinding.FragmentProfileBinding
 import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
+import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 
 class ProfileFragment : Fragment() {
     private val TAG by lazy { this::class.java.simpleName }
 
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var createUserVIewModel: CreateUserViewModel
     private lateinit var navController: NavController
 
     private lateinit var updateToolbarListener: UpdateToolbarListener
@@ -44,6 +46,8 @@ class ProfileFragment : Fragment() {
 
         mainViewModel = ViewModelProviders.of(requireActivity())
             .get(MainViewModel::class.java)
+        createUserVIewModel = ViewModelProviders.of(requireActivity())
+            .get(CreateUserViewModel::class.java)
 
     }
 
@@ -56,11 +60,14 @@ class ProfileFragment : Fragment() {
             DataBindingUtil.inflate<FragmentProfileBinding>(
                 inflater, R.layout.fragment_profile, container, false
             ).apply {
-                this.viewModel = mainViewModel
+                this.mainViewModel = mainViewModel
+                this.viewModel = createUserVIewModel
                 this.lifecycleOwner = this@ProfileFragment
             }
 
         return fragmentHomeBinding.root
+
+
     }
 
 

@@ -7,6 +7,7 @@
 package com.jasoncavinder.insulinpendemoapp.ui.main
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.Group
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -58,7 +60,8 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     /* BEGIN: Required for Demo Actions */
     private var _demoActions = arrayListOf(
-        DemoAction("Simulate receive message", this::simulateReceiveMessage)
+        DemoAction("Simulate receive message", this::simulateReceiveMessage),
+        DemoAction("Simulate temperature alert", this::simulateTempAlert)
     )
 
     private fun simulateReceiveMessage() {
@@ -89,9 +92,19 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         }
     }
 
-    private fun showChart() {
-
-
+    private fun simulateTempAlert() {
+        val builder: AlertDialog.Builder? = activity?.let {
+            AlertDialog.Builder(it)
+        }
+        builder?.setMessage("Your insulin pen was over 100ºC for 2 hours. Replace the cartridge before continuing your doses.")
+            ?.setTitle("Temperature Alert")
+        builder?.apply {
+            setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+                // TODO: Alert acknowledged
+            })
+        }
+        val dialog: AlertDialog? = builder?.create()
+        dialog?.show()
     }
 
     override fun onDemoActionClicked(position: Int) {
