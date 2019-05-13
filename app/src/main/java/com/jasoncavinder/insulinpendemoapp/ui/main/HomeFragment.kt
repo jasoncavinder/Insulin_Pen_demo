@@ -61,6 +61,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
     /* BEGIN: Required for Demo Actions */
     private var _demoActions = arrayListOf(
         DemoAction("Simulate receive message", this::simulateReceiveMessage),
+        DemoAction("Simulate dose alert", this::simulateDoseAlert),
         DemoAction("Simulate temperature alert", this::simulateTempAlert)
     )
 
@@ -98,10 +99,30 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         }
         builder?.setMessage("Your insulin pen was over 100ºC for 2 hours. Replace the cartridge before continuing your doses.")
             ?.setTitle("Temperature Alert")
+            ?.setIcon(R.drawable.ic_warning_black_24dp)
         builder?.apply {
             setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
                 // TODO: Alert acknowledged
             })
+        }
+        val dialog: AlertDialog? = builder?.create()
+        dialog?.show()
+    }
+
+    private fun simulateDoseAlert() {
+        val builder: AlertDialog.Builder? = activity?.let {
+            AlertDialog.Builder(it)
+        }
+        builder?.setMessage("Your Last Insulin Injection was 3.5U with a Normal Blood Glucose Value of 80 mg/dL. Based on Big Data and AI, your Next Injection will be at 7PM. We will Notify you Automatically.")
+            ?.setTitle("Dose Alert")
+            ?.setIcon(R.drawable.ic_event_available_black_24dp)
+        builder?.apply {
+            setPositiveButton("Ok, Schedule Alert", DialogInterface.OnClickListener({ dialog, which ->
+                // TODO:
+            }))
+            setNegativeButton("Don't Schedule", DialogInterface.OnClickListener({ dialog, id ->
+                // TODO:
+            }))
         }
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
