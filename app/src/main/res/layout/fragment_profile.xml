@@ -33,13 +33,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:padding="16dp"
             app:cardBackgroundColor="@color/surfaceLightColor">
 
             <include
                 layout="@layout/content_profile_full"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 app:mainViewModel="@{mainViewModel}" />
 
         </androidx.cardview.widget.CardView>
@@ -47,13 +47,13 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:padding="16dp">
+            android:layout_margin="8dp">
 
             <include
                 layout="@layout/content_provider_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 app:viewModel="@{viewModel}" />
         </androidx.cardview.widget.CardView>
 
