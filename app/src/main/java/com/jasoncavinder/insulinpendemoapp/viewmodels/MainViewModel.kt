@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.jasoncavinder.insulinpendemoapp.database.AppDatabase
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
+import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.UserProfile
 import com.jasoncavinder.insulinpendemoapp.repository.AppRepository
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
@@ -53,7 +54,8 @@ class MainViewModel internal constructor(
         Transformations.map(unreadMessages) { unreadList ->
             unreadList.size == 0
         }
-
+    private val _providers: LiveData<List<Provider>> = repository.getProviders()
+    var providers: MutableMap<String, String> = mutableMapOf()
 
     init {
         try {
@@ -61,7 +63,11 @@ class MainViewModel internal constructor(
         } catch (ex: java.lang.Exception) {
             Log.d(TAG, "Failed loading demoMessages", ex)
         }
-
+        _providers.observeForever {
+            for (provider in it) {
+                providers.putIfAbsent(provider.providerId, provider.name)
+            }
+        }
 
     }
 

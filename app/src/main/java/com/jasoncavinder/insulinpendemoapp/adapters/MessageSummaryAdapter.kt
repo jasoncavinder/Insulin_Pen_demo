@@ -15,7 +15,10 @@ import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.content_message_summary.view.*
 
-class MessageSummaryAdapter(private val messageSummaryList: LiveData<List<MainViewModel.MessageSummary>>) :
+class MessageSummaryAdapter(
+    private val messageSummaryList: LiveData<List<MainViewModel.MessageSummary>>,
+    val providers: MutableMap<String, String>
+) :
     RecyclerView.Adapter<MessageSummaryAdapter.MessageSummaryViewHolder>() {
 
     class MessageSummaryViewHolder(val messageSummaryView: RelativeLayout) : RecyclerView.ViewHolder(messageSummaryView)
@@ -30,7 +33,7 @@ class MessageSummaryAdapter(private val messageSummaryList: LiveData<List<MainVi
 
     override fun onBindViewHolder(holder: MessageSummaryViewHolder, position: Int) {
         holder.messageSummaryView.message_from.text =
-            messageSummaryList.value?.get(position)?.from
+            providers.get(messageSummaryList.value?.get(position)?.from)
         holder.messageSummaryView.message_content.text =
             messageSummaryList.value?.get(position)?.content
     }

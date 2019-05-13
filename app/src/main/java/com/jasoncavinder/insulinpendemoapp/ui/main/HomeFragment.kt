@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.Group
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -91,6 +92,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             Toast.makeText(context, "Could not create sample message. See error log for details.", Toast.LENGTH_LONG)
                 .show()
         }
+
     }
 
     private fun simulateTempAlert() {
@@ -211,7 +213,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
         /* Messages Recycler */
         messagesManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        messagesAdapter = MessageSummaryAdapter(mainViewModel.unreadMessages)
+        messagesAdapter = MessageSummaryAdapter(mainViewModel.unreadMessages, providers = mainViewModel.providers)
 
         recycler_messages.apply {
             setHasFixedSize(true)
@@ -240,6 +242,9 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             SleepChart().show(requireFragmentManager(), "sleep")
         }
 
+        mainViewModel.unreadMessages.observe(this, Observer {
+            messagesAdapter.notifyDataSetChanged()
+        })
 
     }
 
