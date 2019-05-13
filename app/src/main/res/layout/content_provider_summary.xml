@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+  ~ This project is licenced to the client of Upwork contract #21949291. It is not
+  ~ licensed for public use. See the LICENSE.md file for details
+  -->
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -41,6 +47,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="@{viewModel.provider.name}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/primaryDarkColor"
                 app:layout_constraintBottom_toTopOf="@+id/provider_position"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -57,6 +64,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="@{viewModel.provider.position}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/secondaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/provider_rating"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -71,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="?attr/colorBackgroundFloating"
+                android:background="@color/surfaceLightColor"
                 android:isIndicator="true"
                 android:numStars="5"
                 android:progressTint="@color/secondaryColor"
@@ -92,6 +100,7 @@
                 android:layout_marginEnd="16dp"
                 android:text="@{viewModel.provider.intro}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/secondaryTextColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/provider_photo"
@@ -117,6 +126,7 @@
                 android:text="@string/label_education"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/primaryDarkColor"
                 app:layout_constraintBottom_toTopOf="@id/barrier_education"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -130,6 +140,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@{viewModel.provider.education}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/secondaryTextColor"
                 app:layout_constraintBottom_toTopOf="@id/barrier_education"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/barrier_gutter"
@@ -154,6 +165,7 @@
                 android:text="@string/label_copay"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/primaryDarkColor"
                 app:layout_constraintBottom_toTopOf="@+id/barrier_copay"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/barrier_education" />
@@ -167,6 +179,7 @@
                 android:layout_marginBottom="8dp"
                 android:text='@{@string/currency(viewModel.provider.copay)}'
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/secondaryTextColor"
                 app:layout_constraintBottom_toTopOf="@id/barrier_copay"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/barrier_gutter"
@@ -191,6 +204,7 @@
                 android:text="@string/label_languages"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/primaryDarkColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/barrier_copay" />
@@ -205,6 +219,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@{viewModel.provider.languages}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/secondaryTextColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/barrier_gutter"

@@ -47,7 +47,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/surfaceColor_50">
 
             <include
                 layout="@layout/content_provider_summary"
