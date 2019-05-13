@@ -76,11 +76,11 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         updateToolbarListener.updateToolbar(
             "At a Glance",
-            R.menu.menu_home_left,
-            R.menu.menu_home_right,
+            R.menu.menu_profile_left,
+            R.menu.menu_profile_right,
             mapOf(
-                Pair(R.id.menu_item_profile_settings, R.id.action_homeFragment_to_profile),
-                Pair(R.id.menu_item_dose_history, R.id.action_nav_fail_safe)
+                Pair(R.id.menu_item_home, R.id.action_profileFragment_pop),
+                Pair(R.id.menu_item_dose_history, R.id.action_nav_fail_safe)//R.id.action_profile_to_payment)
             )
         )
 
