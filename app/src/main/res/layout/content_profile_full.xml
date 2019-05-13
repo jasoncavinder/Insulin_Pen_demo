@@ -11,7 +11,7 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="mainViewModel"
             type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
 
     </data>
@@ -51,8 +51,9 @@
             android:layout_marginStart="112dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text='@{viewModel.userProfile.user.firstName + " " + viewModel.userProfile.user.lastName ?? "not loaded"}'
+            android:text='@{mainViewModel.userProfile.user.firstName + " " + mainViewModel.userProfile.user.lastName ?? "not loaded"}'
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/secondaryTextColor"
             app:barrierMargin="8dp"
             app:layout_constraintBottom_toTopOf="@+id/text_user_email"
             app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="112dp"
             android:layout_marginEnd="16dp"
-            android:text="@{viewModel.userProfile.user.email}"
+            android:text="@{mainViewModel.userProfile.user.email}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:barrierMargin="8dp"
             app:layout_constraintBottom_toTopOf="@+id/text_user_location"
@@ -85,7 +86,7 @@
             android:layout_marginStart="112dp"
             android:layout_marginEnd="16dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:text="@{viewModel.userProfile.user.location}"
+            android:text="@{mainViewModel.userProfile.user.location}"
             app:barrierMargin="8dp"
             app:layout_constraintBottom_toTopOf="@+id/text_user_payment"
             app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +102,8 @@
             android:layout_marginStart="112dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:text='@{"Payment: " + viewModel.userProfile.user.paymentConfigured ? "is setup" : "is not setup"'
+            android:text='@{"Payment: " + mainViewModel.userProfile.user.paymentConfigured ? "is setup" : "is not setup"'
+            android:textColor="@color/secondaryTextColor"
             app:barrierMargin="8dp"
             app:layout_constraintBottom_toTopOf="@+id/barrier7"
             app:layout_constraintEnd_toEndOf="parent"
