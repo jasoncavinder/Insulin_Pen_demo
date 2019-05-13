@@ -98,6 +98,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         }
         builder?.setMessage("Your insulin pen was over 100ºC for 2 hours. Replace the cartridge before continuing your doses.")
             ?.setTitle("Temperature Alert")
+            ?.setIcon(R.drawable.ic_warning_black_24dp)
         builder?.apply {
             setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
                 // TODO: Alert acknowledged
