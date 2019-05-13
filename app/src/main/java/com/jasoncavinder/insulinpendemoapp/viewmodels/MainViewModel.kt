@@ -54,8 +54,6 @@ class MainViewModel internal constructor(
             unreadList.size == 0
         }
 
-    private lateinit var demoMessages: List<String>
-
 
     init {
         try {
