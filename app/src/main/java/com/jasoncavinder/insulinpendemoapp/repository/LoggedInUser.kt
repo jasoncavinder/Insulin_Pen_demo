@@ -19,6 +19,12 @@ class LoggedInUser(userId: String = "") : Observable() {
         _expires = Calendar.getInstance()
     }
 
+    private fun setUserId(newId: String) {
+        _userId = newId
+        setChanged()
+        notifyObservers(_userId)
+    }
+
     private fun update() {
         _expires = Calendar.getInstance()
         _expires.add(Calendar.MINUTE, DEFAULT_USER_TIMEOUT_MINUTES)
@@ -28,10 +34,12 @@ class LoggedInUser(userId: String = "") : Observable() {
         when (_expires.after(Calendar.getInstance())) {
             true -> {
                 update()
+                setChanged()
+                notifyObservers(_userId)
                 return true
             }
             false -> {
-                _userId = ""
+                setUserId("")
                 return false
             }
         }
@@ -40,13 +48,13 @@ class LoggedInUser(userId: String = "") : Observable() {
     var id: String
         get() = if (isLoggedIn()) _userId else ""
         set(id) {
-            _userId = id
+            setUserId(id)
             if (_userId.isNotBlank()) update()
         }
 
     fun logout() {
         _expires = Calendar.getInstance()
-        _userId = ""
+        setUserId("")
     }
 }
 

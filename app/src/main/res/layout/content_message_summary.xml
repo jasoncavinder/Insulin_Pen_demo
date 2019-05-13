@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+  ~ This project is licenced to the client of Upwork contract #21949291. It is not
+  ~ licensed for public use. See the LICENSE.md file for details
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/message_summary"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/label_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/from"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/secondaryTextColor"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/message_from"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toEndOf="@+id/label_from"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/secondaryTextColor"
+        android:textStyle="bold"
+        tools:text="Dr. Lauren" />
+
+    <TextView
+        android:id="@+id/message_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/message_from"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_vertical"
+        android:minLines="4"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/secondaryTextColor"
+        tools:text="Don't forget to ..... \n Also your tests look good!" />
+
+</RelativeLayout>

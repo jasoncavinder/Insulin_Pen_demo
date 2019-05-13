@@ -31,5 +31,13 @@ data class User(
     var password: String,
     var firstName: String,
     var lastName: String,
-    var providerId: String? = null
-)
+    var locationCity: String = "",
+    var locationState: String = "",
+    var providerId: String? = null,
+    var paymentConfigured: Boolean = false
+) {
+    var location = when (locationCity.isBlank()) {
+        true -> ""
+        false -> locationCity.plus(", ")
+    }.plus(locationState)
+}

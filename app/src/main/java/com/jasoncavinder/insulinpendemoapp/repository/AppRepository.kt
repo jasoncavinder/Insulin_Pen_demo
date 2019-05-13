@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jasoncavinder.insulinpendemoapp.database.entities.alert.AlertDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseDao
+import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.MessageDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.Pen
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.PenDao
@@ -18,7 +19,6 @@ import com.jasoncavinder.insulinpendemoapp.database.entities.pendatapoint.PenDat
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.ProviderDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.UserDao
-import com.jasoncavinder.insulinpendemoapp.database.entities.user.UserProfile
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -39,6 +39,9 @@ class AppRepository private constructor(
     var user = LoggedInUser()
         private set
 
+    private val _userIdLiveData = MutableLiveData<String>()
+    val userIdLiveData: LiveData<String> = _userIdLiveData
+
     private fun setLoggedIn(userId: String) {
         user.id = userId
     }
@@ -52,24 +55,14 @@ class AppRepository private constructor(
     private val _changeProviderResult = MutableLiveData<Result<User>>()
     val changeProviderResult: LiveData<Result<User>> = _changeProviderResult
 
-    private val _loadProfileResult = MutableLiveData<Result<UserProfile>>()
-    val loadProfileResult: LiveData<Result<UserProfile>> = _loadProfileResult
-
-//    private val _userProfile = MediatorLiveData<UserProfile>()
-//    var userProfile: LiveData<UserProfile> = _userProfile
-//        private set
-
     init {
-//        _userProfile.addSource(loginResult) {
-//            when (it) {
-//                is Result.Success -> {
-//                    val result = async {
-//
-//                    }.await()
-//                    _userProfile.postValue(userDao.getUserProfile(it.data))
-//                }
-//            }
-//        }
+        user.addObserver { _, id ->
+            when (id) {
+                is String -> {
+                    _userIdLiveData.postValue(id)
+                }
+            }
+        }
     }
 
     fun checkLogin() {
@@ -135,6 +128,8 @@ class AppRepository private constructor(
 
     fun loadAlerts(userId: String) = alertDao.getUserAlerts(userId)
 
+    fun loadUserProfile(userId: String) = userDao.getUserProfile(userId)
+
 
     suspend fun addPen(pen: Pen) {
         if (!(pen.userId == user.id))
@@ -164,12 +159,12 @@ class AppRepository private constructor(
         }
     }
 
-    suspend fun changeProvider(userId: String, provider: String): Result<Int> {
+    suspend fun changeProvider(providerId: String, userId: String): Result<Int> {
         if (!(userId == user.id)) return Result.Error(Exception("User is not logged in."))
         var updates = 0
         withContext(IO) {
             try {
-                updates = userDao.changeProvider(userId, provider)
+                updates = userDao.changeProvider(userId, providerId)
             } catch (e: Exception) {
                 Log.e(TAG, "Exception changing provider", e)
             }
@@ -181,18 +176,18 @@ class AppRepository private constructor(
     }
 
 
-    suspend fun loadUserProfile() {
-        _loadProfileResult.postValue(
-            withContext(IO) {
-                // user.id ?: return@withContext
-                try {
-                    return@withContext Result.Success(userDao.getUserProfile(user.id))
-                } catch (ex: IOException) {
-                    return@withContext Result.Error(Exception("Failed to load user profile", ex))
-                }
-            }
-        )
-    }
+//    suspend fun loadUserProfile() {
+//        _loadProfileResult.postValue(
+//            withContext(IO) {
+//                // user.id ?: return@withContext
+//                try {
+//                    return@withContext Result.Success(userDao.getUserProfile(user.id))
+//                } catch (ex: IOException) {
+//                    return@withContext Result.Error(Exception("Failed to load user profile", ex))
+//                }
+//            }
+//        )
+//    }
 //    suspend fun loadUserProfile(): LiveData<Result<UserProfile>> {
 ////        return when {
 ////            (!(userId == user.id)) -> null
@@ -211,10 +206,17 @@ class AppRepository private constructor(
 ////        }
 //    }
 
+    suspend fun createMessage(message: Message) {
+        withContext(IO) {
+            messageDao.insertReplace(message)
+        }
+    }
+
     suspend fun resetDb() {
         withContext(IO) {
             penDao.deleteAllPens()
             userDao.deleteAllUsers()
+            messageDao.deleteAllMessages()
         }
     }
 

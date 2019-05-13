@@ -35,10 +35,10 @@
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jasoncavinder.insulinpendemoapp.todo.MainActivity" />
+                android:value="com.jasoncavinder.insulinpendemoapp.MainActivity" />
         </activity>
         <activity
-            android:name="com.jasoncavinder.insulinpendemoapp.todo.MainActivity"
+            android:name="com.jasoncavinder.insulinpendemoapp.MainActivity"
             android:label="At a Glance"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize">

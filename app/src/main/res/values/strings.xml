@@ -52,4 +52,11 @@
     <string name="add_provider_title">Connect With Your Doctor</string>
     <string name="button_later">I\'ll do this later...</string>
     <string name="button_searching_provider">Searching for provider</string>
+    <string name="profile_summary_demo_text">Welcome %s! With type 2 diabetes, the body either doesn\'t produce enough insulin, or it resists insulin. Treatments include diet, exercise, medication and insulin therapy.</string>
+    <string name="pen_data_transfer_indicator">Pen data transfer indicator</string>
+    <string name="pen_connection_status_indicator">Pen connection status indicator</string>
+    <string name="pen_battery_status_indicator">Pen battery status indicator</string>
+    <string name="from">From:</string>
+    <string name="got_it">Okay</string>
+    <string name="no_unread_messages">There are no unread messages</string>
 </resources>
