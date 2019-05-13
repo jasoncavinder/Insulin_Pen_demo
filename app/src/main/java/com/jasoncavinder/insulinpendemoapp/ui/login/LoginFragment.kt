@@ -21,8 +21,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.jasoncavinder.insulinpendemoapp.MainActivity
 import com.jasoncavinder.insulinpendemoapp.R
-import com.jasoncavinder.insulinpendemoapp.todo.MainActivity
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.viewmodels.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login_login.*

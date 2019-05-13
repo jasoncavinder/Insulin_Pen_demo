@@ -42,7 +42,7 @@ import com.jasoncavinder.insulinpendemoapp.utilities.DATABASE_NAME
         Message::class,
         Alert::class
     ],
-    version = 28,
+    version = 30,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

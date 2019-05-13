@@ -20,10 +20,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.jasoncavinder.insulinpendemoapp.MainActivity
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 import com.jasoncavinder.insulinpendemoapp.databinding.FragmentAddProviderBinding
-import com.jasoncavinder.insulinpendemoapp.todo.MainActivity
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
 import kotlinx.android.synthetic.main.fragment_add_provider.*

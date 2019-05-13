@@ -13,9 +13,8 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.jasoncavinder.old_inpen_demo.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile">
+        android:name="com.jasoncavinder.insulinpendemoapp.ui.main.ProfileFragment"
+        android:label="Profile">
         <action
             android:id="@+id/action_profile_to_updateProfile"
             app:destination="@id/updateProfile" />
@@ -25,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.jasoncavinder.insulinpendemoapp.todo.ui.main.HomeFragment"
+        android:name="com.jasoncavinder.insulinpendemoapp.ui.main.HomeFragment"
         android:label="At A Glance"
         tools:layout="@layout/fragment_home">
         <action

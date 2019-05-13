@@ -1,123 +1,130 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+  ~ This project is licenced to the client of Upwork contract #21949291. It is not
+  ~ licensed for public use. See the LICENSE.md file for details
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:background="@color/surfaceLightColor">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_margin="16dp"
-        android:tint="@color/primaryColor"
-        app:layout_constraintBottom_toTopOf="@+id/barrier3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_mail_outline_24dp" />
+    <data>
 
-    <TextView
-        android:id="@+id/title_messages"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Messages"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/surfaceTextColor"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toStartOf="@+id/icon_message_toggle"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        <import type="android.view.View" />
 
-    <ImageView
-        android:id="@+id/icon_message_toggle"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="auto"
-        android:tint="@color/primaryColor"
-        app:layout_constraintBottom_toTopOf="@+id/barrier3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/less_unfold_24dp" />
+        <variable
+            name="viewModel"
+            type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="imageView,title_messages,icon_message_toggle"
-        tools:layout_editor_absoluteY="658dp" />
+    </data>
 
-    <TextView
-        android:id="@+id/label_from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="From:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/message_content"
-        app:layout_constraintTop_toTopOf="@+id/barrier3" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/message_from"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginEnd="8dp"
-        android:maxLines="1"
-        android:text="Dr. Lauren"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/label_from"
-        app:layout_constraintTop_toTopOf="@+id/barrier3" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="16dp"
+            android:tint="?attr/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/barrier3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_mail_outline_24dp" />
 
-    <TextView
-        android:id="@+id/message_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:minLines="4"
-        android:text="Don't forget to ..... \n Also your tests look good!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/next_message"
-        app:layout_constraintStart_toEndOf="@id/prev_message"
-        app:layout_constraintTop_toBottomOf="@+id/message_from" />
+        <TextView
+            android:id="@+id/title_messages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Messages"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="?attr/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toStartOf="@+id/icon_message_toggle"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
 
-    <ImageView
-        android:id="@+id/prev_message"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:tint="@color/surfaceColor"
-        app:layout_constraintBottom_toBottomOf="@+id/message_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/message_content"
-        app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
+        <ImageView
+            android:id="@+id/icon_message_toggle"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:focusable="auto"
+            android:tint="?attr/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/barrier3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/less_unfold_24dp" />
 
-    <ImageView
-        android:id="@+id/next_message"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:tint="@color/primaryColor"
-        app:layout_constraintBottom_toBottomOf="@+id/message_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/message_content"
-        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="imageView,title_messages,icon_message_toggle"
+            tools:layout_editor_absoluteY="658dp" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_message_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="next_message,prev_message,label_from,message_from,message_content" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_messages"
+            android:layout_width="0dp"
+            android:layout_height="108dp"
+            android:layout_margin="8dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/next_message"
+            app:layout_constraintStart_toEndOf="@id/prev_message"
+            app:layout_constraintTop_toBottomOf="@+id/barrier3" />
+
+        <TextView
+            android:id="@+id/empty_recycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@string/no_unread_messages"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/secondaryTextColor"
+            android:visibility="@{(safeUnbox(viewModel.noMessages) ? View.VISIBLE : View.GONE)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/next_message"
+            app:layout_constraintStart_toEndOf="@id/prev_message"
+            app:layout_constraintTop_toBottomOf="@+id/barrier3" />
+        <!--android:visibility="@{unreadMessages.size()}"-->
+
+        <ImageButton
+            android:id="@+id/next_message"
+            style="@android:style/Widget.Material.Light.ImageButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/primaryColor"
+            android:tint="@color/surfaceLightColor"
+            app:layout_constraintBottom_toBottomOf="@+id/recycler_messages"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recycler_messages"
+            app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/prev_message"
+            style="@android:style/Widget.Material.Light.ImageButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="@color/primaryColor"
+            android:tint="@color/surfaceLightColor"
+            app:layout_constraintBottom_toBottomOf="@+id/recycler_messages"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recycler_messages"
+            app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_message_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="next_message,prev_message,recycler_messages" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

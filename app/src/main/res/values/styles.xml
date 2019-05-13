@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+  ~ This project is licenced to the client of Upwork contract #21949291. It is not
+  ~ licensed for public use. See the LICENSE.md file for details
+  -->
+
 <resources>
 
     <!-- Splash Screen -->
@@ -13,6 +19,20 @@
 
     <!-- Primary Theme -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/primaryLightColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/accentColor</item>
+
+        <item name="fontFamily">@font/anodina_regular</item>
+
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:textColorSecondary">@color/secondaryTextColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+
+        <!--<item name="colorBackgroundFloating">@color/surfaceLightColor</item>-->
+        <!--<item name="panelBackground">@color/surfaceColor_50</item>-->
+        <!--<item name="android:background">@color/surfaceLightColor</item>-->
+        <!--<item name="android:backgroundTint">@color/surfaceColor_50</item>-->
 
     </style>
 
