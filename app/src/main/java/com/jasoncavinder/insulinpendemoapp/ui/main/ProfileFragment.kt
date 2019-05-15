@@ -24,6 +24,11 @@ import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 
 class ProfileFragment : Fragment() {
+
+    companion object {
+        fun newInstance() = ProfileFragment()
+    }
+
     private val TAG by lazy { this::class.java.simpleName }
 
     private lateinit var mainViewModel: MainViewModel
@@ -56,17 +61,16 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        return inflater.inflate(R.layout.fragment_home, container, false)
-        val fragmentHomeBinding =
+        val fragmentProfileBinding =
             DataBindingUtil.inflate<FragmentProfileBinding>(
                 inflater, R.layout.fragment_profile, container, false
             ).apply {
-                this.mainViewModel = mainViewModel
-                this.viewModel = createUserViewModel
-                this.lifecycleOwner = this@ProfileFragment
+                this.viewModel = mainViewModel
+                this.cuViewModel = createUserViewModel
+                this.lifecycleOwner = viewLifecycleOwner
             }
 
-        return fragmentHomeBinding.root
+        return fragmentProfileBinding.root
 
 
     }

@@ -13,11 +13,11 @@
     <data>
 
         <variable
-            name="mainViewModel"
+            name="viewModel"
             type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
 
         <variable
-            name="viewModel"
+            name="cuViewModel"
             type="com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel" />
 
     </data>
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:mainViewModel="@{mainViewModel}" />
+                app:viewModel="@{viewModel}" />
 
         </androidx.cardview.widget.CardView>
 
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:viewModel="@{viewModel}" />
+                app:viewModel="@{cuViewModel}" />
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>

@@ -124,7 +124,7 @@ class CreateUserFragment : Fragment() {
         super.onAttach(context)
 
         requireActivity().onBackPressedDispatcher.addCallback(
-            this, // LifecycleOwner
+            this,
             object : OnBackPressedCallback(
                 true // default to enabled
             ) {

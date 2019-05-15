@@ -162,13 +162,12 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        return inflater.inflate(R.layout.fragment_home, container, false)
         val fragmentHomeBinding =
             DataBindingUtil.inflate<FragmentHomeBinding>(
                 inflater, R.layout.fragment_home, container, false
             ).apply {
                 this.viewModel = mainViewModel
-                this.lifecycleOwner = this@HomeFragment
+                this.lifecycleOwner = viewLifecycleOwner
             }
 
         return fragmentHomeBinding.root

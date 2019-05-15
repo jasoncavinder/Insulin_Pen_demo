@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.custom_toolbar.*
 class MainActivity : AppCompatActivity(), UpdateToolbarListener {
 
     val TAG: String by lazy { this::class.java.simpleName }
+
     private lateinit var _mainViewModel: MainViewModel
 
     private lateinit var navController: NavController

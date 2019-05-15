@@ -79,7 +79,7 @@ class AddProviderFragment : Fragment() {
                 inflater, R.layout.fragment_add_provider, container, false
             ).apply {
                 viewModel = createUserViewModel
-                lifecycleOwner = this@AddProviderFragment
+                lifecycleOwner = viewLifecycleOwner
             }
 
         // TODO: Can this be removed or moved?

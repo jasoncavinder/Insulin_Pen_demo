@@ -15,13 +15,13 @@ import com.jasoncavinder.insulinpendemoapp.viewmodels.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var navController: NavController
-
+    val TAG: String by lazy { this::class.java.simpleName }
     lateinit var _loginViewModel: LoginViewModel
+
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_login)
 
         _loginViewModel = ViewModelProviders
