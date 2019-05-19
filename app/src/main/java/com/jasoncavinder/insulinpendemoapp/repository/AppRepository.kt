@@ -55,6 +55,9 @@ class AppRepository private constructor(
     private val _changeProviderResult = MutableLiveData<Result<User>>()
     val changeProviderResult: LiveData<Result<User>> = _changeProviderResult
 
+    private val _updateUserResult = MutableLiveData<Result<User>>()
+    val updateUserResult: LiveData<Result<User>> = _updateUserResult
+
     init {
         user.addObserver { _, id ->
             when (id) {
@@ -172,6 +175,37 @@ class AppRepository private constructor(
         return when (updates) {
             1 -> Result.Success(updates)
             else -> Result.Error(IOException("Could not change provider."))
+        }
+    }
+
+    suspend fun updateUser(
+        firstName: String? = null,
+        lastName: String? = null,
+        email: String? = null,
+        locationCity: String? = null,
+        locationState: String? = null,
+        passwordHash: String? = null,
+        paymentConfigured: Boolean? = null,
+        providerId: String? = null
+    ) {
+        withContext(IO) {
+            try {
+                val user: User = userDao.getUser(this@AppRepository.user.id)
+                firstName?.let { user.firstName = it }
+                lastName?.let { user.lastName = it }
+                email?.let { user.email = it }
+                locationCity?.let { user.locationCity = it }
+                locationState?.let { user.locationState = it }
+                passwordHash?.let { user.password = it }
+                paymentConfigured?.let { user.paymentConfigured = it }
+                providerId?.let { user.providerId = it }
+                val result = userDao.update(user)
+                if (result > 0) _updateUserResult.postValue(Result.Success<User>(user))
+                else throw Exception("Could not update user. (")
+            } catch (ex: Exception) {
+                Log.d(TAG, "Failed to update user", ex)
+                _updateUserResult.postValue(Result.Error(ex))
+            }
         }
     }
 

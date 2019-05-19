@@ -6,22 +6,29 @@
 
 package com.jasoncavinder.insulinpendemoapp.ui.main
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavController
+import com.google.android.material.snackbar.Snackbar
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.databinding.FragmentProfileBinding
+import com.jasoncavinder.insulinpendemoapp.databinding.ModalEditPasswordBinding
+import com.jasoncavinder.insulinpendemoapp.databinding.ModalEditProfileBinding
+import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
 import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
+import kotlinx.android.synthetic.main.content_profile_full.*
 
 class ProfileFragment : Fragment() {
 
@@ -33,7 +40,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var createUserViewModel: CreateUserViewModel
-    private lateinit var navController: NavController
+//    private lateinit var navController: NavController
 
     private lateinit var updateToolbarListener: UpdateToolbarListener
 
@@ -78,6 +85,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         updateToolbarListener.updateToolbar(
             "At a Glance",
             R.menu.menu_profile_left,
@@ -88,9 +96,12 @@ class ProfileFragment : Fragment() {
             )
         )
 
-        mainViewModel.userProfile.observe(this, Observer { })
-    }
+        button_edit_profile.setOnClickListener(editProfile())
+        button_edit_password.setOnClickListener(changePassword())
 
+        mainViewModel.userProfile.observe(this, Observer { })
+
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -98,7 +109,7 @@ class ProfileFragment : Fragment() {
             updateToolbarListener = context as UpdateToolbarListener
         } catch (castException: ClassCastException) {
             /** The activity does not implement the listener. */
-            Log.d(TAG, context.toString() + " must implement OnFragmentInteractionListener")
+            Log.d(TAG, "$context must implement OnFragmentInteractionListener")
         }
     }
 
@@ -107,6 +118,24 @@ class ProfileFragment : Fragment() {
 
         mainViewModel.verifyLogin()
 
+        mainViewModel.updateUserResult.observe(this, Observer {
+            when (it) {
+                is Result.Error ->
+                    Snackbar.make(
+                        requireView(),
+                        "Failed to update user. Please try again or, if you can reproduce this error, file a bug report for the developer.",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                is Result.Success ->
+                    Snackbar.make(
+                        requireView(),
+                        "Your profile has been updated successfully.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+
+            }
+        })
+
         /* BEGIN: Required for Demo Actions */
 //        fab_demo_actions_home.setOnClickListener {
 //            DemoActionListDialogFragment.newInstance(_demoActions)
@@ -114,6 +143,66 @@ class ProfileFragment : Fragment() {
 //        }
         /* END: Required for Demo Actions */
 
+    }
+
+    private fun editProfile(): View.OnClickListener {
+        class EditProfileDialog : DialogFragment() {
+
+            override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+                return activity?.let {
+                    val inflater = requireActivity().layoutInflater
+                    val binding = DataBindingUtil.inflate<ModalEditProfileBinding>(
+                        inflater, R.layout.modal_edit_profile, null, false
+                    )
+                    val builder = AlertDialog.Builder(it).apply {
+                        setView(binding.root)
+
+                        setNegativeButton("Cancel") { _, _ -> dialog?.cancel() }
+                        setPositiveButton("Save") { _, _ ->
+                            mainViewModel.updateUserData(
+                                firstName = binding.editTextFname.text.toString(),
+                                lastName = binding.editTextLname.text.toString(),
+                                email = binding.editTextEmail.text.toString(),
+                                locationCity = binding.editTextCity.text.toString(),
+                                locationState = binding.editTextState.text.toString()
+                            )
+                        }
+
+                    }
+                    binding.viewModel = mainViewModel
+                    builder.create()
+                } ?: throw IllegalStateException("Activity cannot be null")
+            }
+        }
+
+        return View.OnClickListener { EditProfileDialog().show(requireFragmentManager(), "editProfile") }
+
+    }
+
+    private fun changePassword(): View.OnClickListener {
+        class ChangePasswordDialog : DialogFragment() {
+
+            override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+                return activity?.let {
+                    val inflater = requireActivity().layoutInflater
+                    val binding = DataBindingUtil.inflate<ModalEditPasswordBinding>(
+                        inflater, R.layout.modal_edit_password, null, false
+                    )
+                    val builder = AlertDialog.Builder(it).apply {
+                        setView(binding.root)
+
+                        setNegativeButton("Cancel") { _, _ -> dialog?.cancel() }
+                        setPositiveButton("Save") { _, _ ->
+                            mainViewModel.changePassword(password = binding.editTextPassword.text.toString())
+                        }
+                    }
+                    binding.viewModel = mainViewModel
+                    builder.create()
+                } ?: throw IllegalStateException("Activity cannot be null")
+            }
+        }
+
+        return View.OnClickListener { ChangePasswordDialog().show(requireFragmentManager(), "changePassword") }
     }
 
 }

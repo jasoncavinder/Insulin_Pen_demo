@@ -25,6 +25,9 @@
     <color name="secondaryTextColor">#3C3C3C</color>
     <color name="surfaceTextColor">#1976D2</color>
 
+    <color name="errorColor">#F44336</color>
+    <color name="successColor">#4CAF50</color>
+
     <color name="iconsColor">#FFFFFF</color>
     <color name="divider">#C2C2C2</color>
 

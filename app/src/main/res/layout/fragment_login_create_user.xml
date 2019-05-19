@@ -109,14 +109,14 @@
                     android:paddingBottom="8dp"
                     android:singleLine="true"
                     android:textColorHighlight="?attr/colorPrimary"
-                    app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
+                    app:layout_constraintBottom_toTopOf="@+id/edit_text_email"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_text_first_name" />
 
                 <EditText
-                    android:id="@+id/edit_text_password"
+                    android:id="@+id/edit_text_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autofillHints="AUTOFILL_HINT_PASSWORD"
@@ -153,14 +153,14 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_email" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrier_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:barrierDirection="right"
-                    app:constraint_referenced_ids="text_headline,edit_text_first_name,edit_text_last_name,edit_text_email,edit_text_password,button_create_user,edit_text_confirm"
+                    app:constraint_referenced_ids="text_headline,edit_text_first_name,edit_text_last_name,edit_text_email,edit_text_email,button_create_user,edit_text_confirm"
                     tools:layout_editor_absoluteX="334dp" />
 
                 <androidx.constraintlayout.widget.Barrier
@@ -168,7 +168,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:barrierDirection="left"
-                    app:constraint_referenced_ids="text_headline,edit_text_password,button_cancel,edit_text_first_name,edit_text_confirm,edit_text_email,edit_text_last_name"
+                    app:constraint_referenced_ids="text_headline,edit_text_email,button_cancel,edit_text_first_name,edit_text_confirm,edit_text_email,edit_text_last_name"
                     tools:layout_editor_absoluteX="78dp" />
 
                 <TextView

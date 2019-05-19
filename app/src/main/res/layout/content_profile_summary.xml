@@ -51,7 +51,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@{viewModel.userProfile.user.location}"
+            android:text='@{String.format("%s%s%s", viewModel.userProfile.user.locationCity, (viewModel.userProfile.user.locationState.length() > 0)? ", " : "" , viewModel.userProfile.user.locationState)}'
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="?attr/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/account_circle"

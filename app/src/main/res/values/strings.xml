@@ -59,4 +59,8 @@
     <string name="from">From:</string>
     <string name="got_it">Okay</string>
     <string name="no_unread_messages">There are no unread messages</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="blank_password_okay">(blank = do not change)</string>
+    <string name="confirm">Confirm</string>
+    <string name="must_match_password">(must match password)</string>
 </resources>

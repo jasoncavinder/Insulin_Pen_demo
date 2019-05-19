@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+  ~ This project is licenced to the client of Upwork contract #21949291. It is not
+  ~ licensed for public use. See the LICENSE.md file for details
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:textAlignment="textEnd">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar3"
+            android:layout_width="379dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/edit_profile"
+            app:titleMarginStart="8dp" />
+
+        <TextView
+            android:id="@+id/label_fname"
+            android:layout_width="122dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@id/edit_text_fname"
+            android:text="First Name: "
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_fname"
+            app:layout_constraintEnd_toEndOf="@+id/label_lname"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/label_lname"
+            android:layout_width="122dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@id/edit_text_lname"
+            android:text="Last Name:"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_lname"
+            app:layout_constraintEnd_toEndOf="@+id/label_email"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/label_email"
+            android:layout_width="122dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@id/edit_text_email"
+            android:text="Email"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_email"
+            app:layout_constraintEnd_toEndOf="@+id/label_location"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/label_location"
+            android:layout_width="122dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@id/edit_text_city"
+            android:text="Location"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_city"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_text_fname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
+            android:autofillHints="name"
+            android:backgroundTint="?attr/editTextColor"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@{viewModel.userProfile.user.firstName}"
+            android:textAlignment="textStart"
+            app:layout_constraintBottom_toTopOf="@+id/edit_text_lname"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/barrier_gutter"
+            app:layout_constraintTop_toBottomOf="@id/toolbar3" />
+
+        <EditText
+            android:id="@+id/edit_text_lname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="name"
+            android:backgroundTint="?attr/editTextColor"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@{viewModel.userProfile.user.lastName}"
+            android:textAlignment="textStart"
+            app:layout_constraintBottom_toTopOf="@+id/edit_text_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/barrier_gutter"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_fname" />
+
+        <EditText
+            android:id="@+id/edit_text_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="email"
+            android:backgroundTint="?attr/editTextColor"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:text="@{viewModel.userProfile.user.email}"
+            android:textAlignment="textStart"
+            app:layout_constraintBottom_toTopOf="@+id/edit_text_city"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/barrier_gutter"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_lname" />
+
+        <EditText
+            android:id="@+id/edit_text_city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginEnd="8dp"
+            android:autofillHints="postalCode"
+            android:backgroundTint="?attr/editTextColor"
+            android:ems="10"
+            android:hint="City"
+            android:inputType="text"
+            android:text="@{viewModel.userProfile.user.locationCity}"
+            android:textAlignment="textStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/edit_text_state"
+            app:layout_constraintStart_toEndOf="@id/barrier_gutter"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_email" />
+
+        <EditText
+            android:id="@+id/edit_text_state"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="?attr/editTextColor"
+            android:ems="10"
+            android:hint="State"
+            android:inputType="text"
+            android:maxLength="2"
+            android:text="@{viewModel.userProfile.user.locationState}"
+            app:layout_constraintBottom_toBottomOf="@+id/edit_text_city"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/edit_text_city" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_gutter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:barrierMargin="8dp"
+            app:constraint_referenced_ids="label_fname,label_lname,label_email,label_location"
+            tools:layout_editor_absoluteX="104dp"
+            tools:layout_editor_absoluteY="8dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

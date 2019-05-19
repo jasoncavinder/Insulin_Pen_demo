@@ -37,26 +37,26 @@
         <action
             android:id="@+id/action_homeFragment_to_penInfo"
             app:destination="@id/penInfo" />
-        <action
-            android:id="@+id/action_homeFragment_to_reporting"
-            app:destination="@id/reporting" />
+        <!--<action-->
+        <!--android:id="@+id/action_homeFragment_to_reporting"-->
+        <!--app:destination="@id/reporting" />-->
     </fragment>
     <fragment android:id="@+id/payment" />
     <fragment android:id="@+id/addPen" />
     <fragment android:id="@+id/updateProfile" />
-    <fragment
-        android:id="@+id/doseHistoryAndWarnings"
-        android:name="com.jasoncavinder.old_inpen_demo.DoseHistoryFragment"
-        android:label="fragment_dose_list"
-        tools:layout="@layout/fragment_dose_list" />
-    <fragment android:id="@+id/reporting">
-        <action
-            android:id="@+id/action_reporting_to_changeReporting"
-            app:destination="@id/changeReporting" />
-        <action
-            android:id="@+id/action_reporting_to_doseHistoryAndWarnings"
-            app:destination="@id/doseHistoryAndWarnings" />
-    </fragment>
+    <!--<fragment-->
+    <!--android:id="@+id/doseHistoryAndWarnings"-->
+    <!--android:name="com.jasoncavinder.old_inpen_demo.DoseHistoryFragment"-->
+    <!--android:label="fragment_dose_list"-->
+    <!--tools:layout="@layout/fragment_dose_list" />-->
+    <!--<fragment android:id="@+id/reporting">-->
+    <!--<action-->
+    <!--android:id="@+id/action_reporting_to_changeReporting"-->
+    <!--app:destination="@id/changeReporting" />-->
+    <!--<action-->
+    <!--android:id="@+id/action_reporting_to_doseHistoryAndWarnings"-->
+    <!--app:destination="@id/doseHistoryAndWarnings" />-->
+    <!--</fragment>-->
     <fragment android:id="@+id/penInfo">
         <action
             android:id="@+id/action_penInfo_to_addPen"

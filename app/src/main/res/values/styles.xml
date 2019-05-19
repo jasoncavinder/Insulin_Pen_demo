@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
   ~ This project is licenced to the client of Upwork contract #21949291. It is not
   ~ licensed for public use. See the LICENSE.md file for details
@@ -19,22 +18,64 @@
 
     <!-- Primary Theme -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/primaryLightColor</item>
+        <!-- Main Colors -->
+        <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/accentColor</item>
 
-        <item name="fontFamily">@font/anodina_regular</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
 
         <item name="android:textColorPrimary">@color/primaryTextColor</item>
         <item name="android:textColorSecondary">@color/secondaryTextColor</item>
-        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="android:textColorTertiary">@color/surfaceTextColor</item>
 
-        <!--<item name="colorBackgroundFloating">@color/surfaceLightColor</item>-->
+        <!--<item name="colorBackgroundFloating">@color/surfaceDarkColor</item>-->
+
+        <!--<item name="colorButtonNormal"></item>-->
+        <!--<item name="android:colorButtonNormal"></item>-->
+
+        <!--<item name="colorControlActivated"></item>-->
+        <!--<item name="android:colorControlActivated"></item>-->
+
+        <!--<item name="colorControlHighlight"></item>-->
+        <!--<item name="android:colorControlHighlight"></item>-->
+
+        <!--<item name="colorControlNormal"></item>-->
+        <!--<item name="android:colorControlNormal"></item>-->
+
+        <!--<item name="colorError"></item>-->
+
+        <!--<item name="editTextColor">@color/primaryTextColor</item>-->
+
+        <!--<item name="textColorAlertDialogListItem"></item>-->
+
+        <!--<item name="actionMenuTextColor"></item>-->
+        <!--<item name="actionModeSplitBackground"></item>-->
+
         <!--<item name="panelBackground">@color/surfaceColor_50</item>-->
+        <!--<item name="android:panelBackground"></item>-->
+
+        <!--<item name="fontFamily">@font/anodina</item>-->
+
+
+        <!--<item name="alertDialogTheme">@style/AppAlertDialogTheme</item>-->
         <!--<item name="android:background">@color/surfaceLightColor</item>-->
         <!--<item name="android:backgroundTint">@color/surfaceColor_50</item>-->
 
+
     </style>
+
+    <!--<style name="AppAlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">-->
+    <!--<item name="buttonBarButtonStyle">@style/Widget.AppCompat.ButtonBar.AlertDialog</item>-->
+    <!--</style>-->
+
+    <!--<style name="AppTheme.Button.Borderless.Colored" parent="Widget.AppCompat.Button.Borderless.Colored">-->
+    <!--<item name="android:textAppearance">@style/TextAppearance.AppTheme.Widget.Button.Borderless.Colored</item>-->
+    <!--</style>-->
+    <!--<style name="TextAppearance.AppTheme.Widget.Button.Borderless.Colored"-->
+    <!--parent="TextAppearance.AppCompat.Widget.Button.Borderless.Colored">-->
+    <!--<item name="android:textStyle"></item>-->
+    <!--</style>-->
 
 
     <!-- Pre-login Theme-->

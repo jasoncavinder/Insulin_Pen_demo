@@ -12,8 +12,10 @@ import androidx.lifecycle.*
 import com.jasoncavinder.insulinpendemoapp.database.AppDatabase
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
+import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.UserProfile
 import com.jasoncavinder.insulinpendemoapp.repository.AppRepository
+import com.jasoncavinder.insulinpendemoapp.utilities.HashUtils
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -36,6 +38,7 @@ class MainViewModel internal constructor(
         AppDatabase.getInstance(application).alertDao()
     )
     val loginResult: LiveData<Result<String>> = repository.loginResult
+    val updateUserResult: LiveData<Result<User>> = repository.updateUserResult
 
     private var userId: LiveData<String> =
         Transformations.switchMap(repository.userIdLiveData) { MutableLiveData<String>(it) }
@@ -69,6 +72,27 @@ class MainViewModel internal constructor(
             }
         }
 
+    }
+
+    fun updateUserData(
+        firstName: String?, lastName: String?, email: String?,
+        locationCity: String?, locationState: String?
+    ) {
+        viewModelScope.launch {
+            repository.updateUser(
+                firstName = if (firstName.isNullOrBlank()) null else firstName,
+                lastName = if (lastName.isNullOrBlank()) null else lastName,
+                email = if (email.isNullOrBlank()) null else email,
+                locationCity = if (locationCity.isNullOrBlank()) null else locationCity,
+                locationState = if (locationState.isNullOrBlank()) null else locationState
+            )
+        }
+    }
+
+    fun changePassword(password: String) {
+        viewModelScope.launch {
+            repository.updateUser(passwordHash = HashUtils.sha512(password))
+        }
     }
 
     fun verifyLogin() = repository.checkLogin()

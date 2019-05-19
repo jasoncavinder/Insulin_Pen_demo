@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.jasoncavinder.insulinpendemoapp.utilities.AUTHORIZE_USER
+import com.jasoncavinder.insulinpendemoapp.utilities.MenuSafeClick
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
@@ -111,14 +112,10 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
     }
 
     private fun attachAction(menuItem: MenuItem) {
-        menuItem.setOnMenuItemClickListener {
+        menuItem.setOnMenuItemClickListener(MenuSafeClick {
+            menuActions[menuItem.itemId]?.let { navController.navigate(it) }
+        })
 
-            menuActions[menuItem.itemId]?.let {
-                navController.navigate(it)
-                return@setOnMenuItemClickListener true
-            }
-            return@setOnMenuItemClickListener false
-        }
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {

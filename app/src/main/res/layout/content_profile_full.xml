@@ -17,48 +17,32 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        tools:background="@color/surfaceLightColor">
-
-        <ImageView
-            android:id="@+id/image_nopic_circle"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_account_circle_background_24dp"
-            android:tint="@color/primaryColor_50"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp">
 
         <ImageView
             android:id="@+id/image_nopic_user"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:src="@drawable/ic_account_circle_foreground_24dp"
-            android:tint="@color/primaryColor"
-            app:layout_constraintBottom_toBottomOf="@+id/image_nopic_circle"
-            app:layout_constraintEnd_toEndOf="@+id/image_nopic_circle"
-            app:layout_constraintStart_toStartOf="@+id/image_nopic_circle"
-            app:layout_constraintTop_toTopOf="@+id/image_nopic_circle" />
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_account_circle_black_24dp"
+            android:tint="@color/surfaceTextColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_user_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="112dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
             android:text='@{viewModel.userProfile.user.firstName + " " + viewModel.userProfile.user.lastName ?? "not loaded"}'
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/secondaryTextColor"
-            app:barrierMargin="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
             app:layout_constraintBottom_toTopOf="@+id/text_user_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_nopic_user"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="spread"
             tools:text="user's full name" />
@@ -67,15 +51,13 @@
             android:id="@+id/text_user_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="112dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
             android:text="@{viewModel.userProfile.user.email}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:barrierMargin="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
             app:layout_constraintBottom_toTopOf="@+id/text_user_location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_nopic_user"
             app:layout_constraintTop_toBottomOf="@+id/text_user_name"
             tools:text="email@example.com" />
 
@@ -83,73 +65,79 @@
             android:id="@+id/text_user_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="112dp"
-            android:layout_marginEnd="16dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:text="@{viewModel.userProfile.user.location}"
+            android:layout_marginStart="8dp"
+            android:text='@{String.format("%s%s%s", viewModel.userProfile.user.locationCity, (viewModel.userProfile.user.locationState.length() > 0)? ", " : "" , viewModel.userProfile.user.locationState)}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
             app:barrierMargin="8dp"
             app:layout_constraintBottom_toTopOf="@+id/text_user_payment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_nopic_user"
             app:layout_constraintTop_toBottomOf="@+id/text_user_email"
             tools:text="Location, State" />
 
         <TextView
             android:id="@+id/text_user_payment"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="112dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
             android:text='@{String.format("Payment: %s", viewModel.userProfile.user.paymentConfigured ? "is setup" : "is not setup")}'
-            android:textColor="@color/secondaryTextColor"
-            app:barrierMargin="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/barrier7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_user_location" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
+            app:layout_constraintEnd_toStartOf="@+id/icon_payment_setup_status"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/image_nopic_user"
+            app:layout_constraintTop_toBottomOf="@id/text_user_location"
+            tools:text="Payment: " />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier7"
+        <ImageView
+            android:id="@+id/icon_payment_setup_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="text_user_name,text_user_location,image_nopic_user,image_nopic_circle,text_user_email,text_user_payment"
-            tools:layout_editor_absoluteY="300dp" />
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:tint="@color/errorColor"
+            app:layout_constraintBottom_toBottomOf="@+id/text_user_payment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_user_payment"
+            app:layout_constraintTop_toTopOf="@+id/text_user_payment"
+            app:srcCompat="@drawable/ic_error_black_24dp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button_edit_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="Edit Profile"
-            app:barrierMargin="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Edit\nProfile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit_password"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/barrier7" />
+            app:layout_constraintTop_toBottomOf="@+id/text_user_payment" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/button_edit_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="Edit Payment"
-            app:barrierMargin="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Change\nPassword"
+            app:layout_constraintBottom_toBottomOf="@+id/button_edit_profile"
+            app:layout_constraintEnd_toStartOf="@+id/button_edit_payment"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_edit_profile"
+            app:layout_constraintTop_toTopOf="@+id/button_edit_profile" />
+
+        <Button
+            android:id="@+id/button_edit_payment"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit\nPayment"
+            app:layout_constraintBottom_toBottomOf="@+id/button_edit_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/barrier7" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="button2,button"
-            tools:layout_editor_absoluteY="300dp" />
+            app:layout_constraintStart_toEndOf="@+id/button_edit_password"
+            app:layout_constraintTop_toTopOf="@+id/button_edit_password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
