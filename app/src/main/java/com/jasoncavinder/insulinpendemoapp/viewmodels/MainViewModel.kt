@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.jasoncavinder.insulinpendemoapp.database.AppDatabase
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
+import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.UserProfile
@@ -33,12 +34,14 @@ class MainViewModel internal constructor(
         AppDatabase.getInstance(application).providerDao(),
         AppDatabase.getInstance(application).penDao(),
         AppDatabase.getInstance(application).penDataPointDao(),
+        AppDatabase.getInstance(application).paymentDao(),
         AppDatabase.getInstance(application).doseDao(),
         AppDatabase.getInstance(application).messageDao(),
         AppDatabase.getInstance(application).alertDao()
     )
     val loginResult: LiveData<Result<String>> = repository.loginResult
     val updateUserResult: LiveData<Result<User>> = repository.updateUserResult
+    val updatePaymentResult: LiveData<Result<Payment>> = repository.updatePaymentResult
 
     private var userId: LiveData<String> =
         Transformations.switchMap(repository.userIdLiveData) { MutableLiveData<String>(it) }
@@ -71,7 +74,6 @@ class MainViewModel internal constructor(
                 providers.putIfAbsent(provider.providerId, provider.name)
             }
         }
-
     }
 
     fun updateUserData(
@@ -92,6 +94,34 @@ class MainViewModel internal constructor(
     fun changePassword(password: String) {
         viewModelScope.launch {
             repository.updateUser(passwordHash = HashUtils.sha512(password))
+        }
+    }
+
+    fun addPaymentMethod(type: Int, ccnum: Long?, ccexp: Int?, ccname: String?, email: String?) {
+        viewModelScope.launch {
+            repository.addPaymentMethod(
+                Payment(
+                    userId = userId.value!!, type = type,
+                    ccnum = ccnum, ccexp = ccexp, ccname = ccname, email = email
+                )
+            )
+        }
+    }
+
+    fun updatePaymentMethod(
+        type: Int,
+        ccnum: Long? = null,
+        ccexp: Int? = null,
+        ccname: String? = null,
+        email: String? = null
+    ) {
+        viewModelScope.launch {
+            repository.updatePaymentMethod(
+                Payment(
+                    userId = userId.value!!, type = type,
+                    ccnum = ccnum, ccexp = ccexp, ccname = ccname, email = email
+                )
+            )
         }
     }
 

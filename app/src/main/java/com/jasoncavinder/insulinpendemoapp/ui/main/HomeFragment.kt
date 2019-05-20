@@ -183,8 +183,8 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             R.menu.menu_home_left,
             R.menu.menu_home_right,
             mapOf(
-                Pair(R.id.menu_item_profile_settings, R.id.action_homeFragment_to_profile),
-                Pair(R.id.menu_item_dose_history, R.id.action_nav_fail_safe)
+                Pair(R.id.menu_item_profile_settings, R.id.action_homeFragment_to_profile)//,
+//                Pair(R.id.menu_item_dose_history, R.id.action_nav_fail_safe)
             )
         )
 

@@ -20,6 +20,8 @@ import com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose
 import com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.MessageDao
+import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
+import com.jasoncavinder.insulinpendemoapp.database.entities.payment.PaymentDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.Pen
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.PenDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.pendatapoint.PenDataPoint
@@ -38,11 +40,12 @@ import com.jasoncavinder.insulinpendemoapp.utilities.DATABASE_NAME
         Provider::class,
         Pen::class,
         PenDataPoint::class,
+        Payment::class,
         Dose::class,
         Message::class,
         Alert::class
     ],
-    version = 31,
+    version = 32,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -51,6 +54,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun providerDao(): ProviderDao
     abstract fun penDao(): PenDao
     abstract fun penDataPointDao(): PenDataPointDao
+    abstract fun paymentDao(): PaymentDao
     abstract fun doseDao(): DoseDao
     abstract fun messageDao(): MessageDao
     abstract fun alertDao(): AlertDao

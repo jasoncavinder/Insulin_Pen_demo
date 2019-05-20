@@ -13,6 +13,8 @@ import com.jasoncavinder.insulinpendemoapp.database.entities.alert.AlertDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.MessageDao
+import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
+import com.jasoncavinder.insulinpendemoapp.database.entities.payment.PaymentDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.Pen
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.PenDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.pendatapoint.PenDataPointDao
@@ -29,6 +31,7 @@ class AppRepository private constructor(
     private val providerDao: ProviderDao,
     private val penDao: PenDao,
     private val penDataPointDao: PenDataPointDao,
+    private val paymentDao: PaymentDao,
     private val doseDao: DoseDao,
     private val messageDao: MessageDao,
     private val alertDao: AlertDao
@@ -57,6 +60,9 @@ class AppRepository private constructor(
 
     private val _updateUserResult = MutableLiveData<Result<User>>()
     val updateUserResult: LiveData<Result<User>> = _updateUserResult
+
+    private val _updatePaymentResult = MutableLiveData<Result<Payment>>()
+    val updatePaymentResult: LiveData<Result<Payment>> = _updatePaymentResult
 
     init {
         user.addObserver { _, id ->
@@ -124,6 +130,8 @@ class AppRepository private constructor(
     fun getUserPen(userId: String = user.id) = penDao.getPenWithData(userId)
 
     fun getPenDataPoints(penId: String) = penDataPointDao.getDataPoints(penId)
+
+    fun getPaymentMethod(userId: String = user.id) = paymentDao.getUserPayment(userId)
 
     fun getUserDoses(userId: String = user.id) = doseDao.getUserDoses(userId)
 
@@ -201,10 +209,36 @@ class AppRepository private constructor(
                 providerId?.let { user.providerId = it }
                 val result = userDao.update(user)
                 if (result > 0) _updateUserResult.postValue(Result.Success<User>(user))
-                else throw Exception("Could not update user. (")
+                else throw Exception("Could not update user.")
             } catch (ex: Exception) {
                 Log.d(TAG, "Failed to update user", ex)
                 _updateUserResult.postValue(Result.Error(ex))
+            }
+        }
+    }
+
+    suspend fun addPaymentMethod(payment: Payment) {
+        withContext(IO) {
+            try {
+                val result = paymentDao.insert(payment)
+                if (result > 0) _updatePaymentResult.postValue(Result.Success<Payment>(payment))
+                else throw Exception("Could not add payment method.")
+            } catch (ex: Exception) {
+                Log.d(TAG, "Failed to add payment", ex)
+                _updatePaymentResult.postValue(Result.Error(ex))
+            }
+        }
+    }
+
+    suspend fun updatePaymentMethod(payment: Payment) {
+        withContext(IO) {
+            try {
+                val result = paymentDao.update(payment)
+                if (result > 0) _updatePaymentResult.postValue(Result.Success<Payment>(payment))
+                else throw Exception("Could not update payment method.")
+            } catch (ex: Exception) {
+                Log.d(TAG, "Failed to update payment", ex)
+                _updatePaymentResult.postValue(Result.Error(ex))
             }
         }
     }
@@ -251,6 +285,7 @@ class AppRepository private constructor(
             penDao.deleteAllPens()
             userDao.deleteAllUsers()
             messageDao.deleteAllMessages()
+            paymentDao.deleteAllPayments()
         }
     }
 
@@ -264,6 +299,7 @@ class AppRepository private constructor(
             providerDao: ProviderDao,
             penDao: PenDao,
             penDataPointDao: PenDataPointDao,
+            paymentDao: PaymentDao,
             doseDao: DoseDao,
             messageDao: MessageDao,
             alertDao: AlertDao
@@ -275,6 +311,7 @@ class AppRepository private constructor(
                         providerDao = providerDao,
                         penDao = penDao,
                         penDataPointDao = penDataPointDao,
+                        paymentDao = paymentDao,
                         doseDao = doseDao,
                         messageDao = messageDao,
                         alertDao = alertDao

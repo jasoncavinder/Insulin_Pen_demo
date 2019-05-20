@@ -48,6 +48,7 @@ class LoginViewModel(
         AppDatabase.getInstance(application).providerDao(),
         AppDatabase.getInstance(application).penDao(),
         AppDatabase.getInstance(application).penDataPointDao(),
+        AppDatabase.getInstance(application).paymentDao(),
         AppDatabase.getInstance(application).doseDao(),
         AppDatabase.getInstance(application).messageDao(),
         AppDatabase.getInstance(application).alertDao()
