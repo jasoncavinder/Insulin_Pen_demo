@@ -21,25 +21,22 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.jasoncavinder.insulinpendemoapp.R
-import com.jasoncavinder.insulinpendemoapp.databinding.FragmentProfileBinding
+import com.jasoncavinder.insulinpendemoapp.databinding.FragmentPaymentBinding
 import com.jasoncavinder.insulinpendemoapp.databinding.ModalEditPasswordBinding
 import com.jasoncavinder.insulinpendemoapp.databinding.ModalEditProfileBinding
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
-import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
-import kotlinx.android.synthetic.main.content_profile_full.*
 
-class ProfileFragment : Fragment() {
+class PaymentFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ProfileFragment()
+        fun newInstance() = PaymentFragment()
     }
 
     private val TAG by lazy { this::class.java.simpleName }
 
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var createUserViewModel: CreateUserViewModel
 //    private lateinit var navController: NavController
 
     private lateinit var updateToolbarListener: UpdateToolbarListener
@@ -59,8 +56,6 @@ class ProfileFragment : Fragment() {
 
         mainViewModel = ViewModelProviders.of(requireActivity())
             .get(MainViewModel::class.java)
-        createUserViewModel = ViewModelProviders.of(requireActivity())
-            .get(CreateUserViewModel::class.java)
 
     }
 
@@ -69,11 +64,10 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val fragmentProfileBinding =
-            DataBindingUtil.inflate<FragmentProfileBinding>(
-                inflater, R.layout.fragment_profile, container, false
+            DataBindingUtil.inflate<FragmentPaymentBinding>(
+                inflater, R.layout.fragment_payment, container, false
             ).apply {
                 this.viewModel = mainViewModel
-                this.cuViewModel = createUserViewModel
                 this.lifecycleOwner = viewLifecycleOwner
             }
 
@@ -87,17 +81,13 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         updateToolbarListener.updateToolbar(
-            "Profile",
-            R.menu.menu_profile_left,
-            R.menu.menu_profile_right,
+            "Update Payment",
+            R.menu.menu_payment_left,
+            R.menu.menu_payment_right,
             mapOf(
-                Pair(R.id.menu_item_payment_settings, R.id.action_profile_to_payment),
-                Pair(R.id.menu_item_home, R.id.action_profileFragment_pop)
+                Pair(R.id.menu_item_profile_settings, R.id.action_paymentFragment_pop)
             )
         )
-
-        button_edit_profile.setOnClickListener(editProfile())
-        button_edit_password.setOnClickListener(changePassword())
 
         mainViewModel.userProfile.observe(this, Observer { })
 
@@ -118,6 +108,7 @@ class ProfileFragment : Fragment() {
 
         mainViewModel.verifyLogin()
 
+        // TODO: edit to updatePaymentResult
         mainViewModel.updateUserResult.observe(this, Observer {
             when (it) {
                 is Result.Error ->

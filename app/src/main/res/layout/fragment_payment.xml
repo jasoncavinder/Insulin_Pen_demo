@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+  ~ This project is licenced to the client of Upwork contract #21949291. It is not
+  ~ licensed for public use. See the LICENSE.md file for details
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/surfaceColor">
+
+        <ImageView
+            android:id="@+id/image_view_brand_visa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:tint="#80E3F2FD"
+            android:tintMode="src_atop"
+            app:layout_constraintBottom_toTopOf="@+id/image_view_brand_amazon_pay"
+            app:layout_constraintEnd_toStartOf="@+id/image_view_brand_mastercard"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_brand_visa" />
+
+        <ImageView
+            android:id="@+id/image_view_brand_mastercard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:tint="#80E3F2FD"
+            android:tintMode="src_atop"
+            app:layout_constraintBottom_toTopOf="@+id/image_view_brand_paypal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/image_view_brand_visa"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_brand_mastercard" />
+
+        <ImageView
+            android:id="@+id/image_view_brand_amazon_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:tint="#80E3F2FD"
+            android:tintMode="src_atop"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_brands"
+            app:layout_constraintEnd_toStartOf="@+id/image_view_brand_paypal"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_view_brand_visa"
+            app:srcCompat="@drawable/ic_brand_amazon_pay" />
+
+        <ImageView
+            android:id="@+id/image_view_brand_paypal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:tint="#80E3F2FD"
+            android:tintMode="src_atop"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_brands"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/image_view_brand_amazon_pay"
+            app:layout_constraintTop_toBottomOf="@+id/image_view_brand_mastercard"
+            app:srcCompat="@drawable/ic_brand_paypal" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_brands"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".25" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_no_payment_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="text_choose_payment"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/text_choose_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Choose a payment method above"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline_brands" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_credit_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="label_card_number,edit_text_card_number,label_expiration,edit_text_expiration,label_name_on_card,edit_text_name_on_card,guideline_card_data"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_card_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".33" />
+
+        <TextView
+            android:id="@+id/label_card_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@id/edit_text_card_number"
+            android:text="Card Number:"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_card_number"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_card_data"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_text_card_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:ems="10"
+            android:inputType="numberSigned"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textColorHint="@color/surfaceColor_700"
+            app:layout_constraintBottom_toTopOf="@+id/edit_text_expiration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline_card_data"
+            app:layout_constraintTop_toTopOf="@+id/guideline_brands"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/label_expiration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@id/edit_text_expiration"
+            android:text="Expiration:"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_expiration"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_card_data"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_text_expiration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:ems="5"
+            android:hint="MMYY"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textColorHint="@color/surfaceColor_700"
+            app:layout_constraintBottom_toTopOf="@+id/edit_text_name_on_card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.03"
+            app:layout_constraintStart_toStartOf="@+id/guideline_card_data"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_card_number" />
+
+        <TextView
+            android:id="@+id/label_name_on_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@id/edit_text_name_on_card"
+            android:text="Name on Card"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_name_on_card"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_card_data"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_text_name_on_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textColorHint="@color/surfaceColor_700"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline_card_data"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_expiration" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".85" />
+
+        <Button
+            android:id="@+id/button_cancel"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel Changes"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_save"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+        <Button
+            android:id="@+id/button_save"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Save Payment Method"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_cancel"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
