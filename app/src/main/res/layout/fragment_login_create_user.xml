@@ -70,6 +70,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/edit_text_email"
                     app:layout_constraintEnd_toStartOf="@+id/edit_text_last_name"
                     app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_headline" />
 
@@ -88,11 +89,11 @@
                     android:paddingBottom="8dp"
                     android:singleLine="true"
                     app:layout_constraintBottom_toBottomOf="@+id/edit_text_first_name"
-                    app:layout_constraintBottom_toTopOf="@+id/edit_text_email"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/edit_text_first_name"
-                    app:layout_constraintTop_toTopOf="@+id/edit_text_first_name" />
+                    app:layout_constraintTop_toTopOf="@+id/edit_text_first_name"
+                    app:layout_constraintVertical_bias="0.5" />
 
                 <EditText
                     android:id="@+id/edit_text_email"
@@ -109,14 +110,14 @@
                     android:paddingBottom="8dp"
                     android:singleLine="true"
                     android:textColorHighlight="?attr/colorPrimary"
-                    app:layout_constraintBottom_toTopOf="@+id/edit_text_email"
+                    app:layout_constraintBottom_toTopOf="@+id/edit_text_password"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_text_first_name" />
 
                 <EditText
-                    android:id="@+id/edit_text_email"
+                    android:id="@+id/edit_text_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autofillHints="AUTOFILL_HINT_PASSWORD"
@@ -124,10 +125,7 @@
                     android:ems="12"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
+                    android:padding="8dp"
                     android:singleLine="true"
                     app:layout_constraintBottom_toTopOf="@+id/edit_text_confirm"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -144,10 +142,7 @@
                     android:ems="12"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
+                    android:padding="8dp"
                     android:singleLine="true"
                     app:layout_constraintBottom_toTopOf="@+id/text_terms"
                     app:layout_constraintEnd_toEndOf="parent"

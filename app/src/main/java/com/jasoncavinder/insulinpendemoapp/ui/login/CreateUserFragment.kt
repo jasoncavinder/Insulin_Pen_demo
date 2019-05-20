@@ -62,7 +62,7 @@ class CreateUserFragment : Fragment() {
                 edit_text_email.error = getString(createUserState.emailError)
             }
             createUserState.passwordError?.let {
-                edit_text_email.error = getString(createUserState.passwordError)
+                edit_text_password.error = getString(createUserState.passwordError)
             }
             createUserState.confirmError?.let {
                 edit_text_confirm.error = getString(createUserState.confirmError)
@@ -92,14 +92,13 @@ class CreateUserFragment : Fragment() {
             edit_text_first_name.text.toString(),
             edit_text_last_name.text.toString(),
             edit_text_email.text.toString(),
-            edit_text_email.text.toString(),
-            edit_text_confirm.text.toString()
+            edit_text_password.text.toString(), edit_text_confirm.text.toString()
         )
 
         edit_text_first_name.afterTextChanged { dataChanged() }
         edit_text_last_name.afterTextChanged { dataChanged() }
         edit_text_email.afterTextChanged { dataChanged() }
-        edit_text_email.apply { afterTextChanged { dataChanged() } }
+        edit_text_password.apply { afterTextChanged { dataChanged() } }
         edit_text_confirm.apply { afterTextChanged { dataChanged() } }
 
         button_cancel.setOnClickListener {
@@ -115,7 +114,7 @@ class CreateUserFragment : Fragment() {
                 edit_text_first_name.text.toString(),
                 edit_text_last_name.text.toString(),
                 edit_text_email.text.toString(),
-                edit_text_email.text.toString()
+                edit_text_password.text.toString()
             )
         }
     }
