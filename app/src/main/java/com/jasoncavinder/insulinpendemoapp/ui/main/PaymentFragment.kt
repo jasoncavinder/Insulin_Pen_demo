@@ -6,49 +6,41 @@
 
 package com.jasoncavinder.insulinpendemoapp.ui.main
 
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jasoncavinder.insulinpendemoapp.R
+import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
+import com.jasoncavinder.insulinpendemoapp.database.entities.payment.PaymentType
 import com.jasoncavinder.insulinpendemoapp.databinding.FragmentPaymentBinding
-import com.jasoncavinder.insulinpendemoapp.databinding.ModalEditPasswordBinding
-import com.jasoncavinder.insulinpendemoapp.databinding.ModalEditProfileBinding
+import com.jasoncavinder.insulinpendemoapp.ui.login.afterTextChanged
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
+import kotlinx.android.synthetic.main.fragment_payment.*
 
 class PaymentFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = PaymentFragment()
-    }
 
     private val TAG by lazy { this::class.java.simpleName }
 
     private lateinit var mainViewModel: MainViewModel
-//    private lateinit var navController: NavController
+    private lateinit var navController: NavController
 
     private lateinit var updateToolbarListener: UpdateToolbarListener
 
-    /* BEGIN: Required for Demo Actions */
-//    private var _demoActions = arrayListOf(
-//        DemoAction("Simulate receive message", this::simulateReceiveMessage)
-//    )
-//    override fun onDemoActionClicked(position: Int) {
-//        _demoActions[position].action()
-//    }
-//    /* END: Required for Demo Actions */
+    private var newPayment: MutableLiveData<Payment> = MutableLiveData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,17 +49,21 @@ class PaymentFragment : Fragment() {
         mainViewModel = ViewModelProviders.of(requireActivity())
             .get(MainViewModel::class.java)
 
+        mainViewModel.paymentMethod.value?.let { newPayment.value = it }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val fragmentProfileBinding =
             DataBindingUtil.inflate<FragmentPaymentBinding>(
                 inflater, R.layout.fragment_payment, container, false
             ).apply {
-                this.viewModel = mainViewModel
+                this.user = mainViewModel.user
+                this.paymentMethod = newPayment
                 this.lifecycleOwner = viewLifecycleOwner
             }
 
@@ -80,6 +76,8 @@ class PaymentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = findNavController()
+
         updateToolbarListener.updateToolbar(
             "Update Payment",
             R.menu.menu_payment_left,
@@ -89,7 +87,82 @@ class PaymentFragment : Fragment() {
             )
         )
 
-        mainViewModel.userProfile.observe(this, Observer { })
+        image_button_brand_visa.setOnClickListener { setPaymentType(PaymentType.VISA) }
+        image_button_brand_mastercard.setOnClickListener { setPaymentType(PaymentType.MASTER) }
+        image_button_brand_amazon_pay.setOnClickListener { setPaymentType(PaymentType.AMAZON) }
+        image_button_brand_paypal.setOnClickListener { setPaymentType(PaymentType.PAYPAL) }
+
+        button_cancel.setOnClickListener { navController.navigate(R.id.action_paymentFragment_pop) }
+        button_save.setOnClickListener {
+            mainViewModel.updatePaymentResult.observe(this, Observer {
+                Snackbar.make(
+                    requireView(),
+                    when (it) {
+                        is Result.Success -> "Your payment method has been updated."
+                        is Result.Error -> String.format("Failed to update payment method: %s", it.exception)
+                    },
+                    Snackbar.LENGTH_LONG
+                ).show()
+                navController.navigate(R.id.action_paymentFragment_pop)
+            })
+            newPayment.value?.let { mainViewModel.updatePaymentMethod(it) }
+        }
+
+        edit_text_email.afterTextChanged {
+            newPayment.value = newPayment.value?.copy(email = if (it.isNotBlank()) it else null)
+        }
+        edit_text_card_number.afterTextChanged {
+            newPayment.value = newPayment.value?.copy(ccnum = if (it.isNotBlank()) it.toLong() else null)
+        }
+        edit_text_expiration.afterTextChanged {
+            newPayment.value = newPayment.value?.copy(ccexp = if (it.isNotBlank()) it.toInt() else null)
+        }
+        edit_text_name_on_card.afterTextChanged {
+            newPayment.value = newPayment.value?.copy(ccname = if (it.isNotBlank()) it else null)
+        }
+
+        newPayment.observe(this, Observer { payment ->
+            payment?.let {
+                when (payment.type) {
+
+                    PaymentType.VISA, PaymentType.MASTER -> {
+                        if (payment.let { it.ccnum?.let { num -> num > 1000000000000000L } == true }
+                                .also { result ->
+                                    if (!result) edit_text_card_number.error = getString(R.string.error_ccnum)
+                                }
+                            &&
+                            payment.let { it.ccexp?.let { exp -> exp > 119 } == true }
+                                .also { result ->
+                                    if (!result) edit_text_expiration.error = getString(R.string.error_ccexp)
+                                }
+                            &&
+                            payment.let { it.ccname?.isNotBlank() == true }
+                                .also { result ->
+                                    if (!result) edit_text_name_on_card.error = getString(R.string.error_ccname)
+                                }
+                        ) {
+                            button_save.isEnabled = true
+                            return@Observer
+                        }
+                    }
+                    PaymentType.PAYPAL, PaymentType.AMAZON -> {
+                        if (payment.let {
+                                it.email?.let { email ->
+                                    Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                                } == true
+                            }
+                                .also { result ->
+                                    if (!result) edit_text_email.error = getString(R.string.error_payment_email)
+                                }
+                        ) {
+                            button_save.isEnabled = true
+                            return@Observer
+                        }
+                    }
+                }
+            }
+            button_save.isEnabled = false
+        })
 
     }
 
@@ -108,93 +181,19 @@ class PaymentFragment : Fragment() {
 
         mainViewModel.verifyLogin()
 
-        // TODO: edit to updatePaymentResult
-        mainViewModel.updateUserResult.observe(this, Observer {
-            when (it) {
-                is Result.Error ->
-                    Snackbar.make(
-                        requireView(),
-                        "Failed to update user. Please try again or, if you can reproduce this error, file a bug report for the developer.",
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                is Result.Success ->
-                    Snackbar.make(
-                        requireView(),
-                        "Your profile has been updated successfully.",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-
-            }
-        })
-
-        /* BEGIN: Required for Demo Actions */
-//        fab_demo_actions_home.setOnClickListener {
-//            DemoActionListDialogFragment.newInstance(_demoActions)
-//                .show(childFragmentManager, "demoActionsDialog")
-//        }
-        /* END: Required for Demo Actions */
-
     }
 
-    private fun editProfile(): View.OnClickListener {
-        class EditProfileDialog : DialogFragment() {
-
-            override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-                return activity?.let {
-                    val inflater = requireActivity().layoutInflater
-                    val binding = DataBindingUtil.inflate<ModalEditProfileBinding>(
-                        inflater, R.layout.modal_edit_profile, null, false
+    private fun setPaymentType(type: PaymentType) {
+        newPayment.apply {
+            value.let {
+                value = when (it) {
+                    null -> Payment(
+                        userId = mainViewModel.user.value?.userId ?: throw Exception("userId cannot be null"),
+                        type = type
                     )
-                    val builder = AlertDialog.Builder(it).apply {
-                        setView(binding.root)
-
-                        setNegativeButton("Cancel") { _, _ -> dialog?.cancel() }
-                        setPositiveButton("Save") { _, _ ->
-                            mainViewModel.updateUserData(
-                                firstName = binding.editTextFname.text.toString(),
-                                lastName = binding.editTextLname.text.toString(),
-                                email = binding.editTextEmail.text.toString(),
-                                locationCity = binding.editTextCity.text.toString(),
-                                locationState = binding.editTextState.text.toString()
-                            )
-                        }
-
-                    }
-                    binding.viewModel = mainViewModel
-                    builder.create()
-                } ?: throw IllegalStateException("Activity cannot be null")
+                    else -> it.copy(type = type)
+                }
             }
         }
-
-        return View.OnClickListener { EditProfileDialog().show(requireFragmentManager(), "editProfile") }
-
     }
-
-    private fun changePassword(): View.OnClickListener {
-        class ChangePasswordDialog : DialogFragment() {
-
-            override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-                return activity?.let {
-                    val inflater = requireActivity().layoutInflater
-                    val binding = DataBindingUtil.inflate<ModalEditPasswordBinding>(
-                        inflater, R.layout.modal_edit_password, null, false
-                    )
-                    val builder = AlertDialog.Builder(it).apply {
-                        setView(binding.root)
-
-                        setNegativeButton("Cancel") { _, _ -> dialog?.cancel() }
-                        setPositiveButton("Save") { _, _ ->
-                            mainViewModel.changePassword(password = binding.editTextPassword.text.toString())
-                        }
-                    }
-                    binding.viewModel = mainViewModel
-                    builder.create()
-                } ?: throw IllegalStateException("Activity cannot be null")
-            }
-        }
-
-        return View.OnClickListener { ChangePasswordDialog().show(requireFragmentManager(), "changePassword") }
-    }
-
 }
-

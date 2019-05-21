@@ -49,10 +49,11 @@ class CreateUserViewModel internal constructor(
     private val _providerList = repository.getProviders()
 
     var provider: LiveData<Provider> = Transformations.switchMap(_providerList) {
+        // TODO: handle empty list
         MutableLiveData<Provider>(it.shuffled().first())
     }
 
-    val changeProviderResult: LiveData<Result<User>> = repository.changeProviderResult
+    val changeProviderResult: LiveData<Result<Provider>> = repository.changeProviderResult
 
     private fun isNameValid(name: String): Boolean {
         return name.isNotEmpty()

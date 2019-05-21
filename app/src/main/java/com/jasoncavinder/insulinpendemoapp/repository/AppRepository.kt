@@ -17,7 +17,9 @@ import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
 import com.jasoncavinder.insulinpendemoapp.database.entities.payment.PaymentDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.Pen
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.PenDao
+import com.jasoncavinder.insulinpendemoapp.database.entities.pen.PenWithDataPoints
 import com.jasoncavinder.insulinpendemoapp.database.entities.pendatapoint.PenDataPointDao
+import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.ProviderDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.UserDao
@@ -37,14 +39,13 @@ class AppRepository private constructor(
     private val alertDao: AlertDao
 ) {
     private val TAG by lazy { this::class.java.simpleName }
-
     /* Manage and Cache Login Status */
     var user = LoggedInUser()
         private set
 
     private val _userIdLiveData = MutableLiveData<String>()
-    val userIdLiveData: LiveData<String> = _userIdLiveData
 
+    val userIdLiveData: LiveData<String> = _userIdLiveData
     private fun setLoggedIn(userId: String) {
         user.id = userId
     }
@@ -52,17 +53,20 @@ class AppRepository private constructor(
     private val _loginResult = MutableLiveData<Result<String>>()
     val loginResult: LiveData<Result<String>> = _loginResult
 
-    private val _addPenResult = MutableLiveData<Result<Pen>>()
-    val addPenResult: LiveData<Result<Pen>> = _addPenResult
-
-    private val _changeProviderResult = MutableLiveData<Result<User>>()
-    val changeProviderResult: LiveData<Result<User>> = _changeProviderResult
-
     private val _updateUserResult = MutableLiveData<Result<User>>()
     val updateUserResult: LiveData<Result<User>> = _updateUserResult
 
     private val _updatePaymentResult = MutableLiveData<Result<Payment>>()
     val updatePaymentResult: LiveData<Result<Payment>> = _updatePaymentResult
+
+    private val _changeProviderResult = MutableLiveData<Result<Provider>>()
+    val changeProviderResult: LiveData<Result<Provider>> = _changeProviderResult
+
+    private val _addPenResult = MutableLiveData<Result<Pen>>()
+    val addPenResult: LiveData<Result<Pen>> = _addPenResult
+
+    private val _changePenResult = MutableLiveData<Result<PenWithDataPoints>>()
+    val changePenResult: LiveData<Result<PenWithDataPoints>> = _changePenResult
 
     init {
         user.addObserver { _, id ->
@@ -121,6 +125,10 @@ class AppRepository private constructor(
     /* Pass-through database (usually LiveData) */
     fun getLocalUserCount() = userDao.countUsers()
 
+    fun loadUserProfile(userId: String) = userDao.getUserProfile(userId)
+
+    fun loadMessages(userId: String) = messageDao.getUserMessages(userId)
+
     fun getProviders() = providerDao.getProviders()
 
     fun getPens() = penDao.getAllPens()
@@ -135,11 +143,7 @@ class AppRepository private constructor(
 
     fun getUserDoses(userId: String = user.id) = doseDao.getUserDoses(userId)
 
-    fun loadMessages(userId: String) = messageDao.getUserMessages(userId)
-
     fun loadAlerts(userId: String) = alertDao.getUserAlerts(userId)
-
-    fun loadUserProfile(userId: String) = userDao.getUserProfile(userId)
 
 
     suspend fun addPen(pen: Pen) {
@@ -233,7 +237,7 @@ class AppRepository private constructor(
     suspend fun updatePaymentMethod(payment: Payment) {
         withContext(IO) {
             try {
-                val result = paymentDao.update(payment)
+                val result = paymentDao.updateUserPayment(payment)
                 if (result > 0) _updatePaymentResult.postValue(Result.Success<Payment>(payment))
                 else throw Exception("Could not update paymentMethod method.")
             } catch (ex: Exception) {

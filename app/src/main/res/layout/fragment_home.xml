@@ -13,6 +13,10 @@
     <data>
 
         <variable
+            name="user"
+            type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
+
+        <variable
             name="viewModel"
             type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
 
@@ -55,7 +59,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
-                        app:viewModel="@{viewModel}" />
+                        app:user="@{user}" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -88,8 +92,7 @@
                         android:id="@+id/report_summary"
                         layout="@layout/content_report_summary"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:viewModel="@{viewModel}" />
+                        android:layout_height="wrap_content" />
 
                 </androidx.cardview.widget.CardView>
             </LinearLayout>

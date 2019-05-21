@@ -107,7 +107,7 @@ class ProfileFragment : Fragment() {
         button_edit_password.setOnClickListener(changePassword())
         button_edit_payment.setOnClickListener { navController.navigate(R.id.action_profile_to_payment) }
 
-        mainViewModel.userProfile.observe(this, Observer { })
+//        mainViewModel.userProfile.observe(this, Observer { })
 
     }
 

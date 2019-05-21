@@ -10,11 +10,6 @@ import androidx.room.*
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 import java.util.*
 
-const val VISA = 0
-const val MASTER = 1
-const val PAYPAL = 2
-const val AMAZON = 3
-
 @Entity(
     tableName = "payments",
     foreignKeys = [
@@ -23,15 +18,29 @@ const val AMAZON = 3
     indices = [
         Index(value = ["userId"], unique = true)
     ]
-
 )
 data class Payment(
     @PrimaryKey
     @ColumnInfo(name = "id") var paymentId: String = UUID.randomUUID().toString(),
     var userId: String,
-    var type: Int, // one of VISA, MASTER, PAYPAL, AMAZON
-    var ccnum: Long?,
-    var ccexp: Int?,
-    var ccname: String?,
-    var email: String?
+    var type: PaymentType,
+    var ccnum: Long? = null,
+    var ccexp: Int? = null,
+    var ccname: String? = null,
+    var email: String? = null
 )
+
+enum class PaymentType(val intVal: Int) {
+    VISA(0), MASTER(1), PAYPAL(10), AMAZON(11);
+
+    companion object {
+        private val map by lazy { values().associateBy(PaymentType::intVal) }
+        operator fun invoke(type: Int) = map.getOrDefault(type, VISA)
+    }
+}
+
+//const val VISA = 0
+//const val MASTER = 1
+//const val PAYPAL = 2
+//const val AMAZON = 3
+

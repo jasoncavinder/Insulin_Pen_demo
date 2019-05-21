@@ -12,6 +12,10 @@
     <data>
 
         <variable
+            name="user"
+            type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
+
+        <variable
             name="viewModel"
             type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
 
@@ -37,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text='@{viewModel.userProfile.user.firstName + " " + viewModel.userProfile.user.lastName ?? "not loaded"}'
+            android:text='@{user.firstName + " " + user.lastName ?? "not loaded"}'
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="?attr/colorPrimaryDark"
             app:layout_constraintStart_toEndOf="@+id/account_circle"
@@ -51,7 +55,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text='@{String.format("%s%s%s", viewModel.userProfile.user.locationCity, (viewModel.userProfile.user.locationState.length() > 0)? ", " : "" , viewModel.userProfile.user.locationState)}'
+            android:text='@{String.format("%s%s%s", user.locationCity, (user.locationState.length() > 0)? ", " : "" , user.locationState)}'
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="?attr/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/account_circle"
@@ -110,7 +114,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:minLines="4"
-            android:text="@{String.format(@string/profile_summary_demo_text, viewModel.userProfile.user.firstName)}"
+            android:text="@{String.format(@string/profile_summary_demo_text, user.firstName)}"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

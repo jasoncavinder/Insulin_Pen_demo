@@ -36,7 +36,7 @@
                 android:contentDescription="@string/provider_photo_desc"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@{viewModel.provider.photo}"
+                android:src="@{viewModel.provider.photo}"
                 tools:srcCompat="@tools:sample/avatars[10]" />
 
             <TextView

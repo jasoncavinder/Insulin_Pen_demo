@@ -4,523 +4,529 @@
   ~ licensed for public use. See the LICENSE.md file for details
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data>
+    <ImageView
+        android:id="@+id/icon_report"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/reports_icon"
+        android:tint="?attr/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/barrier_report_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_folder_shared_black_24dp" />
 
-        <variable
-            name="viewModel"
-            type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
+    <TextView
+        android:id="@+id/title_report_summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/report_summary"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="?attr/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="@+id/icon_report"
+        app:layout_constraintEnd_toStartOf="@+id/icon_report_toggle"
+        app:layout_constraintStart_toEndOf="@+id/icon_report"
+        app:layout_constraintTop_toTopOf="@+id/icon_report" />
 
-    </data>
+    <ImageView
+        android:id="@+id/icon_report_toggle"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/toggle_short_long_report"
+        android:focusable="true"
+        android:tint="?attr/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@id/barrier4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/more_unfold_24dp" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_report_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="title_report_summary,icon_report,icon_report_toggle"
+        tools:layout_editor_absoluteY="52dp" />
+
+    <FrameLayout
+        android:id="@+id/frame_report_glucose"
+        android:layout_width="0dp"
+        android:layout_height="168dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/surfaceColor_100"
+        app:layout_constraintEnd_toStartOf="@+id/frame_report_inject"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier_report_header">
 
         <ImageView
-            android:id="@+id/icon_report"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_margin="16dp"
-            android:tint="?attr/colorPrimaryDark"
-            app:layout_constraintBottom_toTopOf="@+id/barrier_report_header"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_folder_shared_black_24dp" />
+            android:id="@+id/circle_glucose"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:layout_gravity="center|top"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/glucose_meter"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_circle1" />
 
         <TextView
-            android:id="@+id/title_report_summary"
-            android:layout_width="wrap_content"
+            android:id="@+id/data_glucose"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center|top"
+            android:layout_margin="24dp"
+            android:height="80dp"
+            android:fontFamily="@font/anodina_bold"
+            android:gravity="center"
+            android:lines="1"
+            android:maxWidth="80dp"
+            android:maxLines="1"
+            android:minLines="1"
+            android:text="@string/_88_mg_dl"
+            android:textColor="@color/surfaceTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="18dp"
+            app:autoSizeMinTextSize="14dp"
+            app:autoSizeTextType="uniform" />
+
+        <TextView
+            android:id="@+id/label_glucose"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Report Summary"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="?attr/colorPrimaryDark"
-            app:layout_constraintBottom_toBottomOf="@+id/icon_report"
-            app:layout_constraintEnd_toStartOf="@+id/icon_report_toggle"
-            app:layout_constraintStart_toEndOf="@+id/icon_report"
-            app:layout_constraintTop_toTopOf="@+id/icon_report" />
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="6dp"
+            android:fontFamily="@font/anodina_bold"
+            android:gravity="bottom|center"
+            android:text="@string/last_glucose"
+            android:textColor="@color/surfaceTextColor"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_report_inject"
+        android:layout_width="0dp"
+        android:layout_height="168dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/primaryColor_50"
+        app:layout_constraintEnd_toStartOf="@+id/frame_report_sleep"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/frame_report_glucose"
+        app:layout_constraintTop_toBottomOf="@id/barrier_report_header">
 
         <ImageView
-            android:id="@+id/icon_report_toggle"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:focusable="auto"
-            android:tint="?attr/colorPrimaryDark"
-            app:layout_constraintBottom_toTopOf="@id/barrier4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/more_unfold_24dp" />
+            android:id="@+id/circle_inject"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:layout_gravity="center|top"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/injection_meter"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_circle2" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier_report_header"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/data_inject"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center|top"
+            android:layout_margin="24dp"
+            android:height="80dp"
+            android:fontFamily="@font/anodina_bold"
+            android:gravity="center"
+            android:lines="1"
+            android:maxWidth="80dp"
+            android:maxLines="1"
+            android:minLines="1"
+            android:text="@string/_7u"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="18dp"
+            app:autoSizeMinTextSize="14dp"
+            app:autoSizeTextType="uniform" />
+
+        <TextView
+            android:id="@+id/label_inject"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="title_report_summary,icon_report,icon_report_toggle"
-            tools:layout_editor_absoluteY="52dp" />
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="6dp"
+            android:fontFamily="@font/anodina_bold"
+            android:gravity="bottom|center"
+            android:text="@string/last_dose"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </FrameLayout>
 
-        <FrameLayout
-            android:id="@+id/frame_report_glucose"
-            android:layout_width="0dp"
-            android:layout_height="168dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/surfaceColor_100"
-            app:layout_constraintEnd_toStartOf="@+id/frame_report_inject"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier_report_header">
+    <FrameLayout
+        android:id="@+id/frame_report_sleep"
+        android:layout_width="0dp"
+        android:layout_height="168dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/primaryColor_500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/frame_report_inject"
+        app:layout_constraintTop_toBottomOf="@id/barrier_report_header">
+
+        <ImageView
+            android:id="@+id/circle_sleep"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:layout_gravity="center|top"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/sleep_meter"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_circle3" />
+
+        <TextView
+            android:id="@+id/data_sleep"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center|top"
+            android:layout_margin="24dp"
+            android:height="80dp"
+            android:fontFamily="@font/anodina_bold"
+            android:gravity="center"
+            android:lines="1"
+            android:maxWidth="80dp"
+            android:maxLines="1"
+            android:minLines="1"
+            android:text="@string/_06_15"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="18dp"
+            app:autoSizeMinTextSize="14dp"
+            app:autoSizeTextType="uniform" />
+
+        <TextView
+            android:id="@+id/label_sleep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="6dp"
+            android:fontFamily="@font/anodina_bold"
+            android:gravity="bottom|center"
+            android:text="@string/time_asleep"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="frame_report_glucose,frame_report_inject,frame_report_sleep"
+        tools:layout_editor_absoluteY="236dp" />
+
+    <FrameLayout
+        android:id="@+id/frame_report_glucose_wide"
+        android:layout_width="match_parent"
+        android:layout_height="174dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/surfaceColor_100"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier4">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/circle_glucose"
-                android:layout_width="match_parent"
+                android:id="@+id/circle_glucose_wide"
+                android:layout_width="128dp"
                 android:layout_height="128dp"
-                android:layout_gravity="center|top"
+                android:layout_gravity="center|top|left"
                 android:layout_margin="8dp"
+                android:layout_marginStart="16dp"
+                android:contentDescription="@string/glucose_meter"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_circle1" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_circle1"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
-                android:id="@+id/data_glucose"
+                android:id="@+id/data_glucose_wide"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:layout_gravity="center|top"
+                android:layout_gravity="top|left"
                 android:layout_margin="24dp"
-                android:height="80dp"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/anodina_bold"
                 android:gravity="center"
                 android:lines="1"
                 android:maxWidth="80dp"
                 android:maxLines="1"
                 android:minLines="1"
-                android:text="88 mg/dL"
+                android:text="@string/_06_15"
                 android:textColor="@color/surfaceTextColor"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:autoSizeMaxTextSize="18dp"
+                app:autoSizeMaxTextSize="21dp"
                 app:autoSizeMinTextSize="14dp"
-                app:autoSizeTextType="uniform" />
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="@+id/circle_glucose_wide"
+                app:layout_constraintEnd_toEndOf="@+id/circle_glucose_wide"
+                app:layout_constraintStart_toStartOf="@+id/circle_glucose_wide"
+                app:layout_constraintTop_toTopOf="@+id/circle_glucose_wide"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
-                android:id="@+id/label_glucose"
-                android:layout_width="match_parent"
+                android:id="@+id/label_glucose_wide"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_margin="6dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/anodina_bold"
                 android:gravity="bottom|center"
-                android:text="Last Glucose"
-                android:textColor="@color/surfaceTextColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/frame_report_inject"
-            android:layout_width="0dp"
-            android:layout_height="168dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/primaryColor_50"
-            app:layout_constraintEnd_toStartOf="@+id/frame_report_sleep"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/frame_report_glucose"
-            app:layout_constraintTop_toBottomOf="@id/barrier_report_header">
-
-            <ImageView
-                android:id="@+id/circle_inject"
-                android:layout_width="match_parent"
-                android:layout_height="128dp"
-                android:layout_gravity="center|top"
-                android:layout_margin="8dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_circle2" />
+                android:text="@string/today_s_glucose"
+                android:textColor="@color/primaryColor"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/fulltext_glucose"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/circle_glucose_wide"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
-                android:id="@+id/data_inject"
+                android:id="@+id/fulltext_glucose"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/feedback_from_dr_lauren_ngood_work_please_keep_up_the_injection"
+                android:textColor="@color/primaryColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/label_glucose_wide"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/label_glucose_wide"
+                app:layout_constraintTop_toBottomOf="@+id/label_glucose_wide"
+                app:layout_constraintVertical_chainStyle="packed" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_report_inject_wide"
+        android:layout_width="match_parent"
+        android:layout_height="174dp"
+        android:background="@color/primaryColor_50"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frame_report_glucose_wide">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/circle_inject_wide"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_gravity="center|top|left"
+                android:layout_margin="8dp"
+                android:layout_marginStart="16dp"
+                android:contentDescription="@string/injection_meter"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_circle2"
+                tools:ignore="RtlHardcoded" />
+
+            <TextView
+                android:id="@+id/data_inject_wide"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:layout_gravity="center|top"
+                android:layout_gravity="top|left"
                 android:layout_margin="24dp"
-                android:height="80dp"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/anodina_bold"
                 android:gravity="center"
                 android:lines="1"
                 android:maxWidth="80dp"
                 android:maxLines="1"
                 android:minLines="1"
-                android:text="7U"
+                android:text="@string/_7u"
                 android:textColor="@color/secondaryTextColor"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:autoSizeMaxTextSize="18dp"
+                app:autoSizeMaxTextSize="21dp"
                 app:autoSizeMinTextSize="14dp"
-                app:autoSizeTextType="uniform" />
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="@+id/circle_inject_wide"
+                app:layout_constraintEnd_toEndOf="@+id/circle_inject_wide"
+                app:layout_constraintStart_toStartOf="@+id/circle_inject_wide"
+                app:layout_constraintTop_toTopOf="@+id/circle_inject_wide"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
-                android:id="@+id/label_inject"
-                android:layout_width="match_parent"
+                android:id="@+id/label_inject_wide"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_margin="6dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/anodina_bold"
                 android:gravity="bottom|center"
-                android:text="Last Dose"
+                android:text="@string/average_injection"
                 android:textColor="@color/secondaryTextColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/frame_report_sleep"
-            android:layout_width="0dp"
-            android:layout_height="168dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/primaryColor_500"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/frame_report_inject"
-            app:layout_constraintTop_toBottomOf="@id/barrier_report_header">
-
-            <ImageView
-                android:id="@+id/circle_sleep"
-                android:layout_width="match_parent"
-                android:layout_height="128dp"
-                android:layout_gravity="center|top"
-                android:layout_margin="8dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_circle3" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/fulltext_inject"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/circle_inject_wide"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
-                android:id="@+id/data_sleep"
+                android:id="@+id/fulltext_inject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/feedback_nplease_don_t_forget_you_need_one_more_injection_tonight"
+                android:textColor="@color/secondaryTextColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/label_inject_wide"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/label_inject_wide"
+                app:layout_constraintTop_toBottomOf="@+id/label_inject_wide"
+                app:layout_constraintVertical_chainStyle="packed" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_report_sleep_wide"
+        android:layout_width="match_parent"
+        android:layout_height="174dp"
+        android:background="@color/primaryColor"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frame_report_inject_wide">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/circle_sleep_wide"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_gravity="center|top|left"
+                android:layout_margin="8dp"
+                android:layout_marginStart="16dp"
+                android:contentDescription="@string/sleep_meter"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_circle3"
+                tools:ignore="RtlHardcoded" />
+
+            <TextView
+                android:id="@+id/data_sleep_wide"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:layout_gravity="center|top"
+                android:layout_gravity="top|left"
                 android:layout_margin="24dp"
-                android:height="80dp"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/anodina_bold"
                 android:gravity="center"
                 android:lines="1"
                 android:maxWidth="80dp"
                 android:maxLines="1"
                 android:minLines="1"
-                android:text="06:15"
+                android:text="@string/_06_15"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:autoSizeMaxTextSize="18dp"
+                app:autoSizeMaxTextSize="21dp"
                 app:autoSizeMinTextSize="14dp"
-                app:autoSizeTextType="uniform" />
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="@+id/circle_sleep_wide"
+                app:layout_constraintEnd_toEndOf="@+id/circle_sleep_wide"
+                app:layout_constraintStart_toStartOf="@+id/circle_sleep_wide"
+                app:layout_constraintTop_toTopOf="@+id/circle_sleep_wide"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
-                android:id="@+id/label_sleep"
-                android:layout_width="match_parent"
+                android:id="@+id/label_sleep_wide"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_margin="6dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/anodina_bold"
                 android:gravity="bottom|center"
-                android:text="Time Asleep"
+                android:text="@string/average_sleep"
                 android:textColor="@color/primaryTextColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/fulltext_sleep"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/circle_sleep_wide"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:ignore="RtlHardcoded" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="frame_report_glucose,frame_report_inject,frame_report_sleep"
-            tools:layout_editor_absoluteY="236dp" />
+            <TextView
+                android:id="@+id/fulltext_sleep"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/feedback_from_dr_lauren_nyou_need_more_sleep_to_control_your_glucose_please_sleep_8_hours_if_you_can"
+                android:textColor="@color/primaryTextColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/label_sleep_wide"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/label_sleep_wide"
+                app:layout_constraintTop_toBottomOf="@+id/label_sleep_wide"
+                app:layout_constraintVertical_chainStyle="packed" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
-        <FrameLayout
-            android:id="@+id/frame_report_glucose_wide"
-            android:layout_width="match_parent"
-            android:layout_height="174dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/surfaceColor_100"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier4">
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="frame_report_glucose_wide,frame_report_inject_wide,frame_report_sleep_wide"
+        tools:layout_editor_absoluteY="236dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_report_short"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="frame_report_sleep,frame_report_glucose,frame_report_inject" />
 
-                <ImageView
-                    android:id="@+id/circle_glucose_wide"
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:layout_gravity="center|top|left"
-                    android:layout_margin="8dp"
-                    android:layout_marginStart="16dp"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_circle1" />
-
-                <TextView
-                    android:id="@+id/data_glucose_wide"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_gravity="top|left"
-                    android:layout_margin="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/anodina_bold"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:maxWidth="80dp"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:text="06:15"
-                    android:textColor="@color/surfaceTextColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:autoSizeMaxTextSize="21dp"
-                    app:autoSizeMinTextSize="14dp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="@+id/circle_glucose_wide"
-                    app:layout_constraintEnd_toEndOf="@+id/circle_glucose_wide"
-                    app:layout_constraintStart_toStartOf="@+id/circle_glucose_wide"
-                    app:layout_constraintTop_toTopOf="@+id/circle_glucose_wide" />
-
-                <TextView
-                    android:id="@+id/label_glucose_wide"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/anodina_bold"
-                    android:gravity="bottom|center"
-                    android:text="Today's Glucose"
-                    android:textColor="@color/primaryColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/fulltext_glucose"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/circle_glucose_wide"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
-
-                <TextView
-                    android:id="@+id/fulltext_glucose"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Feedback from Dr. Lauren: \nGood Work! Please keep up the injection!"
-                    android:textColor="@color/primaryColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/label_glucose_wide"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/label_glucose_wide"
-                    app:layout_constraintTop_toBottomOf="@+id/label_glucose_wide"
-                    app:layout_constraintVertical_chainStyle="packed" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/frame_report_inject_wide"
-            android:layout_width="match_parent"
-            android:layout_height="174dp"
-            android:background="@color/primaryColor_50"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/frame_report_glucose_wide">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/circle_inject_wide"
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:layout_gravity="center|top|left"
-                    android:layout_margin="8dp"
-                    android:layout_marginStart="16dp"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_circle2" />
-
-                <TextView
-                    android:id="@+id/data_inject_wide"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_gravity="top|left"
-                    android:layout_margin="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/anodina_bold"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:maxWidth="80dp"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:text="7U"
-                    android:textColor="@color/secondaryTextColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:autoSizeMaxTextSize="21dp"
-                    app:autoSizeMinTextSize="14dp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="@+id/circle_inject_wide"
-                    app:layout_constraintEnd_toEndOf="@+id/circle_inject_wide"
-                    app:layout_constraintStart_toStartOf="@+id/circle_inject_wide"
-                    app:layout_constraintTop_toTopOf="@+id/circle_inject_wide" />
-
-                <TextView
-                    android:id="@+id/label_inject_wide"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/anodina_bold"
-                    android:gravity="bottom|center"
-                    android:text="Average Injection"
-                    android:textColor="@color/secondaryTextColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/fulltext_inject"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/circle_inject_wide"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
-
-                <TextView
-                    android:id="@+id/fulltext_inject"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Feedback:\nPlease Don't forget you need one more injection tonight!"
-                    android:textColor="@color/secondaryTextColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/label_inject_wide"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/label_inject_wide"
-                    app:layout_constraintTop_toBottomOf="@+id/label_inject_wide"
-                    app:layout_constraintVertical_chainStyle="packed" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/frame_report_sleep_wide"
-            android:layout_width="match_parent"
-            android:layout_height="174dp"
-            android:background="@color/primaryColor"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/frame_report_inject_wide">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/circle_sleep_wide"
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:layout_gravity="center|top|left"
-                    android:layout_margin="8dp"
-                    android:layout_marginStart="16dp"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_circle3" />
-
-                <TextView
-                    android:id="@+id/data_sleep_wide"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_gravity="top|left"
-                    android:layout_margin="24dp"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/anodina_bold"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:maxWidth="80dp"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:text="6h45m"
-                    android:textColor="@color/primaryTextColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:autoSizeMaxTextSize="21dp"
-                    app:autoSizeMinTextSize="14dp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="@+id/circle_sleep_wide"
-                    app:layout_constraintEnd_toEndOf="@+id/circle_sleep_wide"
-                    app:layout_constraintStart_toStartOf="@+id/circle_sleep_wide"
-                    app:layout_constraintTop_toTopOf="@+id/circle_sleep_wide" />
-
-                <TextView
-                    android:id="@+id/label_sleep_wide"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/anodina_bold"
-                    android:gravity="bottom|center"
-                    android:text="Average Sleep"
-                    android:textColor="@color/primaryTextColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/fulltext_sleep"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/circle_sleep_wide"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
-
-                <TextView
-                    android:id="@+id/fulltext_sleep"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Feedback from Dr. Lauren:\nYou need moresleep to control your glucose! Please sleep 8 hours if you can!"
-                    android:textColor="@color/primaryTextColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/label_sleep_wide"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/label_sleep_wide"
-                    app:layout_constraintTop_toBottomOf="@+id/label_sleep_wide"
-                    app:layout_constraintVertical_chainStyle="packed" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </FrameLayout>
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="frame_report_glucose_wide,frame_report_inject_wide,frame_report_sleep_wide"
-            tools:layout_editor_absoluteY="236dp" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_report_short"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="frame_report_sleep,frame_report_glucose,frame_report_inject" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_report_long"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="frame_report_glucose_wide,frame_report_inject_wide,frame_report_sleep_wide" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_report_long"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="frame_report_glucose_wide,frame_report_inject_wide,frame_report_sleep_wide" />
+</androidx.constraintlayout.widget.ConstraintLayout>

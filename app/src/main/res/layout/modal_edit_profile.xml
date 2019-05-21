@@ -11,6 +11,10 @@
     <data>
 
         <variable
+            name="user"
+            type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
+
+        <variable
             name="viewModel"
             type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
     </data>
@@ -42,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:labelFor="@id/edit_text_fname"
-            android:text="First Name: "
+            android:text="@string/first_name"
             android:textAlignment="textEnd"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?android:attr/textColorPrimary"
@@ -57,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:labelFor="@id/edit_text_lname"
-            android:text="Last Name:"
+            android:text="@string/last_name"
             android:textAlignment="textEnd"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?android:attr/textColorPrimary"
@@ -72,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:labelFor="@id/edit_text_email"
-            android:text="Email"
+            android:text="@string/email_"
             android:textAlignment="textEnd"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?android:attr/textColorPrimary"
@@ -86,8 +90,7 @@
             android:layout_width="122dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:labelFor="@id/edit_text_city"
-            android:text="Location"
+            android:text="@string/location"
             android:textAlignment="textEnd"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?android:attr/textColorPrimary"
@@ -105,12 +108,13 @@
             android:backgroundTint="?attr/editTextColor"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@{viewModel.userProfile.user.firstName}"
+            android:text="@{user.firstName}"
             android:textAlignment="textStart"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_lname"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/barrier_gutter"
-            app:layout_constraintTop_toBottomOf="@id/toolbar3" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar3"
+            tools:targetApi="o" />
 
         <EditText
             android:id="@+id/edit_text_lname"
@@ -121,12 +125,13 @@
             android:backgroundTint="?attr/editTextColor"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@{viewModel.userProfile.user.lastName}"
+            android:text="@{user.lastName}"
             android:textAlignment="textStart"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/barrier_gutter"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_fname" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_fname"
+            tools:targetApi="o" />
 
         <EditText
             android:id="@+id/edit_text_email"
@@ -137,12 +142,13 @@
             android:backgroundTint="?attr/editTextColor"
             android:ems="10"
             android:inputType="textEmailAddress"
-            android:text="@{viewModel.userProfile.user.email}"
+            android:text="@{user.email}"
             android:textAlignment="textStart"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_city"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/barrier_gutter"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_lname" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_lname"
+            tools:targetApi="o" />
 
         <EditText
             android:id="@+id/edit_text_city"
@@ -150,17 +156,18 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginEnd="8dp"
-            android:autofillHints="postalCode"
             android:backgroundTint="?attr/editTextColor"
             android:ems="10"
-            android:hint="City"
+            android:hint="@string/city"
             android:inputType="text"
-            android:text="@{viewModel.userProfile.user.locationCity}"
+            android:text="@{user.locationCity}"
             android:textAlignment="textStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/edit_text_state"
             app:layout_constraintStart_toEndOf="@id/barrier_gutter"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_email" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_email"
+            tools:ignore="Autofill"
+            tools:targetApi="o" />
 
         <EditText
             android:id="@+id/edit_text_state"
@@ -169,13 +176,14 @@
             android:layout_margin="8dp"
             android:backgroundTint="?attr/editTextColor"
             android:ems="10"
-            android:hint="State"
+            android:hint="@string/state"
             android:inputType="text"
             android:maxLength="2"
-            android:text="@{viewModel.userProfile.user.locationState}"
+            android:text="@{user.locationState}"
             app:layout_constraintBottom_toBottomOf="@+id/edit_text_city"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/edit_text_city" />
+            app:layout_constraintTop_toTopOf="@+id/edit_text_city"
+            tools:ignore="Autofill" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_gutter"

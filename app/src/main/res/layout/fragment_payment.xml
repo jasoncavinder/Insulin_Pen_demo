@@ -6,15 +6,25 @@
   ~ licensed for public use. See the LICENSE.md file for details
   -->
 
+<!-- TODO: format text input (ccnum, ccexp) --><!-- TODO: validate inputs -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <import type="com.jasoncavinder.insulinpendemoapp.database.entities.payment.PaymentType" />
+
+        <import type="android.view.View" />
+
         <variable
-            name="viewModel"
-            type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
+            name="paymentMethod"
+            type="androidx.lifecycle.MutableLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment&gt;" />
+
+        <variable
+            name="user"
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,60 +33,68 @@
         android:layout_height="match_parent"
         android:background="@color/surfaceColor">
 
-        <ImageView
-            android:id="@+id/image_view_brand_visa"
+        <ImageButton
+            android:id="@+id/image_button_brand_visa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:tint="#80E3F2FD"
+            android:backgroundTint="@color/surfaceColor"
+            android:contentDescription="@string/visa_logo"
+            android:tint="@{paymentMethod.type == PaymentType.VISA ? @color/noOverlay : @color/blueFadeOverlay}"
             android:tintMode="src_atop"
-            app:layout_constraintBottom_toTopOf="@+id/image_view_brand_amazon_pay"
-            app:layout_constraintEnd_toStartOf="@+id/image_view_brand_mastercard"
+            app:layout_constraintBottom_toTopOf="@+id/image_button_brand_amazon_pay"
+            app:layout_constraintEnd_toStartOf="@+id/image_button_brand_mastercard"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_brand_visa" />
 
-        <ImageView
-            android:id="@+id/image_view_brand_mastercard"
+        <ImageButton
+            android:id="@+id/image_button_brand_mastercard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:tint="#80E3F2FD"
+            android:backgroundTint="@color/surfaceColor"
+            android:contentDescription="@string/mastercard_logo"
+            android:tint="@{paymentMethod.type == PaymentType.MASTER ? @color/noOverlay : @color/blueFadeOverlay}"
             android:tintMode="src_atop"
-            app:layout_constraintBottom_toTopOf="@+id/image_view_brand_paypal"
+            app:layout_constraintBottom_toTopOf="@+id/image_button_brand_paypal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/image_view_brand_visa"
+            app:layout_constraintStart_toEndOf="@+id/image_button_brand_visa"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_brand_mastercard" />
 
-        <ImageView
-            android:id="@+id/image_view_brand_amazon_pay"
+        <ImageButton
+            android:id="@+id/image_button_brand_amazon_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:tint="#80E3F2FD"
+            android:backgroundTint="@color/surfaceColor"
+            android:contentDescription="@string/amazon_pay_logo"
+            android:tint="@{paymentMethod.type == PaymentType.AMAZON ? @color/noOverlay : @color/blueFadeOverlay}"
             android:tintMode="src_atop"
             app:layout_constraintBottom_toTopOf="@+id/guideline_brands"
-            app:layout_constraintEnd_toStartOf="@+id/image_view_brand_paypal"
+            app:layout_constraintEnd_toStartOf="@+id/image_button_brand_paypal"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_view_brand_visa"
+            app:layout_constraintTop_toBottomOf="@+id/image_button_brand_visa"
             app:srcCompat="@drawable/ic_brand_amazon_pay" />
 
-        <ImageView
-            android:id="@+id/image_view_brand_paypal"
+        <ImageButton
+            android:id="@+id/image_button_brand_paypal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:tint="#80E3F2FD"
+            android:backgroundTint="@color/surfaceColor"
+            android:contentDescription="@string/paypal_logo"
+            android:tint="@{paymentMethod.type == PaymentType.PAYPAL ? @color/noOverlay : @color/blueFadeOverlay}"
             android:tintMode="src_atop"
             app:layout_constraintBottom_toTopOf="@+id/guideline_brands"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/image_view_brand_amazon_pay"
-            app:layout_constraintTop_toBottomOf="@+id/image_view_brand_mastercard"
+            app:layout_constraintStart_toEndOf="@+id/image_button_brand_amazon_pay"
+            app:layout_constraintTop_toBottomOf="@+id/image_button_brand_mastercard"
             app:srcCompat="@drawable/ic_brand_paypal" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -84,13 +102,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".25" />
+            app:layout_constraintGuide_percent=".33" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group_no_payment_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="@{paymentMethod.type == null ? View.VISIBLE : View.GONE}"
             app:constraint_referenced_ids="text_choose_payment"
             tools:visibility="gone" />
 
@@ -99,8 +117,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Choose a payment method above"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            android:text="@string/choose_a_payment_method_above"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_buttons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline_brands" />
@@ -109,9 +127,9 @@
             android:id="@+id/group_credit_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="@{paymentMethod.type == PaymentType.VISA || paymentMethod.type == PaymentType.MASTER ? View.VISIBLE : View.GONE}"
             app:constraint_referenced_ids="label_card_number,edit_text_card_number,label_expiration,edit_text_expiration,label_name_on_card,edit_text_name_on_card,guideline_card_data"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_card_data"
@@ -126,11 +144,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:labelFor="@id/edit_text_card_number"
-            android:text="Card Number:"
+            android:text="@string/card_number"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_card_number"
             app:layout_constraintEnd_toStartOf="@+id/guideline_card_data"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -139,8 +156,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:autofillHints="creditCardNumber"
             android:ems="10"
             android:inputType="numberSigned"
+            android:text="@{paymentMethod.ccnum.toString()}"
             android:textColor="?android:attr/textColorSecondary"
             android:textColorHint="@color/surfaceColor_700"
             app:layout_constraintBottom_toTopOf="@+id/edit_text_expiration"
@@ -148,7 +167,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline_card_data"
             app:layout_constraintTop_toTopOf="@+id/guideline_brands"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:targetApi="o" />
 
         <TextView
             android:id="@+id/label_expiration"
@@ -156,11 +176,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:labelFor="@id/edit_text_expiration"
-            android:text="Expiration:"
+            android:text="@string/expiration"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_expiration"
             app:layout_constraintEnd_toStartOf="@+id/guideline_card_data"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -169,9 +188,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:autofillHints="creditCardExpirationDate"
             android:ems="5"
-            android:hint="MMYY"
+            android:hint="@string/mmyy"
             android:inputType="number"
+            android:text="@{paymentMethod.ccexp.toString()}"
             android:textAlignment="center"
             android:textColor="?android:attr/textColorSecondary"
             android:textColorHint="@color/surfaceColor_700"
@@ -179,7 +200,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.03"
             app:layout_constraintStart_toStartOf="@+id/guideline_card_data"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_card_number" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_card_number"
+            tools:ignore="LabelFor"
+            tools:targetApi="o" />
 
         <TextView
             android:id="@+id/label_name_on_card"
@@ -187,11 +210,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:labelFor="@id/edit_text_name_on_card"
-            android:text="Name on Card"
+            android:text="@string/name_on_card"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_name_on_card"
             app:layout_constraintEnd_toStartOf="@+id/guideline_card_data"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -200,19 +222,60 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:autofillHints="name"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
+            android:text='@{paymentMethod.ccname != null ? paymentMethod.ccname : String.format("%s %s", user.firstName, user.lastName)}'
             android:textColor="?android:attr/textColorSecondary"
             android:textColorHint="@color/surfaceColor_700"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_buttons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline_card_data"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_expiration" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_expiration"
+            tools:targetApi="o"
+            tools:text="@string/name" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_web_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{paymentMethod.type == PaymentType.AMAZON || paymentMethod.type == PaymentType.PAYPAL ? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="label_email, edit_text_email"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/label_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@+id/edit_text_email"
+            android:text="@string/label_email"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/edit_text_email"
+            app:layout_constraintEnd_toStartOf="@+id/edit_text_email"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_text_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="email"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:text='@{paymentMethod.email != null ? paymentMethod.email : user.email}'
+            android:textColor="?android:attr/textColorSecondary"
+            android:textColorHint="@color/surfaceColor_700"
+            app:layout_constraintBottom_toTopOf="@id/guideline_buttons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/label_email"
+            app:layout_constraintTop_toBottomOf="@id/guideline_brands"
+            tools:targetApi="o" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
+            android:id="@+id/guideline_buttons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -223,12 +286,12 @@
             style="@style/Widget.AppCompat.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel Changes"
+            android:text="@string/cancel_changes"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_save"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline3" />
+            app:layout_constraintTop_toTopOf="@+id/guideline_buttons" />
 
         <Button
             android:id="@+id/button_save"
@@ -236,12 +299,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:text="Save Payment Method"
+            android:text="@string/save_payment_method"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_cancel"
-            app:layout_constraintTop_toTopOf="@+id/guideline3" />
+            app:layout_constraintTop_toTopOf="@+id/guideline_buttons" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

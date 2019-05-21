@@ -7,7 +7,6 @@
 package com.jasoncavinder.insulinpendemoapp.ui.main
 
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -70,11 +69,11 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         try {
             if (sampleMessageContent.size == 0) throw java.lang.Exception("sampleMessageContent is empty")
 
-            val userId = mainViewModel.userProfile.value?.user?.userId
-            if (userId.isNullOrBlank()) throw Exception("userId not found")
+            val userId = mainViewModel.user.value?.userId
+                ?: throw Exception("userId not found")
 
-            val providerId = mainViewModel.userProfile.value?.provider?.first()?.providerId
-            if (providerId.isNullOrBlank()) throw java.lang.Exception("providerId not found")
+            val providerId = mainViewModel.provider.value?.providerId
+                ?: throw java.lang.Exception("providerId not found")
 
             val message = Message(
                 messageId = 0,
@@ -103,9 +102,9 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             ?.setTitle("Temperature Alert")
             ?.setIcon(R.drawable.ic_warning_black_24dp)
         builder?.apply {
-            setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
+            setPositiveButton("OK") { dialog, id ->
                 // TODO: Alert acknowledged
-            })
+            }
         }
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
@@ -119,12 +118,12 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             ?.setTitle("Dose Alert")
             ?.setIcon(R.drawable.ic_event_available_black_24dp)
         builder?.apply {
-            setPositiveButton("Ok, Schedule Alert", DialogInterface.OnClickListener({ dialog, which ->
+            setPositiveButton("Ok, Schedule Alert") { dialog, which ->
                 // TODO:
-            }))
-            setNegativeButton("Don't Schedule", DialogInterface.OnClickListener({ dialog, id ->
+            }
+            setNegativeButton("Don't Schedule") { dialog, id ->
                 // TODO:
-            }))
+            }
         }
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
@@ -167,6 +166,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                 inflater, R.layout.fragment_home, container, false
             ).apply {
                 this.viewModel = mainViewModel
+                this.user = mainViewModel.user
                 this.lifecycleOwner = viewLifecycleOwner
             }
 

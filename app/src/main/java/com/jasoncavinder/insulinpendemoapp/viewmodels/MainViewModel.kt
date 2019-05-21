@@ -12,6 +12,7 @@ import androidx.lifecycle.*
 import com.jasoncavinder.insulinpendemoapp.database.AppDatabase
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
+import com.jasoncavinder.insulinpendemoapp.database.entities.payment.PaymentType
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.PenWithDataPoints
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
@@ -43,22 +44,19 @@ class MainViewModel internal constructor(
     val loginResult: LiveData<Result<String>> = repository.loginResult
     val updateUserResult: LiveData<Result<User>> = repository.updateUserResult
     val updatePaymentResult: LiveData<Result<Payment>> = repository.updatePaymentResult
+    val changeProviderResult: LiveData<Result<Provider>> = repository.changeProviderResult
+    val changePenResult: LiveData<Result<PenWithDataPoints>> = repository.changePenResult
 
     private var userId: LiveData<String> =
         Transformations.switchMap(repository.userIdLiveData) { MutableLiveData<String>(it) }
 
-    var userProfile: LiveData<UserProfile> =
+    private val _userProfile: LiveData<UserProfile> =
         Transformations.switchMap(userId) { repository.loadUserProfile(it) }
 
     var user: MediatorLiveData<User> = MediatorLiveData()
-    //    var paymentMethod: MediatorLiveData<Payment> = MediatorLiveData()
+    var paymentMethod: MediatorLiveData<Payment> = MediatorLiveData()
     var provider: MediatorLiveData<Provider> = MediatorLiveData()
-
-    var paymentMethod: LiveData<Payment> =
-        Transformations.switchMap(userId) { repository.getPaymentMethod() }
-
-    var penWithDataPoints: LiveData<PenWithDataPoints> =
-        Transformations.switchMap(userId) { repository.getUserPen() }
+    var pen: MediatorLiveData<PenWithDataPoints> = MediatorLiveData()
 
     var messages: LiveData<List<Message>> =
         Transformations.switchMap(userId) { repository.loadMessages(it) }
@@ -76,24 +74,44 @@ class MainViewModel internal constructor(
 
     init {
 
-        user.addSource(userProfile) { user.postValue(it.user) }
-        provider.addSource(userProfile) {
-            it.provider?.let { providerSet ->
-                if (providerSet.isNotEmpty()) provider.postValue(providerSet.first())
+        user.addSource(_userProfile) {
+            it?.let { user.value = it.user }
+        }
+        user.addSource(updateUserResult) {
+            when (it) {
+                is Result.Success -> user.value = it.data
             }
         }
-
+        paymentMethod.addSource(_userProfile) {
+            it.paymentMethod?.let { set -> if (set.isNotEmpty()) paymentMethod.value = set.first() }
+        }
+        paymentMethod.addSource(updatePaymentResult) {
+            when (it) {
+                is Result.Success -> paymentMethod.value = it.data
+            }
+        }
+        provider.addSource(_userProfile) {
+            it.provider?.let { set -> if (set.isNotEmpty()) provider.value = set.first() }
+        }
+        provider.addSource(changeProviderResult) {
+            when (it) {
+                is Result.Success -> provider.value = it.data
+            }
+        }
+        pen.addSource(_userProfile) {
+            it.pen?.let { set -> if (set.isNotEmpty()) pen.value = set.first() }
+        }
+        pen.addSource(changePenResult) {
+            when (it) {
+                is Result.Success -> pen.value = it.data
+            }
+        }
 
         try {
 
         } catch (ex: java.lang.Exception) {
             Log.d(TAG, "Failed loading demoMessages", ex)
         }
-//        _providers.observeForever {
-//            for (provider in it) {
-//                providers.putIfAbsent(provider.providerId, provider.name)
-//            }
-//        }
     }
 
     fun updateUserData(
@@ -117,7 +135,7 @@ class MainViewModel internal constructor(
         }
     }
 
-    fun addPaymentMethod(type: Int, ccnum: Long?, ccexp: Int?, ccname: String?, email: String?) {
+    fun addPaymentMethod(type: PaymentType, ccnum: Long?, ccexp: Int?, ccname: String?, email: String?) {
         viewModelScope.launch {
             repository.addPaymentMethod(
                 Payment(
@@ -128,21 +146,8 @@ class MainViewModel internal constructor(
         }
     }
 
-    fun updatePaymentMethod(
-        type: Int,
-        ccnum: Long? = null,
-        ccexp: Int? = null,
-        ccname: String? = null,
-        email: String? = null
-    ) {
-        viewModelScope.launch {
-            repository.updatePaymentMethod(
-                Payment(
-                    userId = userId.value!!, type = type,
-                    ccnum = ccnum, ccexp = ccexp, ccname = ccname, email = email
-                )
-            )
-        }
+    fun updatePaymentMethod(payment: Payment) {
+        viewModelScope.launch { repository.updatePaymentMethod(payment) }
     }
 
     fun verifyLogin() = repository.checkLogin()

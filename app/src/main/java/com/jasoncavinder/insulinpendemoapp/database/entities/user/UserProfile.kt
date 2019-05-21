@@ -10,6 +10,7 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.Pen
+import com.jasoncavinder.insulinpendemoapp.database.entities.pen.PenWithDataPoints
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 
 class UserProfile {
@@ -32,14 +33,9 @@ class UserProfile {
 
     @Relation(
         parentColumn = "id",
-        entityColumn = "userId"
+        entityColumn = "userId",
+        entity = Pen::class
     )
-    var pen: Set<Pen>? = null
-
-//    @Relation(
-//        parentColumn = "id",
-//        entityColumn = "userId"
-//    )
-//    var penWithDataPoints: Set<PenWithDataPoints>? = null
+    var pen: Set<PenWithDataPoints>? = null
 
 }

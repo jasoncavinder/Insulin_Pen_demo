@@ -7,6 +7,7 @@
 package com.jasoncavinder.insulinpendemoapp.database.utilities
 
 import androidx.room.TypeConverter
+import com.jasoncavinder.insulinpendemoapp.database.entities.payment.PaymentType
 import com.jasoncavinder.insulinpendemoapp.database.entities.pendatapoint.DataPointType
 import java.util.*
 
@@ -36,5 +37,15 @@ class Converters {
     @TypeConverter
     fun stringToList(string: String): List<String> {
         return string.split("__")
+    }
+
+    @TypeConverter
+    fun paymentTypeToInt(type: PaymentType): Int {
+        return type.intVal
+    }
+
+    @TypeConverter
+    fun intToPaymentType(int: Int): PaymentType {
+        return PaymentType(int)
     }
 }
