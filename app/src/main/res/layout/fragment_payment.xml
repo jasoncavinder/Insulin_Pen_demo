@@ -225,7 +225,7 @@
             android:autofillHints="name"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text='@{paymentMethod.ccname != null ? paymentMethod.ccname : String.format("%s %s", user.firstName, user.lastName)}'
+            android:text='@{paymentMethod.ccname ?? String.format("%s %s", user.firstName, user.lastName)}'
             android:textColor="?android:attr/textColorSecondary"
             android:textColorHint="@color/surfaceColor_700"
             app:layout_constraintBottom_toTopOf="@+id/guideline_buttons"
@@ -265,7 +265,7 @@
             android:autofillHints="email"
             android:ems="10"
             android:inputType="textEmailAddress"
-            android:text='@{paymentMethod.email != null ? paymentMethod.email : user.email}'
+            android:text='@{paymentMethod.email ?? user.email}'
             android:textColor="?android:attr/textColorSecondary"
             android:textColorHint="@color/surfaceColor_700"
             app:layout_constraintBottom_toTopOf="@id/guideline_buttons"
