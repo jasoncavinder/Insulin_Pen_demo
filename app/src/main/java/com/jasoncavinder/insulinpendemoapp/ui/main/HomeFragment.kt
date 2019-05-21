@@ -176,8 +176,6 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        mainViewModel.userProfile.value.pen.first().
-
         updateToolbarListener.updateToolbar(
             "At a Glance",
             R.menu.menu_home_left,

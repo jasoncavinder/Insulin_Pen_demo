@@ -12,8 +12,8 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel" />
+            name="provider"
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider&gt;" />
 
     </data>
 
@@ -36,7 +36,7 @@
                 android:contentDescription="@string/provider_photo_desc"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@{viewModel.provider.photo}"
+                app:srcCompat='@{provider.photo}'
                 tools:srcCompat="@tools:sample/avatars[10]" />
 
             <TextView
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@{viewModel.provider.name}"
+                android:text="@{provider.name}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/primaryDarkColor"
                 app:layout_constraintBottom_toTopOf="@+id/provider_position"
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@{viewModel.provider.position}"
+                android:text="@{provider.position}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/secondaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/provider_rating"
@@ -83,7 +83,7 @@
                 android:isIndicator="true"
                 android:numStars="5"
                 android:progressTint="@color/secondaryColor"
-                android:rating="@{viewModel.provider.rating}"
+                android:rating="@{provider.rating}"
                 android:stepSize=".25"
                 app:layout_constraintBottom_toTopOf="@+id/provider_intro"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -98,14 +98,14 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{viewModel.provider.intro}"
+                android:text="@{provider.intro}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/secondaryTextColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/provider_photo"
                 tools:text="This is a little information about the medical provider. It should contain a few (2-3) short sentences." />
-            <!--android:text="@{viewModel.provider.intro}"-->
+            <!--android:text="@{provider.intro}"-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -138,7 +138,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@{viewModel.provider.education}"
+                android:text="@{provider.education}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/secondaryTextColor"
                 app:layout_constraintBottom_toTopOf="@id/barrier_education"
@@ -177,7 +177,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text='@{@string/currency(viewModel.provider.copay)}'
+                android:text='@{@string/currency(provider.copay)}'
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/secondaryTextColor"
                 app:layout_constraintBottom_toTopOf="@id/barrier_copay"
@@ -217,7 +217,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@{viewModel.provider.languages}"
+                android:text="@{provider.languages}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/secondaryTextColor"
                 app:layout_constraintBottom_toBottomOf="parent"

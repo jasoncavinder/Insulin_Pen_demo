@@ -12,8 +12,8 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel" />
+            name="provider"
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,7 +67,7 @@
                         layout="@layout/content_provider_summary"
                         android:layout_width="320dp"
                         android:layout_height="wrap_content"
-                        app:viewModel="@{viewModel}" />
+                        app:provider="@{provider}" />
 
                 </FrameLayout>
 

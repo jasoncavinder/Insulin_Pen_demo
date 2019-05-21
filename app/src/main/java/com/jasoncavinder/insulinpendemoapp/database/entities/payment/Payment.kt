@@ -7,13 +7,14 @@
 package com.jasoncavinder.insulinpendemoapp.database.entities.payment
 
 import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 import java.util.*
 
 @Entity(
     tableName = "payments",
     foreignKeys = [
-        ForeignKey(entity = User::class, parentColumns = ["id"], childColumns = ["userId"])
+        ForeignKey(entity = User::class, parentColumns = ["id"], childColumns = ["userId"], onDelete = CASCADE)
     ],
     indices = [
         Index(value = ["userId"], unique = true)
@@ -38,9 +39,3 @@ enum class PaymentType(val intVal: Int) {
         operator fun invoke(type: Int) = map.getOrDefault(type, VISA)
     }
 }
-
-//const val VISA = 0
-//const val MASTER = 1
-//const val PAYPAL = 2
-//const val AMAZON = 3
-

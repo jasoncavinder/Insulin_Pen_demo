@@ -41,8 +41,8 @@ class AddProviderFragment : Fragment() {
     private lateinit var _userId: LiveData<Result<String>>
     private var userId = ""
 
-    lateinit var provider: LiveData<Provider>
-        private set
+    private val provider: LiveData<Provider> by lazy { createUserViewModel.provider }
+
     private var providerId = ""
 
     private var providerSearchCountDownTimer: CountDownTimer? = null
@@ -54,7 +54,7 @@ class AddProviderFragment : Fragment() {
         createUserViewModel = ViewModelProviders.of(requireActivity())
             .get(CreateUserViewModel::class.java)
 
-        provider = createUserViewModel.provider
+//        provider = createUserViewModel.provider
 
         /*
     val name: String,
@@ -78,8 +78,8 @@ class AddProviderFragment : Fragment() {
             DataBindingUtil.inflate<FragmentAddProviderBinding>(
                 inflater, R.layout.fragment_add_provider, container, false
             ).apply {
-                viewModel = createUserViewModel
-                lifecycleOwner = viewLifecycleOwner
+                this.provider = this@AddProviderFragment.provider
+                this.lifecycleOwner = viewLifecycleOwner
             }
 
         // TODO: Can this be removed or moved?

@@ -17,18 +17,21 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jasoncavinder.insulinpendemoapp.R
+import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
+import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
+import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 import com.jasoncavinder.insulinpendemoapp.databinding.FragmentProfileBinding
 import com.jasoncavinder.insulinpendemoapp.databinding.ModalEditPasswordBinding
 import com.jasoncavinder.insulinpendemoapp.databinding.ModalEditProfileBinding
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
-import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.content_profile_full.*
 
@@ -41,10 +44,13 @@ class ProfileFragment : Fragment() {
     private val TAG by lazy { this::class.java.simpleName }
 
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var createUserViewModel: CreateUserViewModel
     private lateinit var navController: NavController
 
     private lateinit var updateToolbarListener: UpdateToolbarListener
+
+    private val user: LiveData<User> by lazy { mainViewModel.user }
+    private val provider: LiveData<Provider> by lazy { mainViewModel.provider }
+    private val paymentMethod: LiveData<Payment> by lazy { mainViewModel.paymentMethod }
 
     /* BEGIN: Required for Demo Actions */
 //    private var _demoActions = arrayListOf(
@@ -61,9 +67,6 @@ class ProfileFragment : Fragment() {
 
         mainViewModel = ViewModelProviders.of(requireActivity())
             .get(MainViewModel::class.java)
-        createUserViewModel = ViewModelProviders.of(requireActivity())
-            .get(CreateUserViewModel::class.java)
-
     }
 
     override fun onCreateView(
@@ -74,19 +77,13 @@ class ProfileFragment : Fragment() {
             DataBindingUtil.inflate<FragmentProfileBinding>(
                 inflater, R.layout.fragment_profile, container, false
             ).apply {
-                this.user = mainViewModel.user
-                this.provider = mainViewModel.provider
-                this.paymentMethod = mainViewModel.paymentMethod
-                this.viewModel = mainViewModel
-                this.cuViewModel = createUserViewModel
+                this.user = this@ProfileFragment.user
+                this.provider = this@ProfileFragment.provider
+                this.paymentMethod = this@ProfileFragment.paymentMethod
                 this.lifecycleOwner = viewLifecycleOwner
             }
-
         return fragmentProfileBinding.root
-
-
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -107,8 +104,6 @@ class ProfileFragment : Fragment() {
         button_edit_password.setOnClickListener(changePassword())
         button_edit_payment.setOnClickListener { navController.navigate(R.id.action_profile_to_payment) }
 
-//        mainViewModel.userProfile.observe(this, Observer { })
-
     }
 
     override fun onAttach(context: Context) {
@@ -126,29 +121,11 @@ class ProfileFragment : Fragment() {
 
         mainViewModel.verifyLogin()
 
-        mainViewModel.updateUserResult.observe(this, Observer {
-            when (it) {
-                is Result.Error ->
-                    Snackbar.make(
-                        requireView(),
-                        "Failed to update user. Please try again or, if you can reproduce this error, file a bug report for the developer.",
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                is Result.Success ->
-                    Snackbar.make(
-                        requireView(),
-                        "Your profile has been updated successfully.",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-
-            }
-        })
-
         /* BEGIN: Required for Demo Actions */
-//        fab_demo_actions_home.setOnClickListener {
-//            DemoActionListDialogFragment.newInstance(_demoActions)
-//                .show(childFragmentManager, "demoActionsDialog")
-//        }
+        /*fab_demo_actions_home.setOnClickListener {
+            DemoActionListDialogFragment.newInstance(_demoActions)
+                .show(childFragmentManager, "demoActionsDialog")
+        }*/
         /* END: Required for Demo Actions */
 
     }
@@ -167,6 +144,25 @@ class ProfileFragment : Fragment() {
 
                         setNegativeButton("Cancel") { _, _ -> dialog?.cancel() }
                         setPositiveButton("Save") { _, _ ->
+                            mainViewModel.updateUserResult.observe(this@ProfileFragment.viewLifecycleOwner, Observer {
+                                when (it) {
+                                    is Result.Error ->
+                                        Snackbar.make(
+                                            requireParentFragment().requireView(),
+                                            "Failed to update user. Please try again or, if you can reproduce this error, file a bug report for the developer.",
+                                            Snackbar.LENGTH_LONG
+                                        ).show()
+                                    is Result.Success ->
+                                        Snackbar.make(
+                                            requireParentFragment().requireView(),
+                                            "Your profile has been updated successfully.",
+                                            Snackbar.LENGTH_SHORT
+                                        ).show()
+
+                                }
+                            })
+
+
                             mainViewModel.updateUserData(
                                 firstName = binding.editTextFname.text.toString(),
                                 lastName = binding.editTextLname.text.toString(),
@@ -177,7 +173,7 @@ class ProfileFragment : Fragment() {
                         }
 
                     }
-                    binding.viewModel = mainViewModel
+                    binding.user = this@ProfileFragment.user
                     builder.create()
                 } ?: throw IllegalStateException("Activity cannot be null")
             }
@@ -204,7 +200,6 @@ class ProfileFragment : Fragment() {
                             mainViewModel.changePassword(password = binding.editTextPassword.text.toString())
                         }
                     }
-                    binding.viewModel = mainViewModel
                     builder.create()
                 } ?: throw IllegalStateException("Activity cannot be null")
             }
