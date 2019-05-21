@@ -24,6 +24,10 @@ Temperature alerts limit the chance of extreme heat or cold which could render y
 ![Create Account](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddUser.png)
 ![Add Pen](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddPen.png)
 ![Add Provider](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddProvider.png)
+![At A Glance](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAtAGlance.png)
+![User Profile](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotProfile.png)
+![Edit Profile](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotEditProfile.png)
+![Edit Payment](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotEditPayment.png)
 
 ---
 

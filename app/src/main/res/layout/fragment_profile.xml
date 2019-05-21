@@ -17,6 +17,10 @@
             type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
 
         <variable
+            name="pen"
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.pen.PenWithDataPoints&gt;" />
+
+        <variable
             name="provider"
             type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider&gt;" />
 
@@ -47,6 +51,15 @@
                 app:paymentMethod="@{paymentMethod}"
                 app:user="@{user}" />
 
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/surfaceColor_50">
+
+            <!--<include-->
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
