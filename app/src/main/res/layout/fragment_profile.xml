@@ -13,6 +13,18 @@
     <data>
 
         <variable
+            name="user"
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
+
+        <variable
+            name="provider"
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider&gt;" />
+
+        <variable
+            name="paymentMethod"
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment&gt;" />
+
+        <variable
             name="viewModel"
             type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
 
@@ -40,7 +52,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:viewModel="@{viewModel}" />
+                app:paymentMethod="@{paymentMethod}"
+                app:user="@{user}" />
 
         </androidx.cardview.widget.CardView>
 

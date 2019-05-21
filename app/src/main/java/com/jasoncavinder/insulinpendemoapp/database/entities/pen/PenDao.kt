@@ -28,7 +28,7 @@ interface PenDao : BaseDao<Pen> {
     fun getPenByRowId(rowId: Long): String
 
     @Transaction
-    @Query("SELECT * FROM pens WHERE id = :penId")
+    @Query("SELECT * FROM pens WHERE id = :penId LIMIT 1")
     fun getPenWithData(penId: String): LiveData<PenWithDataPoints>
 
     @Transaction

@@ -14,7 +14,7 @@ import com.jasoncavinder.insulinpendemoapp.database.entities.BaseDao
 @Dao
 interface PaymentDao : BaseDao<Payment> {
 
-    @Query("SELECT * FROM payments WHERE userId = :userId")
+    @Query("SELECT * FROM payments WHERE userId = :userId LIMIT 1")
     fun getUserPayment(userId: String): LiveData<Payment>
 
     @Query("DELETE FROM payments")

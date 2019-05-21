@@ -222,9 +222,9 @@ class AppRepository private constructor(
             try {
                 val result = paymentDao.insert(payment)
                 if (result > 0) _updatePaymentResult.postValue(Result.Success<Payment>(payment))
-                else throw Exception("Could not add payment method.")
+                else throw Exception("Could not add paymentMethod method.")
             } catch (ex: Exception) {
-                Log.d(TAG, "Failed to add payment", ex)
+                Log.d(TAG, "Failed to add paymentMethod", ex)
                 _updatePaymentResult.postValue(Result.Error(ex))
             }
         }
@@ -235,9 +235,9 @@ class AppRepository private constructor(
             try {
                 val result = paymentDao.update(payment)
                 if (result > 0) _updatePaymentResult.postValue(Result.Success<Payment>(payment))
-                else throw Exception("Could not update payment method.")
+                else throw Exception("Could not update paymentMethod method.")
             } catch (ex: Exception) {
-                Log.d(TAG, "Failed to update payment", ex)
+                Log.d(TAG, "Failed to update paymentMethod", ex)
                 _updatePaymentResult.postValue(Result.Error(ex))
             }
         }

@@ -19,6 +19,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.databinding.FragmentProfileBinding
@@ -40,7 +42,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var createUserViewModel: CreateUserViewModel
-//    private lateinit var navController: NavController
+    private lateinit var navController: NavController
 
     private lateinit var updateToolbarListener: UpdateToolbarListener
 
@@ -72,6 +74,9 @@ class ProfileFragment : Fragment() {
             DataBindingUtil.inflate<FragmentProfileBinding>(
                 inflater, R.layout.fragment_profile, container, false
             ).apply {
+                this.user = mainViewModel.user
+                this.provider = mainViewModel.provider
+                this.paymentMethod = mainViewModel.paymentMethod
                 this.viewModel = mainViewModel
                 this.cuViewModel = createUserViewModel
                 this.lifecycleOwner = viewLifecycleOwner
@@ -86,6 +91,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = findNavController()
+
         updateToolbarListener.updateToolbar(
             "Profile",
             R.menu.menu_profile_left,
@@ -98,6 +105,7 @@ class ProfileFragment : Fragment() {
 
         button_edit_profile.setOnClickListener(editProfile())
         button_edit_password.setOnClickListener(changePassword())
+        button_edit_payment.setOnClickListener { navController.navigate(R.id.action_profile_to_payment) }
 
         mainViewModel.userProfile.observe(this, Observer { })
 

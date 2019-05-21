@@ -28,12 +28,18 @@ class UserProfile {
         parentColumn = "id",
         entityColumn = "userId"
     )
-    var pen: Set<Pen>? = null
+    var paymentMethod: Set<Payment>? = null
 
     @Relation(
         parentColumn = "id",
         entityColumn = "userId"
     )
-    var paymentMethod: Set<Payment>? = null
+    var pen: Set<Pen>? = null
+
+//    @Relation(
+//        parentColumn = "id",
+//        entityColumn = "userId"
+//    )
+//    var penWithDataPoints: Set<PenWithDataPoints>? = null
 
 }

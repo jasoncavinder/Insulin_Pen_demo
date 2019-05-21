@@ -16,6 +16,6 @@ class PenWithDataPoints {
     var pen: Pen? = null
 
     @Relation(parentColumn = "id", entityColumn = "penId", entity = PenDataPoint::class)
-    var penDataPoints: List<PenDataPoint> = arrayListOf()
+    var dataPoints: List<PenDataPoint> = arrayListOf()
 
 }

@@ -11,8 +11,12 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
+            name="user"
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
+
+        <variable
+            name="paymentMethod"
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment&gt;" />
 
     </data>
 
@@ -37,7 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text='@{viewModel.userProfile.user.firstName + " " + viewModel.userProfile.user.lastName ?? "not loaded"}'
+            android:text='@{user.firstName + " " + user.lastName ?? "not loaded"}'
             android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
             app:layout_constraintBottom_toTopOf="@+id/text_user_email"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@{viewModel.userProfile.user.email}"
+            android:text="@{user.email}"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
             app:layout_constraintBottom_toTopOf="@+id/text_user_location"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text='@{String.format("%s%s%s", viewModel.userProfile.user.locationCity, (viewModel.userProfile.user.locationState.length() > 0)? ", " : "" , viewModel.userProfile.user.locationState)}'
+            android:text='@{String.format("%s%s%s", user.locationCity, (user.locationState.length() > 0)? ", " : "" , user.locationState)}'
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
             app:barrierMargin="8dp"
             app:layout_constraintBottom_toTopOf="@+id/text_user_payment"
@@ -81,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text='@{String.format("Payment: %s", viewModel.userProfile.user.paymentConfigured ? "is setup" : "is not setup")}'
+            android:text='@{String.format("Payment: %s", paymentMethod != null ? "is setup" : "is not setup")}'
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead.Inverse"
             app:layout_constraintEnd_toStartOf="@+id/icon_payment_setup_status"
             app:layout_constraintHorizontal_bias="0.0"
@@ -96,12 +100,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:tint="@color/errorColor"
+            android:src="@{paymentMethod != null ?  @drawable/ic_check_circle_black_24dp : @drawable/ic_error_black_24dp}"
             app:layout_constraintBottom_toBottomOf="@+id/text_user_payment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text_user_payment"
             app:layout_constraintTop_toTopOf="@+id/text_user_payment"
-            app:srcCompat="@drawable/ic_error_black_24dp" />
+            android:tint="@{paymentMethod != null ? @color/successColor : @color/errorColor}" />
+        <!--app:srcCompat="@drawable/ic_error_black_24dp"-->
 
         <Button
             android:id="@+id/button_edit_profile"

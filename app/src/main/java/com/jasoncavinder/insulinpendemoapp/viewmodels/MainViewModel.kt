@@ -12,6 +12,7 @@ import androidx.lifecycle.*
 import com.jasoncavinder.insulinpendemoapp.database.AppDatabase
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
+import com.jasoncavinder.insulinpendemoapp.database.entities.pen.PenWithDataPoints
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.UserProfile
@@ -49,6 +50,16 @@ class MainViewModel internal constructor(
     var userProfile: LiveData<UserProfile> =
         Transformations.switchMap(userId) { repository.loadUserProfile(it) }
 
+    var user: MediatorLiveData<User> = MediatorLiveData()
+    //    var paymentMethod: MediatorLiveData<Payment> = MediatorLiveData()
+    var provider: MediatorLiveData<Provider> = MediatorLiveData()
+
+    var paymentMethod: LiveData<Payment> =
+        Transformations.switchMap(userId) { repository.getPaymentMethod() }
+
+    var penWithDataPoints: LiveData<PenWithDataPoints> =
+        Transformations.switchMap(userId) { repository.getUserPen() }
+
     var messages: LiveData<List<Message>> =
         Transformations.switchMap(userId) { repository.loadMessages(it) }
 
@@ -64,16 +75,25 @@ class MainViewModel internal constructor(
     var providers: MutableMap<String, String> = mutableMapOf()
 
     init {
+
+        user.addSource(userProfile) { user.postValue(it.user) }
+        provider.addSource(userProfile) {
+            it.provider?.let { providerSet ->
+                if (providerSet.isNotEmpty()) provider.postValue(providerSet.first())
+            }
+        }
+
+
         try {
 
         } catch (ex: java.lang.Exception) {
             Log.d(TAG, "Failed loading demoMessages", ex)
         }
-        _providers.observeForever {
-            for (provider in it) {
-                providers.putIfAbsent(provider.providerId, provider.name)
-            }
-        }
+//        _providers.observeForever {
+//            for (provider in it) {
+//                providers.putIfAbsent(provider.providerId, provider.name)
+//            }
+//        }
     }
 
     fun updateUserData(
