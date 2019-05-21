@@ -7,11 +7,17 @@
 package com.jasoncavinder.insulinpendemoapp.database.entities.pen
 
 import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 
 @Entity(
     tableName = "pens",
-    foreignKeys = [ForeignKey(entity = User::class, parentColumns = ["id"], childColumns = ["userId"])],
+    foreignKeys = [ForeignKey(
+        entity = User::class,
+        parentColumns = ["id"],
+        childColumns = ["userId"],
+        onDelete = CASCADE
+    )],
     indices = [Index(value = ["userId"], unique = false)]
 )
 data class Pen(

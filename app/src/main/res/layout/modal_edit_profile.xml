@@ -12,11 +12,8 @@
 
         <variable
             name="user"
-            type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
 
-        <variable
-            name="viewModel"
-            type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

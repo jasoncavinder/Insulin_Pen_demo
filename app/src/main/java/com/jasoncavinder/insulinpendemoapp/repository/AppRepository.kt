@@ -286,9 +286,9 @@ class AppRepository private constructor(
 
     suspend fun resetDb() {
         withContext(IO) {
-            penDao.deleteAllPens()
             userDao.deleteAllUsers()
             messageDao.deleteAllMessages()
+            penDao.deleteAllPens()
             paymentDao.deleteAllPayments()
         }
     }

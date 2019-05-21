@@ -181,6 +181,8 @@ class PaymentFragment : Fragment() {
 
         mainViewModel.verifyLogin()
 
+        newPayment.value = newPayment.value?.copy(email = mainViewModel.user.value?.email)
+
     }
 
     private fun setPaymentType(type: PaymentType) {
