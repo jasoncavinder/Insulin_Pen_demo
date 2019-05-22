@@ -50,7 +50,7 @@ class ProfileFragment : Fragment() {
     private lateinit var updateToolbarListener: UpdateToolbarListener
 
     private val user: LiveData<User> by lazy { mainViewModel.user }
-    private val pen: LiveData<PenWithDataPoints> by lazy { mainViewModel.pen }
+    private val penWithData: LiveData<PenWithDataPoints> by lazy { mainViewModel.pen }
     private val provider: LiveData<Provider> by lazy { mainViewModel.provider }
     private val paymentMethod: LiveData<Payment> by lazy { mainViewModel.paymentMethod }
 
@@ -80,7 +80,7 @@ class ProfileFragment : Fragment() {
                 inflater, R.layout.fragment_profile, container, false
             ).apply {
                 this.user = this@ProfileFragment.user
-                this.pen = this@ProfileFragment.pen
+                this.penWithData = this@ProfileFragment.penWithData
                 this.provider = this@ProfileFragment.provider
                 this.paymentMethod = this@ProfileFragment.paymentMethod
                 this.lifecycleOwner = viewLifecycleOwner

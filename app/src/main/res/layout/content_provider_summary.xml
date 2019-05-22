@@ -30,8 +30,8 @@
 
             <ImageView
                 android:id="@+id/provider_photo"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
                 android:layout_marginStart="8dp"
                 android:contentDescription="@string/provider_photo_desc"
                 app:layout_constraintStart_toStartOf="parent"
