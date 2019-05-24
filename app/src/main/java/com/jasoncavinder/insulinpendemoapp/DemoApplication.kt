@@ -18,7 +18,7 @@ class DemoApplication : Application() {
 
         // Copy demo files to internal storage if they do not exist yet
         var count = 0
-        Log.d(TAG, "Preparing to copy provider photos")
+        Log.d(TAG, "Preparing to copy randomProvider photos")
         Log.d(TAG, R.raw::class.java.fields.toString())
         for (field in R.raw::class.java.fields) {
             if (field.name.startsWith("doctor")

@@ -179,7 +179,7 @@ class PaymentFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        mainViewModel.verifyLogin()
+//        mainViewModel.verifyLogin()
 
         newPayment.value = newPayment.value?.copy(email = mainViewModel.user.value?.email)
 

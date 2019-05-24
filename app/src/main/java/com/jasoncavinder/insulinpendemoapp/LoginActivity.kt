@@ -7,26 +7,28 @@
 package com.jasoncavinder.insulinpendemoapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.jasoncavinder.insulinpendemoapp.viewmodels.LoginViewModel
+import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 
 class LoginActivity : AppCompatActivity() {
 
     val TAG: String by lazy { this::class.java.simpleName }
-    lateinit var _loginViewModel: LoginViewModel
+    lateinit var viewModel: MainViewModel
 
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "Entered onCreate")
         setContentView(R.layout.activity_login)
 
-        _loginViewModel = ViewModelProviders
+        viewModel = ViewModelProviders
             .of(this)
-            .get(LoginViewModel::class.java)
+            .get(MainViewModel::class.java)
 
         navController = findNavController(R.id.nav_host_login)
 

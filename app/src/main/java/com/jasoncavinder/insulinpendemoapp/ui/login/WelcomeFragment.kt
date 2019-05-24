@@ -23,7 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoAction
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragment
-import com.jasoncavinder.insulinpendemoapp.viewmodels.LoginViewModel
+import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_login_welcome.*
 import kotlinx.android.synthetic.main.fragment_login_welcome.view.*
 
@@ -31,7 +31,7 @@ class WelcomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     private val TAG by lazy { this::class.java.simpleName }
 
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var navController: NavController
 
     private var backPressedTimer: CountDownTimer? = null
@@ -51,7 +51,7 @@ class WelcomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
     /* END: Required for Demo Actions */
 
     private fun resetData() {
-        loginViewModel.resetDb()
+        viewModel.resetDb()
         Snackbar.make(requireView(), "Database has been reset.", Snackbar.LENGTH_LONG).show()
         fab_demo_actions_welcome.visibility = View.GONE
     }
@@ -67,10 +67,10 @@ class WelcomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
         navController = findNavController()
 
-        loginViewModel = requireActivity().run { ViewModelProviders.of(this).get(LoginViewModel::class.java) }
+        viewModel = requireActivity().run { ViewModelProviders.of(this).get(MainViewModel::class.java) }
 
 
-        loginViewModel.localUsers.observe(this, Observer {
+        viewModel.localUsers.observe(this, Observer {
             when (it) {
                 0 -> {
                     view.button_signin.isEnabled = false

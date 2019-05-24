@@ -29,7 +29,7 @@ data class Message(
     val timeStamp: Long,
     val userId: String,
     val providerId: String,
-    val sent: Boolean, // true = from provider, false = to provider
+    val sent: Boolean, // true = from randomProvider, false = to randomProvider
     val content: String,
     val read: Boolean
 )

@@ -119,20 +119,6 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        mainViewModel.verifyLogin()
-
-        /* BEGIN: Required for Demo Actions */
-        /*fab_demo_actions_home.setOnClickListener {
-            DemoActionListDialogFragment.newInstance(_demoActions)
-                .show(childFragmentManager, "demoActionsDialog")
-        }*/
-        /* END: Required for Demo Actions */
-
-    }
-
     private fun editProfile(): View.OnClickListener {
         class EditProfileDialog : DialogFragment() {
 

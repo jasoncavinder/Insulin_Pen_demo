@@ -11,13 +11,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="user"
             type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
 
         <variable
-            name="viewModel"
-            type="com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel" />
+            name="nextDose"
+            type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose&gt;" />
 
     </data>
 
@@ -128,5 +130,43 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="account_circle,icon_connection"
             tools:layout_editor_absoluteY="658dp" />
+
+        <TextView
+            android:id="@+id/label_next_dose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/next_dose"
+            app:layout_constraintEnd_toStartOf="@+id/text_next_dose"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_profile_summary" />
+
+        <TextView
+            android:id="@+id/text_next_dose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text='@{ nextDose != null ? String.format("%s at %s", nextDose.scheduledAmount, nextDose.scheduledTime) : "Not Scheduled" }'
+            app:layout_constraintBaseline_toBaselineOf="@id/label_next_dose"
+            app:layout_constraintEnd_toStartOf="@+id/button_calc_and_sched"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/label_next_dose"
+            tools:text="Not Scheduled" />
+
+        <Button
+            android:id="@+id/button_calc_and_sched"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/calculate_amp_schedule"
+            android:visibility="@{ nextDose != null ? View.GONE : View.VISIBLE }"
+            app:layout_constraintBaseline_toBaselineOf="@id/label_next_dose"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_next_dose" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

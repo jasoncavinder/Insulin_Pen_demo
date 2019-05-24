@@ -22,7 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
-import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
+import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_login_create_user.*
 
 class CreateUserFragment : Fragment() {
@@ -31,7 +31,7 @@ class CreateUserFragment : Fragment() {
         fun newInstance() = CreateUserFragment()
     }
 
-    private lateinit var _createUserViewModel: CreateUserViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var _navController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,10 +43,10 @@ class CreateUserFragment : Fragment() {
 
         _navController = findNavController()
 
-        _createUserViewModel =
-            requireActivity().run { ViewModelProviders.of(this).get(CreateUserViewModel::class.java) }
+        viewModel =
+            requireActivity().run { ViewModelProviders.of(this).get(MainViewModel::class.java) }
 
-        _createUserViewModel.createUserFormState.observe(this, Observer {
+        viewModel.createUserFormState.observe(this, Observer {
             val createUserState = it ?: return@Observer
 
             // disable create loggedInUser button unless all fields are valid
@@ -69,7 +69,7 @@ class CreateUserFragment : Fragment() {
             }
         })
 
-        _createUserViewModel.createUserResult.observe(this, Observer {
+        viewModel.createUserResult.observe(this, Observer {
 
             when (val createUserResult = it ?: return@Observer) {
                 is Result.Error -> {
@@ -88,7 +88,7 @@ class CreateUserFragment : Fragment() {
             }
         })
 
-        fun dataChanged() = _createUserViewModel.createUserDataChanged(
+        fun dataChanged() = viewModel.createUserDataChanged(
             edit_text_first_name.text.toString(),
             edit_text_last_name.text.toString(),
             edit_text_email.text.toString(),
@@ -110,7 +110,7 @@ class CreateUserFragment : Fragment() {
             hideKeyboard()
             group_form_create_user.visibility = View.GONE
             loading_bar.visibility = View.VISIBLE
-            _createUserViewModel.createUser(
+            viewModel.createUser(
                 edit_text_first_name.text.toString(),
                 edit_text_last_name.text.toString(),
                 edit_text_email.text.toString(),

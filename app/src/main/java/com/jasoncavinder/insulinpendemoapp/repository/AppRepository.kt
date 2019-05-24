@@ -44,8 +44,8 @@ class AppRepository private constructor(
         private set
 
     private val _userIdLiveData = MutableLiveData<String>()
-
     val userIdLiveData: LiveData<String> = _userIdLiveData
+
     private fun setLoggedIn(userId: String) {
         user.id = userId
     }
@@ -74,6 +74,7 @@ class AppRepository private constructor(
                 is String -> {
                     _userIdLiveData.postValue(id)
                 }
+                else -> checkLogin()
             }
         }
     }
@@ -119,6 +120,7 @@ class AppRepository private constructor(
 
     fun logout() {
         user.logout()
+        _loginResult.postValue(Result.Error(Exception("User logged out")))
     }
 
 
@@ -181,12 +183,12 @@ class AppRepository private constructor(
             try {
                 updates = userDao.changeProvider(userId, providerId)
             } catch (e: Exception) {
-                Log.e(TAG, "Exception changing provider", e)
+                Log.e(TAG, "Exception changing randomProvider", e)
             }
         }
         return when (updates) {
             1 -> Result.Success(updates)
-            else -> Result.Error(IOException("Could not change provider."))
+            else -> Result.Error(IOException("Could not change randomProvider."))
         }
     }
 

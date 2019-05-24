@@ -105,7 +105,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/provider_photo"
                 tools:text="This is a little information about the medical provider. It should contain a few (2-3) short sentences." />
-            <!--android:text="@{provider.intro}"-->
+            <!--android:text="@{randomProvider.intro}"-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

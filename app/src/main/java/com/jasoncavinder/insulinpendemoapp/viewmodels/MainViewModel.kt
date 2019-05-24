@@ -8,25 +8,52 @@ package com.jasoncavinder.insulinpendemoapp.viewmodels
 
 import android.app.Application
 import android.util.Log
+import android.util.Patterns
 import androidx.lifecycle.*
+import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.database.AppDatabase
+import com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
 import com.jasoncavinder.insulinpendemoapp.database.entities.payment.PaymentType
+import com.jasoncavinder.insulinpendemoapp.database.entities.pen.Pen
 import com.jasoncavinder.insulinpendemoapp.database.entities.pen.PenWithDataPoints
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.UserProfile
 import com.jasoncavinder.insulinpendemoapp.repository.AppRepository
+import com.jasoncavinder.insulinpendemoapp.ui.login.CreateUserFormState
+import com.jasoncavinder.insulinpendemoapp.ui.login.LoginFormState
 import com.jasoncavinder.insulinpendemoapp.utilities.HashUtils
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 
+/*
+Educational Note:
+
+This application's class is 'DemoApplication' which extends 'Application'.
+The only difference is to preload some photos from res to internal storage
+for demo purposes. The real version of this app would load those resources
+from an online resource.
+
+Here we are telling android to build the viewmodel using default android
+factory for Application and NOT DemoApplication. This is necessary because
+android of course does not supply a custom factory for our custom
+application class, and this works because our extension of Application
+doesn't modify anything that would affect viewmodels.
+
+So, although it may seem natural to put our actual 'DemoApplication' class
+here, DON'T!
+
+~ Jason
+ */
 class MainViewModel internal constructor(
-    application: Application
+    application: Application /* !!! NOT DemoApplication !!! */
 ) : AndroidViewModel(application) {
 
     private val TAG by lazy { this::class.java.simpleName }
@@ -41,13 +68,45 @@ class MainViewModel internal constructor(
         AppDatabase.getInstance(application).messageDao(),
         AppDatabase.getInstance(application).alertDao()
     )
+
+    val localUsers: LiveData<Int> = repository.getLocalUserCount()
+
+    private val _loginForm = MutableLiveData<LoginFormState>()
+    val loginFormState: LiveData<LoginFormState> = _loginForm
     val loginResult: LiveData<Result<String>> = repository.loginResult
+
+    private val _createUserForm = MutableLiveData<CreateUserFormState>()
+    val createUserFormState: LiveData<CreateUserFormState> = _createUserForm
+    private val _createUserResult = MutableLiveData<Result<String>>()
+    val createUserResult: LiveData<Result<String>> = _createUserResult
+
+    private val _providerList = repository.getProviders()
+    var providers: LiveData<Map<String, String>> =
+        Transformations.switchMap(_providerList) {
+            MutableLiveData<Map<String, String>>().apply {
+                value = run {
+                    val map = mutableMapOf<String, String>()
+                    for (provider in it) {
+                        map.putIfAbsent(provider.providerId, provider.name)
+                    }
+                    map
+                }
+            }
+        }
+    var randomProvider: LiveData<Provider> = Transformations.switchMap(_providerList) {
+        // TODO: handle empty list
+        MutableLiveData<Provider>(it.shuffled().first())
+    }
+
+
     val updateUserResult: LiveData<Result<User>> = repository.updateUserResult
     val updatePaymentResult: LiveData<Result<Payment>> = repository.updatePaymentResult
+    val addPenResult: LiveData<Result<Pen>> = repository.addPenResult
     val changeProviderResult: LiveData<Result<Provider>> = repository.changeProviderResult
     val changePenResult: LiveData<Result<PenWithDataPoints>> = repository.changePenResult
 
-    private var userId: LiveData<String> =
+
+    var userId: LiveData<String> =
         Transformations.switchMap(repository.userIdLiveData) { MutableLiveData<String>(it) }
 
     private val _userProfile: LiveData<UserProfile> =
@@ -69,10 +128,15 @@ class MainViewModel internal constructor(
         Transformations.map(unreadMessages) { unreadList ->
             unreadList.size == 0
         }
-    private val _providers: LiveData<List<Provider>> = repository.getProviders()
-    var providers: MutableMap<String, String> = mutableMapOf()
+
+    var doses: LiveData<List<Dose>> =
+        Transformations.switchMap(userId) { repository.getUserDoses(it) }
+
+    var nextDose: MediatorLiveData<Dose> = MediatorLiveData()
 
     init {
+
+        repository.checkLogin()
 
         user.addSource(_userProfile) {
             it?.let { user.value = it.user }
@@ -91,7 +155,7 @@ class MainViewModel internal constructor(
             }
         }
         provider.addSource(_userProfile) {
-            it.provider?.let { set -> if (set.isNotEmpty()) provider.value = set.first() }
+            it?.provider?.let { set -> if (set.isNotEmpty()) provider.value = set.first() }
         }
         provider.addSource(changeProviderResult) {
             when (it) {
@@ -106,12 +170,45 @@ class MainViewModel internal constructor(
                 is Result.Success -> pen.value = it.data
             }
         }
+        nextDose.addSource(doses) {
+            it.firstOrNull { dose -> dose.scheduledTime?.after(Calendar.getInstance()) ?: false }
+        }
 
         try {
 
         } catch (ex: java.lang.Exception) {
             Log.d(TAG, "Failed loading demoMessages", ex)
         }
+    }
+
+    fun login(email: String, password: String) {
+        viewModelScope.launch {
+            repository.login(email, HashUtils.sha512(password))
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
+    }
+
+    fun loginDataChanged(email: String, password: String) {
+        if (!isEmailValid(email)) {
+            _loginForm.value = LoginFormState(emailError = R.string.invalid_email)
+        } else if (!isPasswordValid(password)) {
+            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
+        } else {
+            _loginForm.value = LoginFormState(isDataValid = true)
+        }
+    }
+
+    private fun isEmailValid(username: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(username).matches()
+    }
+
+    private fun isPasswordValid(password: String): Boolean {
+        return password.length >= 8
     }
 
     fun updateUserData(
@@ -167,7 +264,7 @@ class MainViewModel internal constructor(
         for (message in list) {
             messageSummary = MessageSummary(
                 message.timeStamp,
-                if (message.sent) "Me" else message.providerId, //TODO: get provider name
+                if (message.sent) "Me" else message.providerId, //TODO: get randomProvider name
                 if (message.content.length < 60) message.content else message.content.substring(0..60) + "..."
             )
             messagesVM.add(messageSummary)
@@ -182,4 +279,73 @@ class MainViewModel internal constructor(
             }
         }
     }
+
+    fun addPen(pen: Pen) {
+//        pen.userId = repository.user.id
+        viewModelScope.launch {
+            withContext(IO) {
+                repository.addPen(pen)
+            }
+        }
+    }
+
+    fun changeProvider(providerId: String, userId: String) {
+        viewModelScope.launch {
+            withContext(IO) {
+                repository.changeProvider(providerId, userId)
+            }
+        }
+    }
+
+    fun resetDb() {
+        viewModelScope.launch {
+            repository.resetDb()
+        }
+    }
+
+    private fun isNameValid(name: String): Boolean {
+        return name.isNotEmpty()
+    }
+
+    private fun isConfirmValid(password: String, confirm: String): Boolean {
+        return password == confirm
+    }
+
+    fun createUserDataChanged(
+        firstName: String,
+        lastName: String,
+        email: String,
+        password: String,
+        confirm: String
+    ) {
+        when {
+            !isNameValid(firstName) ->
+                _createUserForm.value =
+                    CreateUserFormState(firstNameError = R.string.invalid_first_name)
+            !isNameValid(lastName) ->
+                _createUserForm.value =
+                    CreateUserFormState(lastNameError = R.string.invalid_last_name)
+            !isEmailValid(email) ->
+                _createUserForm.value =
+                    CreateUserFormState(emailError = R.string.invalid_email)
+            !isPasswordValid(password) ->
+                _createUserForm.value =
+                    CreateUserFormState(passwordError = R.string.invalid_password)
+            !isConfirmValid(password, confirm) ->
+                _createUserForm.value =
+                    CreateUserFormState(confirmError = R.string.invalid_confirm)
+            else ->
+                _createUserForm.value = CreateUserFormState(isDataValid = true)
+        }
+    }
+
+    fun createUser(firstName: String, lastName: String, email: String, password: String) =
+        viewModelScope.launch {
+            val user =
+                User(email = email, firstName = firstName, lastName = lastName, password = HashUtils.sha512(password))
+            withContext(IO) {
+                _createUserResult.postValue(repository.createUser(user))
+            }
+        }
+
 }

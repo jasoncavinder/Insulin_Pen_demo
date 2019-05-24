@@ -10,6 +10,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,13 +25,15 @@ import androidx.navigation.fragment.findNavController
 import com.jasoncavinder.insulinpendemoapp.MainActivity
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
-import com.jasoncavinder.insulinpendemoapp.viewmodels.LoginViewModel
+import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_login_login.*
 
 
 class LoginFragment : Fragment() {
 
-    private lateinit var _loginViewModel: LoginViewModel
+    private val TAG by lazy { this::class.java.simpleName }
+
+    private lateinit var _viewModel: MainViewModel
     private lateinit var _navController: NavController
 
     /*
@@ -53,9 +56,9 @@ class LoginFragment : Fragment() {
 
         _navController = findNavController()
 
-        _loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        _viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-        _loginViewModel.loginFormState.observe(this, Observer {
+        _viewModel.loginFormState.observe(this, Observer {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
@@ -69,27 +72,34 @@ class LoginFragment : Fragment() {
             }
         })
 
-        _loginViewModel.loginResult.observe(this, Observer {
-            val loginResult = it ?: return@Observer
-
-            when (loginResult) {
+        _viewModel.loginResult.observe(this, Observer {
+            Log.d(TAG, "loginResult changed: $it")
+            when (val loginResult = it ?: return@Observer) {
                 is Result.Error -> {
+                    Log.d(TAG, "loginResult is Result.Error")
                     showLoginFailed(loginResult.exception.localizedMessage)
                     loading_bar.visibility = View.GONE
                     group_form_login.visibility = View.VISIBLE
                 }
                 is Result.Success -> {
+                    Log.d(TAG, "loginResult is Result.Success")
                     requireActivity().apply {
-                        this.setResult(
-                            Activity.RESULT_OK,
-                            Intent(activity, MainActivity::class.java)
-                        )
+                        if (intent.hasExtra("fromMain")) {
+                            this.setResult(
+                                Activity.RESULT_OK,
+                                Intent(activity, MainActivity::class.java)
+                            )
+                        } else {
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                        }
+                        _viewModel.loginResult.removeObservers(this@LoginFragment)
                     }.finish()
                 }
             }
         })
 
-        fun dataChanged() = _loginViewModel.loginDataChanged(
+        fun dataChanged() = _viewModel.loginDataChanged(
             edit_text_email.text.toString(),
             edit_text_pass.text.toString()
         )
@@ -105,7 +115,7 @@ class LoginFragment : Fragment() {
         button_do_login.setOnClickListener {
             loading_bar.visibility = View.VISIBLE
             group_form_login.visibility = View.GONE
-            _loginViewModel.login(
+            _viewModel.login(
                 edit_text_email.text.toString(),
                 edit_text_pass.text.toString()
             )

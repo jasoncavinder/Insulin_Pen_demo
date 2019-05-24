@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
 
     val TAG: String by lazy { this::class.java.simpleName }
 
-    private lateinit var _mainViewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
 
     private lateinit var navController: NavController
 
@@ -43,21 +43,22 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
 
     private inner class VerifyLogin : Observer<Result<String>> {
         override fun onChanged(it: Result<String>?) {
-            when (it) {
+            when (it ?: return) {
                 is Result.Error -> {
                     Log.d(TAG, "No login detected. Redirecting to Login")
                     startActivityForResult(
                         Intent(this@MainActivity, LoginActivity::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                            .addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION),
+                            .addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                            .putExtra("fromMain", true),
                         AUTHORIZE_USER
                     )
-                    _mainViewModel.loginResult.removeObservers(this@MainActivity)
                 }
                 is Result.Success -> {
                     Log.d(TAG, "Valid login detected. Continuing")
                 }
             }
+//            viewModel.loginResult.removeObservers(this@MainActivity)
         }
     }
 
@@ -66,12 +67,11 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        _mainViewModel = ViewModelProviders
+        viewModel = ViewModelProviders
             .of(this)
             .get(MainViewModel::class.java)
 
-        // require login to access
-        _mainViewModel.loginResult.observe(this, VerifyLogin())
+        viewModel.loginResult.observe(this, VerifyLogin())
 
         navController = findNavController(R.id.nav_host_main)
 
@@ -81,14 +81,15 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
     override fun onResume() {
         super.onResume()
 
-        _mainViewModel.loginResult.observe(this, VerifyLogin())
+        // require login to access
+        viewModel.loginResult.observe(this, VerifyLogin())
 
     }
 
     override fun onPause() {
         super.onPause()
 
-        _mainViewModel.loginResult.removeObservers(this)
+        viewModel.loginResult.removeObservers(this)
     }
 
 
@@ -108,7 +109,7 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
     override fun onResumeFragments() {
         super.onResumeFragments()
 
-        _mainViewModel.verifyLogin()
+        viewModel.verifyLogin()
     }
 
     private fun attachAction(menuItem: MenuItem) {

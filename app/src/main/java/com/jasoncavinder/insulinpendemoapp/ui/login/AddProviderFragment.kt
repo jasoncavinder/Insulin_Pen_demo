@@ -25,7 +25,7 @@ import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 import com.jasoncavinder.insulinpendemoapp.databinding.FragmentAddProviderBinding
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
-import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
+import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_add_provider.*
 
 
@@ -35,13 +35,13 @@ class AddProviderFragment : Fragment() {
         fun newInstance() = CreateUserFragment()
     }
 
-    private lateinit var createUserViewModel: CreateUserViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var navController: NavController
 
     private lateinit var _userId: LiveData<Result<String>>
     private var userId = ""
 
-    private val provider: LiveData<Provider> by lazy { createUserViewModel.provider }
+    private val provider: LiveData<Provider> by lazy { viewModel.randomProvider }
 
     private var providerId = ""
 
@@ -51,10 +51,10 @@ class AddProviderFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        createUserViewModel = ViewModelProviders.of(requireActivity())
-            .get(CreateUserViewModel::class.java)
+        viewModel = ViewModelProviders.of(requireActivity())
+            .get(MainViewModel::class.java)
 
-//        provider = createUserViewModel.provider
+//        randomProvider = viewModel.randomProvider
 
         /*
     val name: String,
@@ -85,9 +85,7 @@ class AddProviderFragment : Fragment() {
         // TODO: Can this be removed or moved?
         provider.observe(this, Observer { })
 
-        val view = fragmentAddProviderBinding.root
-
-        return view
+        return fragmentAddProviderBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,7 +93,7 @@ class AddProviderFragment : Fragment() {
 
         navController = findNavController()
 
-        _userId = createUserViewModel.createUserResult
+        _userId = viewModel.createUserResult
 
         _userId.observe(this, Observer {
             userId = when (val user = it ?: return@Observer) {
@@ -104,7 +102,7 @@ class AddProviderFragment : Fragment() {
             }
         })
 
-        createUserViewModel.changeProviderResult.observe(this, Observer {
+        viewModel.changeProviderResult.observe(this, Observer {
             when (it) {
                 is Result.Error -> text_provider_search_error.apply {
                     this.text = it.exception.message
@@ -120,16 +118,16 @@ class AddProviderFragment : Fragment() {
 
         button_skip.setOnClickListener { nextStep() }
 
-        findprovider()
+        findProvider()
     }
 
     private fun setProvider() {
-        createUserViewModel.changeProvider(provider.value!!.providerId, userId)
+        viewModel.changeProvider(provider.value!!.providerId, userId)
         nextStep()
     }
 
 
-    fun findprovider() {
+    private fun findProvider() {
         providerSearchCountDownTimer = object : CountDownTimer(3000, 1000) {
             override fun onFinish() {
                 providerId = provider.value!!.providerId
@@ -149,10 +147,16 @@ class AddProviderFragment : Fragment() {
 
     private fun nextStep() {
         requireActivity().apply {
-            this.setResult(
-                Activity.RESULT_OK,
-                Intent(activity, MainActivity::class.java)
-            )
-        }.finish()
+            if (intent.hasExtra("fromMain")) {
+                this.setResult(
+                    Activity.RESULT_OK,
+                    Intent(activity, MainActivity::class.java)
+                )
+                finish()
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 }

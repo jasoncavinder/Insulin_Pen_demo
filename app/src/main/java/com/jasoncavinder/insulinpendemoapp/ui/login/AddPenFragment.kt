@@ -21,7 +21,7 @@ import com.jasoncavinder.insulinpendemoapp.database.entities.pen.Pen
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoAction
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragment
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
-import com.jasoncavinder.insulinpendemoapp.viewmodels.CreateUserViewModel
+import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_add_pen.*
 import java.util.*
 
@@ -32,7 +32,7 @@ class AddPenFragment : Fragment(), DemoActionListDialogFragment.Listener {
         fun newInstance() = AddPenFragment()
     }
 
-    private lateinit var createUserViewModel: CreateUserViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var navController: NavController
 
     private var _uuid = UUID.randomUUID().toString()
@@ -56,7 +56,7 @@ class AddPenFragment : Fragment(), DemoActionListDialogFragment.Listener {
         camera_view.setOnPreparedListener { it.isLooping = false }
         camera_view.start()
         camera_view.setOnCompletionListener {
-            createUserViewModel.addPen(Pen(penId = _uuid, userId = userId))
+            viewModel.addPen(Pen(penId = _uuid, userId = userId))
         }
     }
 
@@ -73,9 +73,9 @@ class AddPenFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
         navController = findNavController()
 
-        createUserViewModel = ViewModelProviders.of(requireActivity()).get(CreateUserViewModel::class.java)
+        viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
 
-        _userId = createUserViewModel.createUserResult
+        _userId = viewModel.createUserResult
 
 
         _userId.observe(this, Observer {
@@ -88,7 +88,7 @@ class AddPenFragment : Fragment(), DemoActionListDialogFragment.Listener {
             navController.navigate(R.id.action_addPenFragment_to_addProviderFragment)
         }
 
-        createUserViewModel.addPenResult.observe(this, Observer {
+        viewModel.addPenResult.observe(this, Observer {
             when (it) {
                 is Result.Error -> {
                     text_scan_status.text = getString(R.string.error_adding_pen).format(it.exception.message)

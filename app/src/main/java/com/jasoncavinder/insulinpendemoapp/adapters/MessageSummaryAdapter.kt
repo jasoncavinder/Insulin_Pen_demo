@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.content_message_summary.view.*
 
 class MessageSummaryAdapter(
     private val messageSummaryList: LiveData<List<MainViewModel.MessageSummary>>,
-    val providers: MutableMap<String, String>
+    val providers: LiveData<Map<String, String>>
 ) :
     RecyclerView.Adapter<MessageSummaryAdapter.MessageSummaryViewHolder>() {
 
@@ -33,7 +33,7 @@ class MessageSummaryAdapter(
 
     override fun onBindViewHolder(holder: MessageSummaryViewHolder, position: Int) {
         holder.messageSummaryView.message_from.text =
-            providers.get(messageSummaryList.value?.get(position)?.from)
+            providers.value?.get(messageSummaryList.value?.get(position)?.from) ?: "Error Loading Providers"
         holder.messageSummaryView.message_content.text =
             messageSummaryList.value?.get(position)?.content
     }

@@ -36,6 +36,7 @@ import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragmen
 import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.content_messages.*
+import kotlinx.android.synthetic.main.content_profile_summary.*
 import kotlinx.android.synthetic.main.content_report_summary.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
@@ -44,9 +45,9 @@ import java.util.*
 class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
     private val TAG by lazy { this::class.java.simpleName }
 
-//    private val mainViewModel: MainViewModel by activityViewModels()
+//    private val viewModel: MainViewModel by activityViewModels()
 
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var navController: NavController
 
     private lateinit var updateToolbarListener: UpdateToolbarListener
@@ -69,10 +70,10 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         try {
             if (sampleMessageContent.size == 0) throw java.lang.Exception("sampleMessageContent is empty")
 
-            val userId = mainViewModel.user.value?.userId
+            val userId = viewModel.user.value?.userId
                 ?: throw Exception("userId not found")
 
-            val providerId = mainViewModel.provider.value?.providerId
+            val providerId = viewModel.provider.value?.providerId
                 ?: throw java.lang.Exception("providerId not found")
 
             val message = Message(
@@ -85,7 +86,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                 read = false
             )
 
-            mainViewModel.newMessage(message)
+            viewModel.newMessage(message)
         } catch (ex: Exception) {
             Log.e(TAG, "Error creating sample message", ex)
             Toast.makeText(context, "Could not create sample message. See error log for details.", Toast.LENGTH_LONG)
@@ -137,9 +138,10 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "Entered onCreate")
         setHasOptionsMenu(true)
 
-        mainViewModel = ViewModelProviders.of(requireActivity())
+        viewModel = ViewModelProviders.of(requireActivity())
             .get(MainViewModel::class.java)
 
         requireContext().assets.open("sampleMessages.json").use { inputStream ->
@@ -155,18 +157,21 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                 }
             }
         }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d(TAG, "Entered onCreateView")
         val fragmentHomeBinding =
             DataBindingUtil.inflate<FragmentHomeBinding>(
                 inflater, R.layout.fragment_home, container, false
             ).apply {
-                this.viewModel = mainViewModel
-                this.user = mainViewModel.user
+                this.user = this@HomeFragment.viewModel.user
+                this.nextDose = this@HomeFragment.viewModel.nextDose
+                this.noMessages = this@HomeFragment.viewModel.noMessages
                 this.lifecycleOwner = viewLifecycleOwner
             }
 
@@ -175,6 +180,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "Entered onViewCreated")
 
         updateToolbarListener.updateToolbar(
             "At a Glance",
@@ -210,7 +216,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
         /* Messages Recycler */
         messagesManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        messagesAdapter = MessageSummaryAdapter(mainViewModel.unreadMessages, providers = mainViewModel.providers)
+        messagesAdapter = MessageSummaryAdapter(viewModel.unreadMessages, providers = viewModel.providers)
 
         recycler_messages.apply {
             setHasFixedSize(true)
@@ -239,14 +245,27 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             SleepChart().show(requireFragmentManager(), "sleep")
         }
 
-        mainViewModel.unreadMessages.observe(this, Observer {
+        viewModel.provider.observe(this, Observer { })
+
+        viewModel.providers.observe(this, Observer {
             messagesAdapter.notifyDataSetChanged()
         })
+
+        viewModel.unreadMessages.observe(this, Observer {
+            messagesAdapter.notifyDataSetChanged()
+        })
+
+        button_logout.setOnClickListener {
+            viewModel.logout()
+        }
+
+        button_calc_and_sched.setOnClickListener { calculateAndScheduleDose() }
 
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        Log.d(TAG, "Entered on Attach")
         try {
             updateToolbarListener = context as UpdateToolbarListener
         } catch (castException: ClassCastException) {
@@ -257,8 +276,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     override fun onResume() {
         super.onResume()
-
-        mainViewModel.verifyLogin()
+        Log.d(TAG, "Entered onResume")
 
         /* BEGIN: Required for Demo Actions */
         fab_demo_actions_home.setOnClickListener {
@@ -269,7 +287,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     }
 
-    fun toggleVisibility(group: Group, visibleSrc: Int?, goneSrc: Int?, toggle: ImageView?) {
+    private fun toggleVisibility(group: Group, visibleSrc: Int?, goneSrc: Int?, toggle: ImageView?) {
 
         when (group.visibility) {
             View.VISIBLE -> {
@@ -297,5 +315,61 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             else -> return
         }
     }
+
+    private fun calculateAndScheduleDose(): View.OnClickListener {
+/*
+        class EditProfileDialog : DialogFragment() {
+
+            override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+                return activity?.let {
+                    val inflater = requireActivity().layoutInflater
+                    val binding = DataBindingUtil.inflate<ModalEditProfileBinding>(
+                        inflater, R.layout.modal_edit_profile, null, false
+                    )
+                    val builder = AlertDialog.Builder(it).apply {
+                        setView(binding.root)
+
+                        setNegativeButton("Cancel") { _, _ -> dialog?.cancel() }
+                        setPositiveButton("Save") { _, _ ->
+                            mainViewModel.updateUserResult.observe(this@ProfileFragment.viewLifecycleOwner, Observer {
+                                when (it) {
+                                    is Result.Error ->
+                                        Snackbar.make(
+                                            requireParentFragment().requireView(),
+                                            "Failed to update user. Please try again or, if you can reproduce this error, file a bug report for the developer.",
+                                            Snackbar.LENGTH_LONG
+                                        ).show()
+                                    is Result.Success ->
+                                        Snackbar.make(
+                                            requireParentFragment().requireView(),
+                                            "Your profile has been updated successfully.",
+                                            Snackbar.LENGTH_SHORT
+                                        ).show()
+
+                                }
+                            })
+
+
+                            mainViewModel.updateUserData(
+                                firstName = binding.editTextFname.text.toString(),
+                                lastName = binding.editTextLname.text.toString(),
+                                email = binding.editTextEmail.text.toString(),
+                                locationCity = binding.editTextCity.text.toString(),
+                                locationState = binding.editTextState.text.toString()
+                            )
+                        }
+
+                    }
+                    binding.user = this@ProfileFragment.user
+                    builder.create()
+                } ?: throw IllegalStateException("Activity cannot be null")
+            }
+        }
+
+        return View.OnClickListener { EditProfileDialog().show(requireFragmentManager(), "editProfile") }
+*/
+        return View.OnClickListener { }
+    }
+
 }
 

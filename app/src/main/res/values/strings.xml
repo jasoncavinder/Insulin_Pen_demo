@@ -105,4 +105,6 @@
     <string name="city">City</string>
     <string name="state">State</string>
     <string name="insulin_pin_image">Insulin Pin Image</string>
+    <string name="calculate_amp_schedule"><![CDATA[Calculate\n& Schedule]]></string>
+    <string name="next_dose">Next Dose:</string>
 </resources>
