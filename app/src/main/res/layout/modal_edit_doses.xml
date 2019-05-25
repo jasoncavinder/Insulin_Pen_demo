@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+  ~ This project is licenced to the client of Upwork contract #21949291. It is not
+  ~ licensed for public use. See the LICENSE.md file for details
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseType" />
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="dose"
+            type="com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose" />
+
+        <variable
+            name="doseType"
+            type="com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseType" />
+
+        <variable
+            name="guidance"
+            type="String" />
+
+        <variable
+            name="basalDoseAmount"
+            type="Integer" />
+
+        <variable
+            name="providerName"
+            type="String" />
+
+        <variable
+            name="bloodSugar"
+            type="String" />
+
+        <variable
+            name="calcResult"
+            type="Integer" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:textAlignment="textEnd">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="379dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@{title}"
+            app:titleMarginStart="8dp" />
+
+        <TextView
+            android:id="@+id/text_guidance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text='@{String.format(guidance, providerName, basalDoseAmount)}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <TextView
+            android:id="@+id/label_dose_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@id/edit_text_dose_time"
+            android:text="@string/please_enter_a_time"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintBaseline_toBaselineOf="@id/edit_text_dose_time"
+            app:layout_constraintEnd_toStartOf="@+id/edit_text_dose_time"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:visibleOrGone="@{doseType == DoseType.BASAL}"
+            tools:visibility="gone" />
+
+        <!-- TODO: Replace with TimePicker -->
+        <EditText
+            android:id="@+id/edit_text_dose_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:ems="5"
+            android:focusedByDefault="@{doseType == DoseType.BASAL}"
+            android:hint="@string/ex_7_00"
+            android:importantForAutofill="no"
+            android:inputType="time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/label_dose_time"
+            app:layout_constraintTop_toBottomOf="@+id/text_guidance"
+            app:visibleOrGone="@{doseType == DoseType.BASAL}"
+            tools:ignore="UnusedAttribute"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/label_blood_sugar"
+            visibleOrGone="@{doseType == DoseType.BOLUS}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@id/edit_text_blood_sugar"
+            android:text="@string/current_blood_sugar"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintBaseline_toBaselineOf="@id/edit_text_blood_sugar"
+            app:layout_constraintEnd_toStartOf="@id/edit_text_blood_sugar"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:visibleOrGone="@{doseType == DoseType.BOLUS}" />
+
+        <EditText
+            android:id="@+id/edit_text_blood_sugar"
+            visibleOrGone="@{doseType == DoseType.BOLUS}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="?attr/editTextColor"
+            android:ems="5"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@{bloodSugar}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/label_blood_sugar"
+            app:layout_constraintTop_toBottomOf="@id/text_guidance" />
+
+        <TextView
+            android:id="@+id/label_carbs"
+            visibleOrGone="@{doseType == DoseType.BOLUS}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:labelFor="@id/edit_text_carbs"
+            android:text="@string/carbs_in_this_meal_grams"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintBaseline_toBaselineOf="@id/edit_text_carbs"
+            app:layout_constraintEnd_toStartOf="@id/edit_text_carbs"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_text_carbs"
+            visibleOrGone="@{doseType == DoseType.BOLUS}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="?attr/editTextColor"
+            android:ems="5"
+            android:focusedByDefault="true"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/label_carbs"
+            app:layout_constraintTop_toBottomOf="@id/edit_text_blood_sugar" />
+
+        <TextView
+            android:id="@+id/text_view_calc_result"
+            visibleOrGone="@{doseType == DoseType.BOLUS}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text='@{String.format("Your Dose: %dU", calcResult)}'
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_text_carbs"
+            tools:text="Your Dose: 1U" />
+        <!--android:focusedByDefault="@{doseType == DoseType.BASAL ? true : false }"/>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

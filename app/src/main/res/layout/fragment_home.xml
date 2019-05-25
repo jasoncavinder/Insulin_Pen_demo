@@ -15,15 +15,15 @@
         <variable
             name="user"
             type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
-
         <variable
-            name="nextDose"
+            name="nextBasalDose"
             type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose&gt;" />
-
+        <variable
+            name="nextBolusDose"
+            type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose&gt;" />
         <variable
             name="noMessages"
             type="androidx.lifecycle.LiveData&lt;Boolean&gt;" />
-
     </data>
 
     <FrameLayout
@@ -63,7 +63,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
-                        app:nextDose="@{nextDose}"
+                        app:nextBasalDose="@{nextBasalDose}"
+                        app:nextBolusDose="@{nextBolusDose}"
                         app:user="@{user}" />
 
                 </androidx.cardview.widget.CardView>
@@ -107,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Logout" />
+                    android:text="@string/logout" />
             </LinearLayout>
 
         </ScrollView>

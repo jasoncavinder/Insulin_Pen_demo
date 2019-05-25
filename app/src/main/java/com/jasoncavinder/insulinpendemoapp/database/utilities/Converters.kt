@@ -7,17 +7,18 @@
 package com.jasoncavinder.insulinpendemoapp.database.utilities
 
 import androidx.room.TypeConverter
+import com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseType
 import com.jasoncavinder.insulinpendemoapp.database.entities.payment.PaymentType
 import com.jasoncavinder.insulinpendemoapp.database.entities.pendatapoint.DataPointType
 import java.util.*
 
 class Converters {
     @TypeConverter
-    fun calendarToDatestamp(calendar: Calendar): Long = calendar.timeInMillis
+    fun calendarToDatestamp(calendar: Calendar? = Calendar.getInstance()): Long? = calendar?.timeInMillis
 
     @TypeConverter
-    fun datestampToCalendar(value: Long): Calendar =
-        Calendar.getInstance().apply { timeInMillis = value }
+    fun datestampToCalendar(value: Long? = 0): Calendar? =
+        value?.let { Calendar.getInstance().apply { timeInMillis = it } }
 
     @TypeConverter
     fun dpTypeToString(dpType: DataPointType?): String? {
@@ -47,5 +48,15 @@ class Converters {
     @TypeConverter
     fun intToPaymentType(int: Int): PaymentType {
         return PaymentType(int)
+    }
+
+    @TypeConverter
+    fun doseTypeToInt(type: DoseType): Int {
+        return type.intVal
+    }
+
+    @TypeConverter
+    fun intToDoseType(int: Int): DoseType {
+        return DoseType(int)
     }
 }

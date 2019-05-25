@@ -6,6 +6,7 @@
 
 package com.jasoncavinder.insulinpendemoapp.ui.main
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +17,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.Group
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -24,30 +27,37 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.adapters.MessageSummaryAdapter
+import com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose
+import com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseType
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.databinding.FragmentHomeBinding
+import com.jasoncavinder.insulinpendemoapp.databinding.ModalEditDosesBinding
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoAction
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragment
+import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.content_messages.*
 import kotlinx.android.synthetic.main.content_profile_summary.*
 import kotlinx.android.synthetic.main.content_report_summary.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.time.LocalDate
+import java.time.LocalTime
 import java.util.*
 
 
 class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
-    private val TAG by lazy { this::class.java.simpleName }
+    val TAG by lazy { this::class.java.simpleName }
 
 //    private val viewModel: MainViewModel by activityViewModels()
 
-    private lateinit var viewModel: MainViewModel
+    lateinit var viewModel: MainViewModel
     private lateinit var navController: NavController
 
     private lateinit var updateToolbarListener: UpdateToolbarListener
@@ -170,7 +180,8 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                 inflater, R.layout.fragment_home, container, false
             ).apply {
                 this.user = this@HomeFragment.viewModel.user
-                this.nextDose = this@HomeFragment.viewModel.nextDose
+                this.nextBasalDose = this@HomeFragment.viewModel.nextBasalDose
+                this.nextBolusDose = this@HomeFragment.viewModel.nextBolusDose
                 this.noMessages = this@HomeFragment.viewModel.noMessages
                 this.lifecycleOwner = viewLifecycleOwner
             }
@@ -259,7 +270,18 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             viewModel.logout()
         }
 
-        button_calc_and_sched.setOnClickListener { calculateAndScheduleDose() }
+        button_set_schedule.setOnClickListener {
+            showEditDosesDialog(doseType = DoseType.BASAL)
+        }
+        button_change_basal.setOnClickListener {
+            showEditDosesDialog(dose = viewModel.nextBasalDose.value)
+        }
+        button_calculate.setOnClickListener {
+            showEditDosesDialog(doseType = DoseType.BOLUS)
+        }
+        button_change_bolus.setOnClickListener {
+            showEditDosesDialog(dose = viewModel.nextBolusDose.value)
+        }
 
     }
 
@@ -316,60 +338,128 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         }
     }
 
-    private fun calculateAndScheduleDose(): View.OnClickListener {
-/*
-        class EditProfileDialog : DialogFragment() {
 
+    fun showEditDosesDialog(
+        dose: Dose? = null,
+        doseType: DoseType = dose!!.type
+    ) {
+        class EditDosesDialog(
+            val dose: Dose? = null,
+            val doseType: DoseType = dose!!.type
+        ) : DialogFragment() {
             override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
                 return activity?.let {
+                    val dosage = MainViewModel.Dosage(actualBloodSugar = 220, userWeightInPounds = 207)
                     val inflater = requireActivity().layoutInflater
-                    val binding = DataBindingUtil.inflate<ModalEditProfileBinding>(
-                        inflater, R.layout.modal_edit_profile, null, false
+                    val binding = DataBindingUtil.inflate<ModalEditDosesBinding>(
+                        inflater, R.layout.modal_edit_doses, null, false
                     )
                     val builder = AlertDialog.Builder(it).apply {
                         setView(binding.root)
 
                         setNegativeButton("Cancel") { _, _ -> dialog?.cancel() }
-                        setPositiveButton("Save") { _, _ ->
-                            mainViewModel.updateUserResult.observe(this@ProfileFragment.viewLifecycleOwner, Observer {
-                                when (it) {
+                        dose?.run {
+                            setNeutralButton("unschedule") { _, _ ->
+                                viewModel.removeScheduledDose(dose)
+                            }
+                        }
+                        fun setDose(
+                            type: DoseType = doseType,
+                            time: Calendar? = null,
+                            amount: Int
+                        ) {
+                            viewModel.editDoseResult.observe(this@HomeFragment.viewLifecycleOwner, Observer { result ->
+                                when (result) {
                                     is Result.Error ->
                                         Snackbar.make(
                                             requireParentFragment().requireView(),
-                                            "Failed to update user. Please try again or, if you can reproduce this error, file a bug report for the developer.",
+                                            "Failed to edit dose(s). Please try again or, if you can reproduce this error, file a bug report for the developer.",
                                             Snackbar.LENGTH_LONG
                                         ).show()
                                     is Result.Success ->
                                         Snackbar.make(
                                             requireParentFragment().requireView(),
-                                            "Your profile has been updated successfully.",
+                                            "Dose updated", //TODO
                                             Snackbar.LENGTH_SHORT
                                         ).show()
-
                                 }
                             })
-
-
-                            mainViewModel.updateUserData(
-                                firstName = binding.editTextFname.text.toString(),
-                                lastName = binding.editTextLname.text.toString(),
-                                email = binding.editTextEmail.text.toString(),
-                                locationCity = binding.editTextCity.text.toString(),
-                                locationState = binding.editTextState.text.toString()
+                            viewModel.updateDose(
+                                Dose(
+                                    doseId = binding.dose?.doseId,
+                                    userId = viewModel.userId.value!!,
+                                    type = type,
+                                    scheduledTime = time,
+                                    scheduledAmount = amount
+                                )
                             )
                         }
 
+                        when (doseType) {
+                            DoseType.BASAL ->
+                                setPositiveButton("Save") { _, _ ->
+                                    var timeText: String = binding.editTextDoseTime.text.toString()
+                                    if (timeText[1] == ':') timeText = "0".plus(timeText)
+                                    val localTime = LocalTime.parse(timeText)
+                                    val localDate =
+                                        LocalDate.now().plusDays(if (localTime.isBefore(LocalTime.now())) 1L else 0L)
+
+                                    val scheduledTime = GregorianCalendar.from(
+                                        localTime
+                                            .atDate(localDate)
+                                            .atZone(TimeZone.getDefault().toZoneId())
+                                    ) as Calendar
+                                    setDose(type = doseType, time = scheduledTime, amount = dosage.basalDose)
+                                }
+                            DoseType.BOLUS -> {
+                                setPositiveButton("Save") { _, _ ->
+                                    setDose(
+                                        type = doseType,
+                                        amount = binding.calcResult ?: throw Exception("Dose amount cannot bet Null")
+                                    )
+                                }
+                            }
+                        }
                     }
-                    binding.user = this@ProfileFragment.user
+                    binding.title = when (dose) {
+                        null -> when (doseType) {
+                            DoseType.BASAL -> "Schedule Basal Doses"
+                            DoseType.BOLUS -> "Calculate Bolus Dose"
+                        }
+                        else -> when (doseType) {
+                            DoseType.BASAL -> "Change Basal Dose Schedule"
+                            DoseType.BOLUS -> "Change Bolus Dose"
+                        }
+                    }
+                    binding.guidance = when (doseType) {
+                        DoseType.BASAL -> getString(R.string.guidance_basal)
+                        DoseType.BOLUS -> getString(R.string.guidance_bolus)
+                    }
+                    binding.dose = this.dose
+                    binding.doseType = this.doseType
+                    binding.providerName = viewModel.provider.value?.name ?: "your doctor"
+                    binding.bloodSugar = dosage.actualBloodSugar.toString()
+                    binding.editTextBloodSugar.doAfterTextChanged { bloodSugar ->
+                        dosage.actualBloodSugar = bloodSugar.toString().toIntOrNull() ?: 0
+                        binding.calcResult = dosage.bolusDose
+                    }
+                    binding.editTextCarbs.doAfterTextChanged { carbs ->
+                        dosage.carbsAtMeal = carbs.toString().toIntOrNull() ?: 0
+                        binding.calcResult = dosage.bolusDose
+                    }
                     builder.create()
                 } ?: throw IllegalStateException("Activity cannot be null")
             }
         }
 
-        return View.OnClickListener { EditProfileDialog().show(requireFragmentManager(), "editProfile") }
-*/
-        return View.OnClickListener { }
+        EditDosesDialog(dose = dose, doseType = doseType)
+            .show(
+                requireFragmentManager(),
+                when (doseType) {
+                    DoseType.BASAL -> "editBasalDoses"
+                    DoseType.BOLUS -> "editBolusDose"
+                }
+            )
     }
 
 }
-

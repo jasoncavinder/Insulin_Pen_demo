@@ -25,12 +25,22 @@ import java.util.*
 )
 data class Dose(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val doseID: Long,
-    val createdTime: Calendar?,
-    val userId: String?,
-    val penId: String?,
-    val scheduledTime: Calendar?,
-    val scheduledAmount: Float?,
-    val givenTime: Calendar?,
-    val givenAmount: Float?
+    @ColumnInfo(name = "id") val doseId: Long? = null,
+    val createdTime: Calendar? = Calendar.getInstance(),
+    val userId: String,
+    val penId: String? = null,
+    val type: DoseType,
+    val scheduledTime: Calendar? = null,
+    val scheduledAmount: Int? = null,
+    val givenTime: Calendar? = null,
+    val givenAmount: Float? = null
 )
+
+enum class DoseType(val intVal: Int) {
+    BASAL(0), BOLUS(1);
+
+    companion object {
+        private val map by lazy { values().associateBy(DoseType::intVal) }
+        operator fun invoke(type: Int) = map.getOrDefault(type, BASAL)
+    }
+}

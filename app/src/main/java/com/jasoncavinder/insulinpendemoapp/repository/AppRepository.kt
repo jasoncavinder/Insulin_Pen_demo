@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jasoncavinder.insulinpendemoapp.database.entities.alert.AlertDao
+import com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose
 import com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.MessageDao
@@ -67,6 +68,9 @@ class AppRepository private constructor(
 
     private val _changePenResult = MutableLiveData<Result<PenWithDataPoints>>()
     val changePenResult: LiveData<Result<PenWithDataPoints>> = _changePenResult
+
+    private val _editDoseResult = MutableLiveData<Result<Dose>>()
+    val editDoseResult: LiveData<Result<Dose>> = _editDoseResult
 
     init {
         user.addObserver { _, id ->
@@ -249,36 +253,21 @@ class AppRepository private constructor(
         }
     }
 
+    suspend fun updateDose(dose: Dose) {
+        withContext(IO) {
+            try {
+                val result = doseDao.insertReplace(dose)
+                if (result > 0) _editDoseResult.postValue(Result.Success(dose))
+                else _editDoseResult.postValue(Result.Error(IOException("Could not edit dose(s)")))
+            } catch (ex: Exception) {
+                Log.d(TAG, "Failed to edit dose(s)", ex)
+            }
+        }
+    }
 
-//    suspend fun loadUserProfile() {
-//        _loadProfileResult.postValue(
-//            withContext(IO) {
-//                // user.id ?: return@withContext
-//                try {
-//                    return@withContext Result.Success(userDao.getUserProfile(user.id))
-//                } catch (ex: IOException) {
-//                    return@withContext Result.Error(Exception("Failed to load user profile", ex))
-//                }
-//            }
-//        )
-//    }
-//    suspend fun loadUserProfile(): LiveData<Result<UserProfile>> {
-////        return when {
-////            (!(userId == user.id)) -> null
-////            else -> {
-////                var profile: LiveData<UserProfile>
-//                return withContext(IO) {
-////                    try {
-////                        profile = userDao.getUserProfile(user.id)
-////                    } catch (e: Exception) {
-////                        Log.e(TAG, "Could not load user profile.", e)
-////                    }
-//                    return@withContext userDao.getUserProfile(user.id)
-//                }
-////                profile
-////            }
-////        }
-//    }
+    suspend fun deleteDose(dose: Dose) {
+        withContext(IO) { doseDao.delete(dose) }
+    }
 
     suspend fun createMessage(message: Message) {
         withContext(IO) {

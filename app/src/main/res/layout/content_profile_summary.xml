@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
   ~ This project is licenced to the client of Upwork contract #21949291. It is not
   ~ licensed for public use. See the LICENSE.md file for details
@@ -12,13 +11,17 @@
     <data>
 
         <import type="android.view.View" />
+        <!--<import type="java.text.SimpleDateFormat" />-->
+        <import type="java.util.Calendar" />
 
         <variable
             name="user"
             type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
-
         <variable
-            name="nextDose"
+            name="nextBasalDose"
+            type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose&gt;" />
+        <variable
+            name="nextBolusDose"
             type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose&gt;" />
 
     </data>
@@ -101,12 +104,20 @@
             app:srcCompat="@drawable/ic_battery_80_black_24dp" />
 
         <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier"
+            android:id="@+id/barrier_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="right"
             app:constraint_referenced_ids="user_name,user_location"
             tools:layout_editor_absoluteX="411dp" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="account_circle,icon_connection"
+            tools:layout_editor_absoluteY="658dp" />
 
         <TextView
             android:id="@+id/text_profile_summary"
@@ -115,58 +126,121 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:minLines="4"
             android:text="@{String.format(@string/profile_summary_demo_text, user.firstName)}"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier2"
+            app:layout_constraintTop_toBottomOf="@id/barrier_head"
             tools:text="Welcome John Doe! With type 2 diabetes, the body either doesn't produce enough insulin, or it resists insulin. Treatments include diet, exercise, medication and insulin therapy." />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="account_circle,icon_connection"
-            tools:layout_editor_absoluteY="658dp" />
-
         <TextView
-            android:id="@+id/label_next_dose"
+            android:id="@+id/label_next_basal_dose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/next_dose"
-            app:layout_constraintEnd_toStartOf="@+id/text_next_dose"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            android:layout_marginTop="16dp"
+            android:text="@string/next_basal_dose"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_profile_summary" />
 
         <TextView
-            android:id="@+id/text_next_dose"
+            android:id="@+id/text_next_basal_dose"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text='@{ nextDose != null ? String.format("%s at %s", nextDose.scheduledAmount, nextDose.scheduledTime) : "Not Scheduled" }'
-            app:layout_constraintBaseline_toBaselineOf="@id/label_next_dose"
-            app:layout_constraintEnd_toStartOf="@+id/button_calc_and_sched"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/label_next_dose"
-            tools:text="Not Scheduled" />
+            android:layout_marginStart="8dp"
+            android:text='@{String.format("%dU at %d:%02d %s", nextBasalDose.scheduledAmount, nextBasalDose.scheduledTime.get(Calendar.HOUR_OF_DAY), nextBasalDose.scheduledTime.get(Calendar.MINUTE), nextBasalDose.scheduledTime.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM")}'
+            app:layout_constraintBaseline_toBaselineOf="@+id/label_next_basal_dose"
+            app:layout_constraintEnd_toStartOf="@id/barrier_set_schedule"
+            app:layout_constraintStart_toEndOf="@+id/label_next_basal_dose"
+            app:visibleOrGone="@{ nextBasalDose != null }"
+            tools:text="6U Tomorrow" />
+        <!--app:scheduledDoseText="@{ nextBasalDose.scheduledTime.time }"-->
 
         <Button
-            android:id="@+id/button_calc_and_sched"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:id="@+id/button_set_schedule"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:minHeight="24dp"
+            android:text="@string/schedule_basal_doses"
+            android:visibility="@{ nextBasalDose != null ? View.GONE : View.VISIBLE }"
+            app:layout_constraintBaseline_toBaselineOf="@+id/label_next_basal_dose"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/label_next_basal_dose" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_set_schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="button_change_basal" />
+
+        <Button
+            android:id="@+id/button_change_basal"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="@string/calculate_amp_schedule"
-            android:visibility="@{ nextDose != null ? View.GONE : View.VISIBLE }"
-            app:layout_constraintBaseline_toBaselineOf="@id/label_next_dose"
+            android:minHeight="24dp"
+            android:text="@string/change"
+            android:visibility="@{ nextBasalDose == null ? View.GONE : View.VISIBLE }"
+            app:layout_constraintBaseline_toBaselineOf="@+id/label_next_basal_dose"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/label_next_bolus_dose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/bolus_meal_dose"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_next_basal_dose" />
+
+        <TextView
+            android:id="@+id/text_next_bolus_dose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text='@{String.format("%sU for this meal", nextBolusDose.scheduledAmount)}'
+            android:visibility="@{ nextBolusDose == null ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBaseline_toBaselineOf="@id/label_next_bolus_dose"
+            app:layout_constraintEnd_toStartOf="@+id/barrier_change_bolus"
+            app:layout_constraintStart_toEndOf="@+id/label_next_bolus_dose"
+            tools:text="Dose Ready" />
+
+        <Button
+            android:id="@+id/button_calculate"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:minHeight="24dp"
+            android:text="@string/calculate_dose"
+            android:visibility="@{ nextBolusDose != null ? View.GONE : View.VISIBLE }"
+            app:layout_constraintBaseline_toBaselineOf="@+id/label_next_bolus_dose"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/text_next_dose" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/label_next_bolus_dose" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_change_bolus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="button_change_bolus" />
+
+        <Button
+            android:id="@+id/button_change_bolus"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:minHeight="24dp"
+            android:text="@string/change"
+            android:visibility="@{ nextBolusDose == null ? View.GONE : View.VISIBLE }"
+            app:layout_constraintBaseline_toBaselineOf="@id/label_next_bolus_dose"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

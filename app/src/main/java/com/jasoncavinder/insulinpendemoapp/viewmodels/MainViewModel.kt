@@ -13,6 +13,7 @@ import androidx.lifecycle.*
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.database.AppDatabase
 import com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose
+import com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseType
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.database.entities.payment.Payment
 import com.jasoncavinder.insulinpendemoapp.database.entities.payment.PaymentType
@@ -31,6 +32,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 
 /*
@@ -104,6 +106,7 @@ class MainViewModel internal constructor(
     val addPenResult: LiveData<Result<Pen>> = repository.addPenResult
     val changeProviderResult: LiveData<Result<Provider>> = repository.changeProviderResult
     val changePenResult: LiveData<Result<PenWithDataPoints>> = repository.changePenResult
+    val editDoseResult: LiveData<Result<Dose>> = repository.editDoseResult
 
 
     var userId: LiveData<String> =
@@ -132,7 +135,8 @@ class MainViewModel internal constructor(
     var doses: LiveData<List<Dose>> =
         Transformations.switchMap(userId) { repository.getUserDoses(it) }
 
-    var nextDose: MediatorLiveData<Dose> = MediatorLiveData()
+    var nextBasalDose: MediatorLiveData<Dose> = MediatorLiveData()
+    var nextBolusDose: MediatorLiveData<Dose> = MediatorLiveData()
 
     init {
 
@@ -170,15 +174,28 @@ class MainViewModel internal constructor(
                 is Result.Success -> pen.value = it.data
             }
         }
-        nextDose.addSource(doses) {
-            it.firstOrNull { dose -> dose.scheduledTime?.after(Calendar.getInstance()) ?: false }
+        nextBasalDose.addSource(doses) {
+            nextBasalDose.value = it
+                .sortedByDescending { it.scheduledTime }
+                .firstOrNull { dose ->
+                    (dose.type == DoseType.BASAL && dose.scheduledTime?.after(Calendar.getInstance()) ?: false).apply {
+                        Log.d(
+                            TAG,
+                            "dose.scheduledTime = ${dose.scheduledTime} and Calendar.getInstance() = ${Calendar.getInstance()}"
+                        )
+                    }
+                }
+        }
+        nextBolusDose.addSource(doses) {
+            nextBolusDose.value = it.sortedByDescending { dose -> dose.createdTime }
+                .firstOrNull { dose -> dose.type == DoseType.BOLUS }
         }
 
-        try {
-
-        } catch (ex: java.lang.Exception) {
-            Log.d(TAG, "Failed loading demoMessages", ex)
-        }
+//        try {
+//
+//        } catch (ex: java.lang.Exception) {
+//            Log.d(TAG, "Failed loading demoMessages", ex)
+//        }
     }
 
     fun login(email: String, password: String) {
@@ -226,11 +243,8 @@ class MainViewModel internal constructor(
         }
     }
 
-    fun changePassword(password: String) {
-        viewModelScope.launch {
-            repository.updateUser(passwordHash = HashUtils.sha512(password))
-        }
-    }
+    fun changePassword(password: String) =
+        viewModelScope.launch { repository.updateUser(passwordHash = HashUtils.sha512(password)) }
 
     fun addPaymentMethod(type: PaymentType, ccnum: Long?, ccexp: Int?, ccname: String?, email: String?) {
         viewModelScope.launch {
@@ -243,17 +257,12 @@ class MainViewModel internal constructor(
         }
     }
 
-    fun updatePaymentMethod(payment: Payment) {
+    fun updatePaymentMethod(payment: Payment) =
         viewModelScope.launch { repository.updatePaymentMethod(payment) }
-    }
 
     fun verifyLogin() = repository.checkLogin()
 
-    data class MessageSummary(
-        val timestamp: Long,
-        val from: String,
-        val content: String
-    )
+    data class MessageSummary(val timestamp: Long, val from: String, val content: String)
 
     fun createMessageSummaryList(list: List<Message>): List<MessageSummary> {
 
@@ -272,36 +281,22 @@ class MainViewModel internal constructor(
         return messagesVM
     }
 
-    fun newMessage(message: Message) {
-        viewModelScope.launch {
-            withContext(IO) {
-                repository.createMessage(message)
-            }
-        }
-    }
+    fun newMessage(message: Message) =
+        viewModelScope.launch { repository.createMessage(message) }
 
-    fun addPen(pen: Pen) {
-//        pen.userId = repository.user.id
-        viewModelScope.launch {
-            withContext(IO) {
-                repository.addPen(pen)
-            }
-        }
-    }
+    fun addPen(pen: Pen) =
+        viewModelScope.launch { repository.addPen(pen) }
 
-    fun changeProvider(providerId: String, userId: String) {
-        viewModelScope.launch {
-            withContext(IO) {
-                repository.changeProvider(providerId, userId)
-            }
-        }
-    }
+    fun changeProvider(providerId: String, userId: String) =
+        viewModelScope.launch { repository.changeProvider(providerId, userId) }
 
-    fun resetDb() {
-        viewModelScope.launch {
-            repository.resetDb()
-        }
-    }
+    fun updateDose(dose: Dose) =
+        viewModelScope.launch { repository.updateDose(dose) }
+
+    fun removeScheduledDose(dose: Dose) =
+        viewModelScope.launch { repository.deleteDose(dose) }
+
+    fun resetDb() = viewModelScope.launch { repository.resetDb() }
 
     private fun isNameValid(name: String): Boolean {
         return name.isNotEmpty()
@@ -348,4 +343,30 @@ class MainViewModel internal constructor(
             }
         }
 
+    class Dosage(
+        val userWeightInPounds: Int = 160,
+        val totalDailyInsulinDose: Int = userWeightInPounds.div(4),
+        val basalDose: Int = totalDailyInsulinDose.div(2),
+        val carbCoverageRatio: Float = 500f.div(totalDailyInsulinDose),
+        val correctionFactor: Float = 1800f.div(totalDailyInsulinDose),
+        val targetBloodSugar: Int = 120,
+        var actualBloodSugar: Int = 0,
+        var carbsAtMeal: Int = 0
+    ) {
+
+        private val _carbCoverage: Float
+            get() = carbsAtMeal.div(carbCoverageRatio)
+        private val _excessBloodSugar: Int
+            get() = if (actualBloodSugar > targetBloodSugar) actualBloodSugar.minus(targetBloodSugar) else 0
+        private val _bloodSugarCoverage: Float
+            get() = _excessBloodSugar.div(correctionFactor)
+
+        val carbCoverage: Int
+            get() = _carbCoverage.roundToInt()
+        val bloodSugarCoverage: Int
+            get() = _bloodSugarCoverage.roundToInt()
+        val bolusDose: Int
+            get() = (_carbCoverage.plus(_bloodSugarCoverage)).roundToInt()
+
+    }
 }

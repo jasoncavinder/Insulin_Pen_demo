@@ -105,6 +105,18 @@
     <string name="city">City</string>
     <string name="state">State</string>
     <string name="insulin_pin_image">Insulin Pin Image</string>
-    <string name="calculate_amp_schedule"><![CDATA[Calculate\n& Schedule]]></string>
-    <string name="next_dose">Next Dose:</string>
+    <string name="calculate_amp_schedule"><![CDATA[Calculate & Schedule]]></string>
+    <string name="next_scheduled_dose">Next Scheduled Dose</string>
+    <string name="next_basal_dose">Next Basal Dose:</string>
+    <string name="schedule_basal_doses">Schedule Basal Doses</string>
+    <string name="change">Change</string>
+    <string name="bolus_meal_dose">Bolus (Meal) Dose:</string>
+    <string name="calculate_dose">Calculate Dose</string>
+    <string name="please_enter_a_time">Please enter a time:</string>
+    <string name="ex_7_00">ex: 7:00</string>
+    <string name="guidance_basal">Based on your personal data, our AI, and %s\'s recommendations, your basal injections should be %dU every morning. What time each morning would you like to schedule these doses?</string>
+    <string name="guidance_bolus">Based on your personal data, our AI, and %s\'s recommendations, we only need the amount of carbs in your meal to determine your bolus dose.</string>
+    <string name="current_blood_sugar">Current Blood Sugar (mg/dL):</string>
+    <string name="carbs_in_this_meal_grams">Carbs in this meal (grams):</string>
+    <string name="logout">Logout</string>
 </resources>
