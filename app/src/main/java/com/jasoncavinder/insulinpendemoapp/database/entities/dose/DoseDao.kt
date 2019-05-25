@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019, Jason Cavinder <jason.cavinder@gmail.com>.
+ * This project is licenced to the client of Upwork contract #21949291. It is not
+ * licensed for public use. See the LICENSE.md file for details
+ */
+
 package com.jasoncavinder.insulinpendemoapp.database.entities.dose
 
 import androidx.lifecycle.LiveData
@@ -9,7 +15,7 @@ import com.jasoncavinder.insulinpendemoapp.database.entities.BaseDao
 interface DoseDao : BaseDao<Dose> {
 
     @Query("SELECT * FROM doses WHERE id = :doseId")
-    fun getDose(doseId: Int): LiveData<List<Dose>>
+    fun getDose(doseId: Long): LiveData<List<Dose>>
 
     @Query("SELECT * FROM doses WHERE userId = :userId")
     fun getUserDoses(userId: String? = ""): LiveData<List<Dose>>

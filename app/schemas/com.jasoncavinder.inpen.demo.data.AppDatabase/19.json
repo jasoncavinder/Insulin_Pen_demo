@@ -385,7 +385,7 @@
             "notNull": false
           },
           {
-            "fieldPath": "doseID",
+            "fieldPath": "doseId",
             "columnName": "dose_id",
             "affinity": "INTEGER",
             "notNull": false
@@ -489,7 +489,7 @@
             "notNull": false
           },
           {
-            "fieldPath": "doseID",
+            "fieldPath": "doseId",
             "columnName": "dose_id",
             "affinity": "INTEGER",
             "notNull": false
@@ -536,7 +536,7 @@
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`dose_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `scheduled_ts` INTEGER, `scheduled_amount` REAL, `given_ts` INTEGER, `given_amount` REAL, `user_id` TEXT NOT NULL, `pen_id` TEXT NOT NULL, FOREIGN KEY(`pen_id`) REFERENCES `pens`(`pen_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
-            "fieldPath": "doseID",
+            "fieldPath": "doseId",
             "columnName": "dose_id",
             "affinity": "INTEGER",
             "notNull": true

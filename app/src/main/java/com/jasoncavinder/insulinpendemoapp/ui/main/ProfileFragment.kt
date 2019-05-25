@@ -121,7 +121,6 @@ class ProfileFragment : Fragment() {
 
     private fun editProfile(): View.OnClickListener {
         class EditProfileDialog : DialogFragment() {
-
             override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
                 return activity?.let {
                     val inflater = requireActivity().layoutInflater

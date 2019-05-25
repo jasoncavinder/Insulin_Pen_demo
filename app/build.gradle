@@ -23,8 +23,8 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
-        versionCode 12
-        versionName '0.5.3'
+        versionCode 13
+        versionName '0.5.4'
 
         javaCompileOptions {
             annotationProcessorOptions {
