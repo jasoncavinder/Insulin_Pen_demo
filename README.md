@@ -1,4 +1,4 @@
-# InPen (demo)
+# Insulin Pen App (demo)
 
 > Contract ID `21949291` [*(UpWork)*](https://www.upwork.com/ab/f/contracts/21949291)
 
@@ -18,16 +18,16 @@ Reporting lets you easily share your therapy summary with your care providers so
 Temperature Alert
 Temperature alerts limit the chance of extreme heat or cold which could render your insulin ineffective.
 
-![Splash](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotSplash.png)
-![Welcome](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotWelcome.png)
-![Login](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotLogin.png)
-![Create Account](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddUser.png)
-![Add Pen](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddPen.png)
-![Add Provider](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAddProvider.png)
-![At A Glance](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotAtAGlance.png)
-![User Profile](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotProfile.png)
-![Edit Profile](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotEditProfile.png)
-![Edit Payment](https://github.com/jasoncavinder/InPen_demo/raw/master/README/ScreenShotEditPayment.png)
+![Splash](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/ScreenShotSplash.png)
+![Welcome](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/ScreenShotWelcome.png)
+![Login](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/ScreenShotLogin.png)
+![Create Account](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/ScreenShotAddUser.png)
+![Add Pen](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/ScreenShotAddPen.png)
+![Add Provider](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/ScreenShotAddProvider.png)
+![At A Glance](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/ScreenShotAtAGlance.png)
+![User Profile](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/ScreenShotProfile.png)
+![Edit Profile](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/ScreenShotEditProfile.png)
+![Edit Payment](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/ScreenShotEditPayment.png)
 
 ---
 
@@ -45,7 +45,7 @@ Temperature alerts limit the chance of extreme heat or cold which could render y
 
 ## Clone
 
-- Clone this repo to your local machine using `https://github.com/jasoncavinder/InPen_demo`
+- Clone this repo to your local machine using `https://github.com/jasoncavinder/Insulin_Pen_demo`
 
 ---
 
@@ -58,7 +58,7 @@ Temperature alerts limit the chance of extreme heat or cold which could render y
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/jasoncavinder/InPen_demo/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/jasoncavinder/Insulin_Pen_demo/tags).
 
 ---
 
@@ -76,7 +76,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 - **When will this be done?**
     - ASAP, but it's hard to say.
-      ![progress_bar](https://github.com/jasoncavinder/InPen_demo/raw/master/README/Progress.gif)
+      ![progress_bar](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/Progress.gif)
 
 ---
 
@@ -94,7 +94,7 @@ This contract does not include support, however you can reach out to the author 
 
 ## Donations
 
-[![Become a Patron!](https://github.com/jasoncavinder/InPen_demo/raw/master/README/become_a_patron_button@2x.png)](https://www.patreon.com/bePatron?u=3707292)
+[![Become a Patron!](https://github.com/jasoncavinder/Insulin_Pen_demo/raw/master/README/become_a_patron_button@2x.png)](https://www.patreon.com/bePatron?u=3707292)
 
 ---
 
