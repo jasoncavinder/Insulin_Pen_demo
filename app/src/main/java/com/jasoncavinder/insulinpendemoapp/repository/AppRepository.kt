@@ -28,6 +28,7 @@ import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.util.*
 
 class AppRepository private constructor(
     private val userDao: UserDao,
@@ -71,6 +72,10 @@ class AppRepository private constructor(
 
     private val _editDoseResult = MutableLiveData<Result<Dose>>()
     val editDoseResult: LiveData<Result<Dose>> = _editDoseResult
+
+    private val _injectDoseResult = MutableLiveData<Result<Dose>>()
+    val injectDoseResult: LiveData<Result<Dose>> = _injectDoseResult
+
 
     init {
         user.addObserver { _, id ->
@@ -261,6 +266,19 @@ class AppRepository private constructor(
                 else _editDoseResult.postValue(Result.Error(IOException("Could not edit dose(s)")))
             } catch (ex: Exception) {
                 Log.d(TAG, "Failed to edit dose(s)", ex)
+            }
+        }
+    }
+
+    suspend fun injectDose(dose: Dose) {
+        withContext(IO) {
+            try {
+                val result =
+                    doseDao.inject(dose.copy(givenAmount = dose.scheduledAmount, givenTime = Calendar.getInstance()))
+                if (result == null) _injectDoseResult.postValue(Result.Error(IOException("Could not update dose history.")))
+                else _injectDoseResult.postValue(Result.Success(result))
+            } catch (ex: Exception) {
+                Log.d(TAG, "Failed to edit dose", ex)
             }
         }
     }

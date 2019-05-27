@@ -38,6 +38,7 @@ import com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseType
 import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
 import com.jasoncavinder.insulinpendemoapp.databinding.FragmentHomeBinding
 import com.jasoncavinder.insulinpendemoapp.databinding.ModalEditDosesBinding
+import com.jasoncavinder.insulinpendemoapp.databinding.ModalReportDoseBinding
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoAction
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragment
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
@@ -72,9 +73,13 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
     /* BEGIN: Required for Demo Actions */
     private var _demoActions = arrayListOf(
         DemoAction("Simulate receive message", this::simulateReceiveMessage),
-        DemoAction("Simulate dose alert", this::simulateDoseAlert),
-        DemoAction("Simulate temperature alert", this::simulateTempAlert)
+        DemoAction("Simulate dose alert", this::simulateDoseAlert)
     )
+
+    private fun simulateConnectPen() = viewModel.penStatus.connect()
+    private fun simulateDisconnectPen() = viewModel.penStatus.disconnect()
+    private fun simulatePutPenOnCharger() = viewModel.penStatus.charge()
+    private fun simulateRemovePenFromCharger() = viewModel.penStatus.discharge()
 
     private fun simulateReceiveMessage() {
         try {
@@ -140,6 +145,23 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         dialog?.show()
     }
 
+    private fun simulateBolusDose() {
+        viewModel.nextBolusDose.value?.let {
+            viewModel.injectDose(it)
+            _demoActions.remove(DemoAction("Simulate inject bolus dose", this::simulateBolusDose))
+            viewModel.injectDoseResult.observe(this, Observer { result ->
+                when (result) {
+                    is Result.Success -> showCompletedInjectionDialog(result.data)
+                    is Result.Error -> Snackbar.make(
+                        requireParentFragment().requireView(),
+                        "An error occurred while updating your dose history.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        }
+    }
+
     override fun onDemoActionClicked(position: Int) {
         _demoActions[position].action()
     }
@@ -153,6 +175,38 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
         viewModel = ViewModelProviders.of(requireActivity())
             .get(MainViewModel::class.java)
+
+        viewModel.penStatus.isConnected.observe(this, Observer { connected ->
+            if (connected) {
+                _demoActions.addAll(
+                    arrayOf(
+                        DemoAction("Simulate disconnect pen (bluetooth)", this::simulateDisconnectPen),
+                        DemoAction("Simulate put pen on charger", this::simulatePutPenOnCharger),
+                        DemoAction("Simulate remove pen from charger", this::simulateRemovePenFromCharger),
+                        DemoAction("Simulate temperature alert", this::simulateTempAlert)
+                    )
+                )
+                _demoActions.remove(DemoAction("Simulate connect pen (bluetooth)", this::simulateConnectPen))
+            } else {
+                _demoActions.addAll(arrayOf(DemoAction("Simulate connect pen (bluetooth)", this::simulateConnectPen)))
+                _demoActions.removeAll(
+                    arrayOf(
+                        DemoAction("Simulate disconnect pen (bluetooth)", this::simulateDisconnectPen),
+                        DemoAction("Simulate put pen on charger", this::simulatePutPenOnCharger),
+                        DemoAction("Simulate remove pen from charger", this::simulateRemovePenFromCharger),
+                        DemoAction("Simulate temperature alert", this::simulateTempAlert)
+                    )
+                )
+            }
+        })
+
+        viewModel.nextBolusDose.observe(this, Observer { dose ->
+            if (dose == null)
+                _demoActions.remove(DemoAction("Simulate inject bolus dose", this::simulateBolusDose))
+            else
+                _demoActions.add(DemoAction("Simulate inject bolus dose", this::simulateBolusDose))
+
+        })
 
         requireContext().assets.open("sampleMessages.json").use { inputStream ->
             JsonReader(inputStream.reader()).use { jsonReader ->
@@ -179,10 +233,11 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             DataBindingUtil.inflate<FragmentHomeBinding>(
                 inflater, R.layout.fragment_home, container, false
             ).apply {
-                this.user = this@HomeFragment.viewModel.user
-                this.nextBasalDose = this@HomeFragment.viewModel.nextBasalDose
-                this.nextBolusDose = this@HomeFragment.viewModel.nextBolusDose
-                this.noMessages = this@HomeFragment.viewModel.noMessages
+                this.user = viewModel.user
+                this.penStatus = viewModel.penStatus
+                this.nextBasalDose = viewModel.nextBasalDose
+                this.nextBolusDose = viewModel.nextBolusDose
+                this.noMessages = viewModel.noMessages
                 this.lifecycleOwner = viewLifecycleOwner
             }
 
@@ -202,6 +257,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 //                Pair(R.id.menu_item_dose_history, R.id.action_nav_fail_safe)
             )
         )
+
 
         // Setup toggle listeners
         // TODO: move redundant code to a class
@@ -282,7 +338,6 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         button_change_bolus.setOnClickListener {
             showEditDosesDialog(dose = viewModel.nextBolusDose.value)
         }
-
     }
 
     override fun onAttach(context: Context) {
@@ -338,6 +393,35 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         }
     }
 
+    fun showCompletedInjectionDialog(dose: Dose) {
+        class ReportDoseDialog(val dose: Dose) : DialogFragment() {
+            override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+                return activity?.let {
+                    val inflater = requireActivity().layoutInflater
+                    val binding = DataBindingUtil.inflate<ModalReportDoseBinding>(
+                        inflater, R.layout.modal_report_dose, null, false
+                    )
+                    val builder = AlertDialog.Builder(it).apply {
+                        setView(binding.root)
+
+                        setPositiveButton("Report") { _, _ ->
+                            /* TODO */
+                        }
+                    }
+                    binding.title = "Successful Injection"
+                    binding.dose = dose
+                    binding.provider = viewModel.provider
+
+                    builder.create()
+                } ?: throw IllegalStateException("Activity cannot be null")
+            }
+        }
+
+        ReportDoseDialog(dose = dose).show(
+            requireFragmentManager(),
+            "reportInjection"
+        )
+    }
 
     fun showEditDosesDialog(
         dose: Dose? = null,
@@ -349,7 +433,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         ) : DialogFragment() {
             override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
                 return activity?.let {
-                    val dosage = MainViewModel.Dosage(actualBloodSugar = 220, userWeightInPounds = 207)
+                    val dosage = MainViewModel.Dosage(actualBloodSugar = 220, userWeightInPounds = 170)
                     val inflater = requireActivity().layoutInflater
                     val binding = DataBindingUtil.inflate<ModalEditDosesBinding>(
                         inflater, R.layout.modal_edit_doses, null, false
@@ -366,7 +450,8 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                         fun setDose(
                             type: DoseType = doseType,
                             time: Calendar? = null,
-                            amount: Int
+                            amount: Int,
+                            bloodSugar: Int? = null
                         ) {
                             viewModel.editDoseResult.observe(this@HomeFragment.viewLifecycleOwner, Observer { result ->
                                 when (result) {
@@ -390,7 +475,8 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                                     userId = viewModel.userId.value!!,
                                     type = type,
                                     scheduledTime = time,
-                                    scheduledAmount = amount
+                                    scheduledAmount = amount,
+                                    bloodSugar = bloodSugar
                                 )
                             )
                         }
@@ -415,7 +501,8 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                                 setPositiveButton("Save") { _, _ ->
                                     setDose(
                                         type = doseType,
-                                        amount = binding.calcResult ?: throw Exception("Dose amount cannot bet Null")
+                                        amount = binding.calcResult ?: throw Exception("Dose amount cannot bet Null"),
+                                        bloodSugar = binding.editTextBloodSugar.text.toString().toIntOrNull()
                                     )
                                 }
                             }

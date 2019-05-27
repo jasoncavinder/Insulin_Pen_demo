@@ -33,7 +33,8 @@ data class Dose(
     val scheduledTime: Calendar? = null,
     val scheduledAmount: Int? = null,
     val givenTime: Calendar? = null,
-    val givenAmount: Float? = null
+    val givenAmount: Int? = null,
+    val bloodSugar: Int? = null
 )
 
 enum class DoseType(val intVal: Int) {

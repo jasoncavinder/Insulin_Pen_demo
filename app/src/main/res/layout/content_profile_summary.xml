@@ -17,12 +17,18 @@
         <variable
             name="user"
             type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.user.User&gt;" />
+
+        <variable
+            name="penStatus"
+            type="com.jasoncavinder.insulinpendemoapp.viewmodels.PenStatus" />
+
         <variable
             name="nextBasalDose"
-            type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose&gt;" />
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose&gt;" />
+
         <variable
             name="nextBolusDose"
-            type="androidx.lifecycle.MediatorLiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose&gt;" />
+            type="androidx.lifecycle.LiveData&lt;com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose&gt;" />
 
     </data>
 
@@ -76,32 +82,51 @@
             android:layout_marginTop="8dp"
             android:contentDescription="@string/pen_data_transfer_indicator"
             android:tint="?attr/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@+id/icon_connection"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_import_export_black_24dp" />
-
-        <ImageView
-            android:id="@+id/icon_connection"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/pen_connection_status_indicator"
-            android:tint="?attr/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@+id/icon_battery"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_bluetooth_black_24dp" />
+            app:srcCompat="@drawable/ic_import_export_black_24dp"
+            app:visibleOrGone="@{safeUnbox(penStatus.isTransferring)}" />
 
         <ImageView
             android:id="@+id/icon_battery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:contentDescription="@string/pen_battery_status_indicator"
             android:tint="?attr/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:chargePercent="@{safeUnbox(penStatus.batteryCharge)}"
+            app:charging="@{safeUnbox(penStatus.isPluggedIn)}"
+            app:layout_constraintEnd_toStartOf="@id/icon_connection"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_battery_80_black_24dp" />
+            app:srcCompat="@drawable/ic_battery_80_black_24dp"
+            app:visibleOrGone="@{safeUnbox(penStatus.isConnected)}" />
+
+        <ImageView
+            android:id="@+id/icon_connection"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/pen_connection_status_indicator"
+            android:src="@{penStatus.isConnected ? @drawable/ic_bluetooth_black_24dp : @drawable/ic_bluetooth_searching_black_24dp}"
+            android:tint="?attr/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_pen_status_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxWidth="200dp"
+            android:text="@{penStatus.statusMessage}"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/barrier_name"
+            app:layout_constraintTop_toBottomOf="@+id/icon_connection"
+            tools:text="(Searching for insulin pen. Please make sure it is powered on and nearby.)" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_name"
@@ -116,7 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="account_circle,icon_connection"
+            app:constraint_referenced_ids="account_circle,icon_connection,text_view_pen_status_message"
             tools:layout_editor_absoluteY="658dp" />
 
         <TextView
@@ -202,7 +227,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text='@{String.format("%sU for this meal", nextBolusDose.scheduledAmount)}'
+            android:text='@{String.format("%sU injection is ready", nextBolusDose.scheduledAmount)}'
             android:visibility="@{ nextBolusDose == null ? View.GONE : View.VISIBLE}"
             app:layout_constraintBaseline_toBaselineOf="@id/label_next_bolus_dose"
             app:layout_constraintEnd_toStartOf="@+id/barrier_change_bolus"
@@ -215,8 +240,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:enabled="@{safeUnbox(penStatus.isConnected())}"
             android:minHeight="24dp"
-            android:text="@string/calculate_dose"
+            android:text="@{penStatus.isConnected() ? @string/calculate_and_inject : @string/pen_not_connected}"
+            android:textColor="?android:attr/textColorSecondary"
             android:visibility="@{ nextBolusDose != null ? View.GONE : View.VISIBLE }"
             app:layout_constraintBaseline_toBaselineOf="@+id/label_next_bolus_dose"
             app:layout_constraintEnd_toEndOf="parent"

@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:labelFor="@id/edit_text_blood_sugar"
-            android:text="@string/current_blood_sugar"
+            android:text="@string/blood_sugar"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/primaryTextColor"
             app:layout_constraintBaseline_toBaselineOf="@id/edit_text_blood_sugar"

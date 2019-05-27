@@ -6,101 +6,136 @@
 
 package com.jasoncavinder.insulinpendemoapp.viewmodels
 
-import android.os.CountDownTimer
+import android.os.Handler
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class PenStatus : Observable() {
-    private var _batteryCharge: Int = 100
-        set(charge: Int) {
-            field = charge
-            batteryCharge = when (charge) {
-                // 0, 20, 30, 50, 60, 80, 90, 100
-                in (95..100) -> 100
-                in (85..94) -> 90
-                in (70..84) -> 80
-                in (55..69) -> 60
-                in (40..54) -> 50
-                in (25..39) -> 30
-                in (1..24) -> 20
-                else -> 0
-            }
-            setChanged()
-            notifyObservers()
-        }
 
-    private var batteryTimer: CountDownTimer? = null
-
-    private fun chargeOrDrainBattery(cod: ChargeOrDrain) {
-        batteryTimer?.cancel()
-        if (cod == ChargeOrDrain.STOP) return
-
-        data class TimerArgs(val time: Long, val tick: Long, val tickAction: () -> Unit, val finishAction: () -> Unit)
-        val (time, tick, tickAction, finishAction) = run {
-            when (cod) {
-                ChargeOrDrain.CHARGE ->
-                    TimerArgs(
-                        15000L * (100 - _batteryCharge),
-                        15000L,
-                        { _batteryCharge.inc() },
-                        { _batteryCharge = 100 }
-                    )
-                ChargeOrDrain.DRAIN ->
-                    TimerArgs(
-                        30000L * _batteryCharge,
-                        30000L,
-                        { _batteryCharge.dec() },
-                        {
-                            _batteryCharge = 0
-                            isTransferring = false
-                            isConnected = false
-                        }
-                    )
-                else -> TimerArgs(0, 0, {}, {})
-            }
-        }
-
-        batteryTimer = object : CountDownTimer(time, tick) {
-            override fun onTick(millisUntilFinished: Long) = tickAction()
-            override fun onFinish() = finishAction()
-        }.start()
+    companion object {
+        private var _batteryCharge = MutableLiveData<Int>()
     }
 
-    private enum class ChargeOrDrain { CHARGE, DRAIN, STOP }
+    private val _isConnecting = MutableLiveData<Boolean>()
+    val isConnecting: LiveData<Boolean> = _isConnecting
 
-    var batteryCharge: Int = _batteryCharge
+    private val _isConnected = MutableLiveData<Boolean>()
+    val isConnected: LiveData<Boolean> = _isConnected
 
-    var isConnected: Boolean = false
-        set(bool) {
-            when (bool) {
-                true -> if (!isPluggedIn) chargeOrDrainBattery(ChargeOrDrain.DRAIN)
-                false -> if (!isPluggedIn) chargeOrDrainBattery(ChargeOrDrain.STOP)
+    private val _isTransferring = MutableLiveData<Boolean>()
+    var isTransferring: LiveData<Boolean> = _isTransferring
+
+    private val _isPluggedIn = MutableLiveData<Boolean>()
+    var isPluggedIn: LiveData<Boolean> = _isPluggedIn
+
+    private val _statusMessage = MediatorLiveData<String>()
+    val statusMessage: LiveData<String> = _statusMessage
+
+    var batteryCharge: LiveData<Int> = _batteryCharge
+
+    private val pluggedInObserver = Observer<Boolean> {
+        when {
+            it -> {
+                batteryChargeHandler.removeCallbacks(dischargeBattery)
+                batteryChargeHandler.post(chargeBattery)
             }
-            field = bool
-        }
-
-    var isTransferring: Boolean = false
-        set (bool) {
-            field = bool
-            if (bool) {
-                val transferTimer = object : CountDownTimer(5000, 5000) {
-                    override fun onTick(millisUntilFinished: Long) {}
-                    override fun onFinish() {
-                        field = false
-                        setChanged()
-                        notifyObservers()
-                    }
-                }.start()
-            }
-            setChanged()
-            notifyObservers()
-        }
-
-    var isPluggedIn: Boolean = false
-        set(bool) {
-            field = bool
-            when (bool) {
-                true -> chargeOrDrainBattery(ChargeOrDrain.CHARGE)
-                false -> if (isConnected) chargeOrDrainBattery(ChargeOrDrain.DRAIN)
+            !it -> {
+                batteryChargeHandler.removeCallbacks(chargeBattery)
+                batteryChargeHandler.post(dischargeBattery)
             }
         }
+
+    }
+    private val connectedObserver = Observer<Boolean> { connected ->
+        _batteryCharge.value.let { charge ->
+            when (charge) {
+                null -> _batteryCharge.postValue(100)
+                0 -> _batteryCharge.postValue(charge.plus(10))
+            }
+        }
+        when {
+            connected -> _isPluggedIn.observeForever(pluggedInObserver)
+            !connected -> _isPluggedIn.removeObserver(pluggedInObserver)
+        }
+    }
+    private val batteryChargeHandler = Handler()
+    private val chargeBattery = object : Runnable {
+        override fun run() {
+            _batteryCharge.postValue(_batteryCharge.value?.run { if (this < 100) this.inc() else 100 } ?: 100)
+            _batteryCharge.value?.let { if (it != 100) batteryChargeHandler.postDelayed(this, 1500) }
+        }
+    }
+    private val dischargeBattery = object : Runnable {
+        override fun run() {
+            _batteryCharge.postValue(_batteryCharge.value?.run { if (this > 0) this.dec() else 0 } ?: 0)
+            _batteryCharge.value?.let { if (it == 0) disconnect() else batteryChargeHandler.postDelayed(this, 3000) }
+        }
+    }
+
+    init {
+        _statusMessage.addSource(_isTransferring) {
+            _statusMessage.postValue(if (it) "Transferring pen data. Please wait." else "")
+        }
+        _statusMessage.addSource(_isConnecting) {
+            _statusMessage.postValue(if (it) "Insulin pen connecting. Please wait." else "")
+        }
+        _statusMessage.addSource(_isConnected) {
+            _statusMessage.postValue(if (it) "" else "Searching for insulin pen. Please make sure it is powered on and nearby.")
+        }
+
+        _isPluggedIn.value = false
+        _isTransferring.value = false
+        _isConnecting.value = false
+        _isConnected.value = false
+
+        _batteryCharge.value = 100
+        _isConnected.observeForever(connectedObserver)
+    }
+
+    fun connect() {
+        _isConnecting.postValue(true)
+        GlobalScope.launch {
+            withContext(Main) {
+                delay(2000)
+                _isConnecting.postValue(false)
+                _isConnected.postValue(true)
+                delay(500)
+                transferPenData()
+            }
+        }
+    }
+
+    fun disconnect() {
+        _isConnected.postValue(false)
+    }
+
+    fun transferPenData() {
+        _isTransferring.postValue(true)
+        GlobalScope.launch {
+            withContext(Main) {
+                delay(5000)
+                _isTransferring.postValue(false)
+            }
+        }
+    }
+
+    fun charge() {
+        _isPluggedIn.value = true
+    }
+
+    fun discharge() {
+        _isPluggedIn.value = false
+    }
+
+
+
+
 }

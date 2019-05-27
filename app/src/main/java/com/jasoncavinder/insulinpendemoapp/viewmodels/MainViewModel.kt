@@ -7,7 +7,6 @@
 package com.jasoncavinder.insulinpendemoapp.viewmodels
 
 import android.app.Application
-import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.*
 import com.jasoncavinder.insulinpendemoapp.R
@@ -60,6 +59,7 @@ class MainViewModel internal constructor(
 
     private val TAG by lazy { this::class.java.simpleName }
 
+    /* Repository */
     private val repository: AppRepository = AppRepository.getInstance(
         AppDatabase.getInstance(application).userDao(),
         AppDatabase.getInstance(application).providerDao(),
@@ -71,18 +71,44 @@ class MainViewModel internal constructor(
         AppDatabase.getInstance(application).alertDao()
     )
 
-    val localUsers: LiveData<Int> = repository.getLocalUserCount()
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
-    val loginResult: LiveData<Result<String>> = repository.loginResult
+    /* State, Private  */
+    private val _loginFormState = MutableLiveData<LoginFormState>()
+    private val _createUserFormState = MutableLiveData<CreateUserFormState>()
 
-    private val _createUserForm = MutableLiveData<CreateUserFormState>()
-    val createUserFormState: LiveData<CreateUserFormState> = _createUserForm
+
+    /* State, Public */
+    val loginFormState: LiveData<LoginFormState> = _loginFormState
+    val createUserFormState: LiveData<CreateUserFormState> = _createUserFormState
+
+
+    /* Asynchronous results, Private */
     private val _createUserResult = MutableLiveData<Result<String>>()
-    val createUserResult: LiveData<Result<String>> = _createUserResult
 
+
+    /* Asynchronous Results, Public */
+    val loginResult: LiveData<Result<String>> = repository.loginResult
+    val createUserResult: LiveData<Result<String>> = _createUserResult
+    val updateUserResult: LiveData<Result<User>> = repository.updateUserResult
+    val updatePaymentResult: LiveData<Result<Payment>> = repository.updatePaymentResult
+    val addPenResult: LiveData<Result<Pen>> = repository.addPenResult
+    val changeProviderResult: LiveData<Result<Provider>> = repository.changeProviderResult
+    val changePenResult: LiveData<Result<PenWithDataPoints>> = repository.changePenResult
+    val editDoseResult: LiveData<Result<Dose>> = repository.editDoseResult
+    val injectDoseResult: LiveData<Result<Dose>> = repository.injectDoseResult
+
+
+    /* Private Data */
     private val _providerList = repository.getProviders()
+    private val _userId: LiveData<String> =
+        Transformations.switchMap(repository.userIdLiveData) { MutableLiveData<String>(it) }
+    private val _userProfile: LiveData<UserProfile> =
+        Transformations.switchMap(_userId) { repository.loadUserProfile(it) }
+
+
+    /* Public Data */
+    val localUsers: LiveData<Int> = repository.getLocalUserCount()
+    val userId: LiveData<String> = _userId
     var providers: LiveData<Map<String, String>> =
         Transformations.switchMap(_providerList) {
             MutableLiveData<Map<String, String>>().apply {
@@ -95,48 +121,40 @@ class MainViewModel internal constructor(
                 }
             }
         }
-    var randomProvider: LiveData<Provider> = Transformations.switchMap(_providerList) {
-        // TODO: handle empty list
-        MutableLiveData<Provider>(it.shuffled().first())
-    }
-
-
-    val updateUserResult: LiveData<Result<User>> = repository.updateUserResult
-    val updatePaymentResult: LiveData<Result<Payment>> = repository.updatePaymentResult
-    val addPenResult: LiveData<Result<Pen>> = repository.addPenResult
-    val changeProviderResult: LiveData<Result<Provider>> = repository.changeProviderResult
-    val changePenResult: LiveData<Result<PenWithDataPoints>> = repository.changePenResult
-    val editDoseResult: LiveData<Result<Dose>> = repository.editDoseResult
-
-
-    var userId: LiveData<String> =
-        Transformations.switchMap(repository.userIdLiveData) { MutableLiveData<String>(it) }
-
-    private val _userProfile: LiveData<UserProfile> =
-        Transformations.switchMap(userId) { repository.loadUserProfile(it) }
-
-    var user: MediatorLiveData<User> = MediatorLiveData()
-    var paymentMethod: MediatorLiveData<Payment> = MediatorLiveData()
-    var provider: MediatorLiveData<Provider> = MediatorLiveData()
-    var pen: MediatorLiveData<PenWithDataPoints> = MediatorLiveData()
-
-    var messages: LiveData<List<Message>> =
+    val randomProvider: LiveData<Provider> =
+        Transformations.switchMap(_providerList) {
+            MutableLiveData<Provider>(
+                if (it.isNotEmpty()) it.shuffled().first() else throw Exception(
+                    "No providers were found. This usually you didn't uninstall and relaunch after a version upgrade."
+                )
+            )
+        }
+    val user: MediatorLiveData<User> = MediatorLiveData()
+    val paymentMethod: MediatorLiveData<Payment> = MediatorLiveData()
+    val provider: MediatorLiveData<Provider> = MediatorLiveData()
+    val pen: MediatorLiveData<PenWithDataPoints> = MediatorLiveData()
+    val penStatus = PenStatus()
+    val messages: LiveData<List<Message>> =
         Transformations.switchMap(userId) { repository.loadMessages(it) }
-
-    var unreadMessages: LiveData<List<MessageSummary>> =
-        Transformations.map(messages) { messageList ->
-            createMessageSummaryList(messageList)
-        }
-    var noMessages: LiveData<Boolean> =
-        Transformations.map(unreadMessages) { unreadList ->
-            unreadList.size == 0
-        }
-
-    var doses: LiveData<List<Dose>> =
+    val unreadMessages: LiveData<List<MessageSummary>> =
+        Transformations.map(messages) { messageList -> createMessageSummaryList(messageList) }
+    val noMessages: LiveData<Boolean> =
+        Transformations.map(unreadMessages) { unreadList -> unreadList.isEmpty() }
+    val doses: LiveData<List<Dose>> =
         Transformations.switchMap(userId) { repository.getUserDoses(it) }
+    val nextBasalDose: LiveData<Dose> =
+        Transformations.switchMap(doses) { doseList ->
+            MutableLiveData<Dose>(doseList.sortedByDescending { it.scheduledTime }
+                .firstOrNull { (it.type == DoseType.BASAL && it.scheduledTime?.after(Calendar.getInstance()) ?: false) })
+        }
+    val nextBolusDose: LiveData<Dose> =
+        Transformations.switchMap(doses) { doseList ->
+            MutableLiveData<Dose>(doseList.sortedByDescending { dose -> dose.createdTime }
+                .firstOrNull { it.type == DoseType.BOLUS && it.givenTime == null })
+        }
 
-    var nextBasalDose: MediatorLiveData<Dose> = MediatorLiveData()
-    var nextBolusDose: MediatorLiveData<Dose> = MediatorLiveData()
+//    var nextBasalDose: MediatorLiveData<Dose> = MediatorLiveData()
+//    var nextBolusDose: MediatorLiveData<Dose> = MediatorLiveData()
 
     init {
 
@@ -174,22 +192,17 @@ class MainViewModel internal constructor(
                 is Result.Success -> pen.value = it.data
             }
         }
-        nextBasalDose.addSource(doses) {
-            nextBasalDose.value = it
-                .sortedByDescending { it.scheduledTime }
-                .firstOrNull { dose ->
-                    (dose.type == DoseType.BASAL && dose.scheduledTime?.after(Calendar.getInstance()) ?: false).apply {
-                        Log.d(
-                            TAG,
-                            "dose.scheduledTime = ${dose.scheduledTime} and Calendar.getInstance() = ${Calendar.getInstance()}"
-                        )
-                    }
-                }
-        }
-        nextBolusDose.addSource(doses) {
-            nextBolusDose.value = it.sortedByDescending { dose -> dose.createdTime }
-                .firstOrNull { dose -> dose.type == DoseType.BOLUS }
-        }
+//        nextBasalDose.addSource(doses) {
+//            nextBasalDose.value = it
+//                .sortedByDescending { it.scheduledTime }
+//                .firstOrNull { dose ->
+//                    (dose.type == DoseType.BASAL && dose.scheduledTime?.after(Calendar.getInstance()) ?: false)
+//                }
+//        }
+//        nextBolusDose.addSource(doses) {
+//            nextBolusDose.value = it.sortedByDescending { dose -> dose.createdTime }
+//                .firstOrNull { dose -> dose.type == DoseType.BOLUS }
+//        }
 
 //        try {
 //
@@ -212,11 +225,11 @@ class MainViewModel internal constructor(
 
     fun loginDataChanged(email: String, password: String) {
         if (!isEmailValid(email)) {
-            _loginForm.value = LoginFormState(emailError = R.string.invalid_email)
+            _loginFormState.value = LoginFormState(emailError = R.string.invalid_email)
         } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
+            _loginFormState.value = LoginFormState(passwordError = R.string.invalid_password)
         } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
+            _loginFormState.value = LoginFormState(isDataValid = true)
         }
     }
 
@@ -273,7 +286,7 @@ class MainViewModel internal constructor(
         for (message in list) {
             messageSummary = MessageSummary(
                 message.timeStamp,
-                if (message.sent) "Me" else message.providerId, //TODO: get randomProvider name
+                if (message.sent) "Me" else message.providerId,
                 if (message.content.length < 60) message.content else message.content.substring(0..60) + "..."
             )
             messagesVM.add(messageSummary)
@@ -315,22 +328,22 @@ class MainViewModel internal constructor(
     ) {
         when {
             !isNameValid(firstName) ->
-                _createUserForm.value =
+                _createUserFormState.value =
                     CreateUserFormState(firstNameError = R.string.invalid_first_name)
             !isNameValid(lastName) ->
-                _createUserForm.value =
+                _createUserFormState.value =
                     CreateUserFormState(lastNameError = R.string.invalid_last_name)
             !isEmailValid(email) ->
-                _createUserForm.value =
+                _createUserFormState.value =
                     CreateUserFormState(emailError = R.string.invalid_email)
             !isPasswordValid(password) ->
-                _createUserForm.value =
+                _createUserFormState.value =
                     CreateUserFormState(passwordError = R.string.invalid_password)
             !isConfirmValid(password, confirm) ->
-                _createUserForm.value =
+                _createUserFormState.value =
                     CreateUserFormState(confirmError = R.string.invalid_confirm)
             else ->
-                _createUserForm.value = CreateUserFormState(isDataValid = true)
+                _createUserFormState.value = CreateUserFormState(isDataValid = true)
         }
     }
 
@@ -342,6 +355,10 @@ class MainViewModel internal constructor(
                 _createUserResult.postValue(repository.createUser(user))
             }
         }
+
+    fun injectDose(dose: Dose) {
+        viewModelScope.launch { repository.injectDose(dose) }
+    }
 
     class Dosage(
         val userWeightInPounds: Int = 160,
