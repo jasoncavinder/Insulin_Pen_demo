@@ -4,7 +4,7 @@
   ~ licensed for public use. See the LICENSE.md file for details
   -->
 
-<!DOCTYPE resources [<!ENTITY appname "InPen (demo)"><!ENTITY author "Jason Cavinder"><!ENTITY authorEmail "jason.cavinder@gmail.com"><!ENTITY authorPhone "+1-808-989-1186">]>
+<!DOCTYPE resources [<!ENTITY appname "Insulin Pen (demo)"><!ENTITY author "Jason Cavinder"><!ENTITY authorEmail "jason.cavinder@gmail.com"><!ENTITY authorPhone "+1-808-989-1186">]>
 <resources>
     <string name="app_name">&appname;</string>
 
