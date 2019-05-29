@@ -29,11 +29,11 @@
         android:label="At A Glance"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_profile"
+            android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_penInfo"
-            app:destination="@id/penInfo" />
+            android:id="@+id/action_homeFragment_to_messageFragment"
+            app:destination="@id/messageFragment" />
         <!--<action-->
         <!--android:id="@+id/action_homeFragment_to_reporting"-->
         <!--app:destination="@id/reporting" />-->
@@ -51,7 +51,6 @@
             app:popUpTo="@id/paymentFragment"
             app:popUpToInclusive="true" />
     </fragment>
-    <fragment android:id="@+id/addPen" />
     <!--<fragment-->
     <!--android:id="@+id/doseHistoryAndWarnings"-->
     <!--android:name="com.jasoncavinder.old_inpen_demo.DoseHistoryFragment"-->
@@ -65,14 +64,18 @@
     <!--android:id="@+id/action_reporting_to_doseHistoryAndWarnings"-->
     <!--app:destination="@id/doseHistoryAndWarnings" />-->
     <!--</fragment>-->
-    <fragment android:id="@+id/penInfo">
-        <action
-            android:id="@+id/action_penInfo_to_addPen"
-            app:destination="@id/addPen" />
-    </fragment>
-    <fragment android:id="@+id/changeReporting" />
     <action
         android:id="@+id/action_nav_fail_safe"
         app:popUpTo="@id/nav_graph_main"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.jasoncavinder.insulinpendemoapp.ui.main.MessageFragment"
+        android:label="fragment_message_list"
+        tools:layout="@layout/fragment_message_list">
+        <action
+            android:id="@+id/action_messageFragment_pop"
+            app:popUpTo="@id/messageFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
