@@ -12,6 +12,13 @@
     <item
         android:id="@+id/menu_item_dose_history"
         android:icon="@drawable/ic_history_24dp"
-        android:title="@string/history"
-        app:showAsAction="always" />
+        android:title="@string/dose_history"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+    <item
+        android:id="@+id/menu_item_messaging"
+        android:icon="@drawable/ic_message_black_24dp"
+        android:title="@string/messages"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
 </menu>

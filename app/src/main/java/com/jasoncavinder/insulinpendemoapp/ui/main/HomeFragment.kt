@@ -71,16 +71,14 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
 
     /* BEGIN: Required for Demo Actions */
-    private var _demoActions = arrayListOf(
+    private var _demoActions: ArrayList<DemoAction> = arrayListOf(
         DemoAction("Simulate receive message", this::simulateReceiveMessage),
         DemoAction("Simulate dose alert", this::simulateDoseAlert)
     )
-
     private fun simulateConnectPen() = viewModel.penStatus.connect()
     private fun simulateDisconnectPen() = viewModel.penStatus.disconnect()
     private fun simulatePutPenOnCharger() = viewModel.penStatus.charge()
     private fun simulateRemovePenFromCharger() = viewModel.penStatus.discharge()
-
     private fun simulateReceiveMessage() {
         try {
             if (sampleMessageContent.size == 0) throw java.lang.Exception("sampleMessageContent is empty")
@@ -109,7 +107,6 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         }
 
     }
-
     private fun simulateTempAlert() {
         val builder: AlertDialog.Builder? = activity?.let {
             AlertDialog.Builder(it)
@@ -118,14 +115,13 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             ?.setTitle("Temperature Alert")
             ?.setIcon(R.drawable.ic_warning_black_24dp)
         builder?.apply {
-            setPositiveButton("OK") { dialog, id ->
+            setPositiveButton("OK") { _, _ ->
                 // TODO: Alert acknowledged
             }
         }
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
     }
-
     private fun simulateDoseAlert() {
         val builder: AlertDialog.Builder? = activity?.let {
             AlertDialog.Builder(it)
@@ -134,17 +130,16 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             ?.setTitle("Dose Alert")
             ?.setIcon(R.drawable.ic_event_available_black_24dp)
         builder?.apply {
-            setPositiveButton("Ok, Schedule Alert") { dialog, which ->
+            setPositiveButton("Ok, Schedule Alert") { _, _ ->
                 // TODO:
             }
-            setNegativeButton("Don't Schedule") { dialog, id ->
+            setNegativeButton("Don't Schedule") { _, _ ->
                 // TODO:
             }
         }
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
     }
-
     private fun simulateBolusDose() {
         viewModel.nextBolusDose.value?.let {
             viewModel.injectDose(it)
@@ -161,7 +156,6 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             })
         }
     }
-
     override fun onDemoActionClicked(position: Int) {
         _demoActions[position].action()
     }
@@ -221,14 +215,12 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                 }
             }
         }
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "Entered onCreateView")
         val fragmentHomeBinding =
             DataBindingUtil.inflate<FragmentHomeBinding>(
                 inflater, R.layout.fragment_home, container, false
@@ -253,8 +245,9 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             R.menu.menu_home_left,
             R.menu.menu_home_right,
             mapOf(
-                Pair(R.id.menu_item_profile_settings, R.id.action_homeFragment_to_profile)//,
+                Pair(R.id.menu_item_profile_settings, R.id.action_homeFragment_to_profileFragment),
 //                Pair(R.id.menu_item_dose_history, R.id.action_nav_fail_safe)
+                Pair(R.id.menu_item_messaging, R.id.action_homeFragment_to_messageFragment)
             )
         )
 

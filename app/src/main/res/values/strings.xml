@@ -38,7 +38,7 @@
     <string name="found_pen">Found insulin pen.\nID# %s</string>
     <string name="continue_btn">Continue</string>
     <string name="profile">Profile</string>
-    <string name="history">History</string>
+    <string name="dose_history">Dose History</string>
     <string name="invalid_first_name">Please enter your first name</string>
     <string name="invalid_last_name">Please enter your last name</string>
     <string name="invalid_confirm">Confirm password doesn\'t match password</string>
@@ -120,4 +120,7 @@
     <string name="blood_sugar">Blood Sugar (mg/dL):</string>
     <string name="carbs_in_this_meal_grams">Carbs in this meal (grams):</string>
     <string name="logout">Logout</string>
+    <string name="home">Home</string>
+    <string name="payment">Payment</string>
+    <string name="messages">Messages</string>
 </resources>

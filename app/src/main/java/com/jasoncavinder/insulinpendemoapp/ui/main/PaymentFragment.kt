@@ -80,7 +80,7 @@ class PaymentFragment : Fragment() {
 
         updateToolbarListener.updateToolbar(
             "Update Payment",
-            R.menu.menu_payment_left,
+            R.menu.menu_empty,
             R.menu.menu_payment_right,
             mapOf(
                 Pair(R.id.menu_item_profile_settings, R.id.action_paymentFragment_pop)
@@ -172,7 +172,7 @@ class PaymentFragment : Fragment() {
             updateToolbarListener = context as UpdateToolbarListener
         } catch (castException: ClassCastException) {
             /** The activity does not implement the listener. */
-            Log.d(TAG, "$context must implement OnFragmentInteractionListener")
+            Log.d(TAG, "$context must implement UpdateToolbarListener")
         }
     }
 

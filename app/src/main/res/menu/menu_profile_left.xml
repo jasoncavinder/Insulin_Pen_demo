@@ -13,6 +13,6 @@
         android:id="@+id/menu_item_payment_settings"
         android:enabled="true"
         android:icon="@drawable/ic_payment_black_24dp"
-        android:title="Payment"
+        android:title="@string/payment"
         app:showAsAction="always" />
 </menu>

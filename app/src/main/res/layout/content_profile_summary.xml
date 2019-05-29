@@ -99,7 +99,7 @@
             app:layout_constraintEnd_toStartOf="@id/icon_connection"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_battery_80_black_24dp"
-            app:visibleOrGone="@{safeUnbox(penStatus.isConnected)}" />
+            app:visibleOrGone="@{safeUnbox(penStatus.isConnected())}" />
 
         <ImageView
             android:id="@+id/icon_connection"
@@ -108,7 +108,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/pen_connection_status_indicator"
-            android:src="@{penStatus.isConnected ? @drawable/ic_bluetooth_black_24dp : @drawable/ic_bluetooth_searching_black_24dp}"
+            android:src="@{safeUnbox(penStatus.isConnected().getValue()) ? @drawable/ic_bluetooth_black_24dp : @drawable/ic_bluetooth_searching_black_24dp}"
             android:tint="?attr/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -242,7 +242,7 @@
             android:layout_marginStart="8dp"
             android:enabled="@{safeUnbox(penStatus.isConnected())}"
             android:minHeight="24dp"
-            android:text="@{penStatus.isConnected() ? @string/calculate_and_inject : @string/pen_not_connected}"
+            android:text="@{safeUnbox(penStatus.isConnected().getValue()) ? @string/calculate_and_inject : @string/pen_not_connected}"
             android:textColor="?android:attr/textColorSecondary"
             android:visibility="@{ nextBolusDose != null ? View.GONE : View.VISIBLE }"
             app:layout_constraintBaseline_toBaselineOf="@+id/label_next_bolus_dose"
