@@ -26,7 +26,7 @@ fun View.focusedByDefault(focused: Boolean) {
     isFocusedByDefault = focused
 }
 
-@BindingAdapter("bind:charging", "bind:chargePercent")
+@BindingAdapter("charging", "chargePercent")
 fun ImageView.setBatteryChargeIcon(charging: Boolean = false, chargePercent: Int = 100) {
     val chargeIcon = when (chargePercent) {
         //                 0, 20, 30, 50, 60, 80, 90, 100
@@ -53,7 +53,7 @@ fun TextView.textFromInnt(num: Int) {
     text = num.toString()
 }
 
-@BindingAdapter("app:srcCompat")
+@BindingAdapter("srcCompat")
 fun ImageView.setPhotoResource(photo: String?) {
     when (photo) {
         null -> Log.d("setImageResource (Binding Adapter)", "photo was null")
