@@ -31,6 +31,7 @@ import com.jasoncavinder.insulinpendemoapp.database.entities.provider.ProviderDa
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.UserDao
 import com.jasoncavinder.insulinpendemoapp.database.utilities.Converters
+import com.jasoncavinder.insulinpendemoapp.database.utilities.Migrations
 import com.jasoncavinder.insulinpendemoapp.database.utilities.ProviderDatabaseWorker
 import com.jasoncavinder.insulinpendemoapp.utilities.DATABASE_NAME
 
@@ -46,7 +47,7 @@ import com.jasoncavinder.insulinpendemoapp.utilities.DATABASE_NAME
         Alert::class
     ],
     version = 46,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -82,7 +83,7 @@ abstract class AppDatabase : RoomDatabase() {
                     )
                 )
                 .fallbackToDestructiveMigration()
-//                .addMigrations()  // TODO: Add data migrations to database
+                .addMigrations(*(Migrations().toTypedArray()))
                 .build()
         }
 
