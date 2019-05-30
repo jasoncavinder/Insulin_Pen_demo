@@ -41,8 +41,7 @@ class MessagingRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val message = messageList.value?.get(position)
-        holder.mIdView.text = message?.messageId.toString()
-        holder.mContentView.text = message?.content
+        holder.messageContentView.text = message?.content.plus("???")
 
         with(holder.view) {
             tag = message
@@ -53,11 +52,10 @@ class MessagingRecyclerViewAdapter(
     override fun getItemCount(): Int = messageList.value?.size ?: 0
 
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val mIdView: TextView = view.item_number
-        val mContentView: TextView = view.content
+        val messageContentView: TextView = view.message_content
 
         override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
+            return super.toString() + " '" + messageContentView.text + "'"
         }
     }
 }
