@@ -302,6 +302,12 @@ class AppRepository private constructor(
         }
     }
 
+    suspend fun sendMessage(message: Message) {
+        withContext(IO) {
+            messageDao.insert(message)
+        }
+    }
+
     companion object {
 
         @Volatile

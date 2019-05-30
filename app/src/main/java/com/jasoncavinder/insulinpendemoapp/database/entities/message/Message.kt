@@ -9,6 +9,7 @@ package com.jasoncavinder.insulinpendemoapp.database.entities.message
 import androidx.room.*
 import com.jasoncavinder.insulinpendemoapp.database.entities.provider.Provider
 import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
+import java.util.*
 
 @Entity(
     tableName = "messages",
@@ -25,8 +26,8 @@ import com.jasoncavinder.insulinpendemoapp.database.entities.user.User
 )
 data class Message(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val messageId: Int,
-    val timeStamp: Long,
+    @ColumnInfo(name = "id") val messageId: Int = 0,
+    val timeStamp: Calendar = Calendar.getInstance(),
     val userId: String,
     val providerId: String,
     val sent: Boolean, // true = from randomProvider, false = to randomProvider

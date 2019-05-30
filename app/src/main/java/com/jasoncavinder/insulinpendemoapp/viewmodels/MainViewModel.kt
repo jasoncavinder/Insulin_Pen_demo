@@ -7,6 +7,7 @@
 package com.jasoncavinder.insulinpendemoapp.viewmodels
 
 import android.app.Application
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.*
 import com.jasoncavinder.insulinpendemoapp.R
@@ -275,7 +276,7 @@ class MainViewModel internal constructor(
 
     fun verifyLogin() = repository.checkLogin()
 
-    data class MessageSummary(val timestamp: Long, val from: String, val content: String)
+    data class MessageSummary(val timestamp: Calendar, val from: String, val content: String)
 
     fun createMessageSummaryList(list: List<Message>): List<MessageSummary> {
 
@@ -359,6 +360,25 @@ class MainViewModel internal constructor(
     fun injectDose(dose: Dose) {
         viewModelScope.launch { repository.injectDose(dose) }
     }
+
+    fun sendMessage(messageContent: String) {
+        val userId: String = userId.value ?: run {
+            Log.d(TAG, "userId is null!?")
+            return
+        }
+        val providerId: String = provider.value?.providerId ?: run {
+            Log.d(TAG, "providerId is null!?")
+            return
+        }
+        val message =
+            Message(userId = userId, providerId = providerId, sent = true, content = messageContent, read = true)
+        viewModelScope.launch {
+            withContext(IO) {
+                repository.sendMessage(message)
+            }
+        }
+    }
+
 
     class Dosage(
         val userWeightInPounds: Int = 160,

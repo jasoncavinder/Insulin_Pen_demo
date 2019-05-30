@@ -13,10 +13,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jasoncavinder.insulinpendemoapp.R
@@ -26,7 +24,7 @@ import com.jasoncavinder.insulinpendemoapp.utilities.DemoAction
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragment
 import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
-import kotlinx.android.synthetic.main.fragment_message_list.view.*
+import kotlinx.android.synthetic.main.fragment_message_list.*
 
 class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
     private val TAG by lazy { this::class.java.simpleName }
@@ -59,7 +57,7 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
         viewModel = ViewModelProviders.of(requireActivity())
             .get(MainViewModel::class.java)
 
-        messageList = MessageList(viewModel.messages, viewModel.provider)
+        messageList = MessageList(viewModel.messages, viewModel.provider, context)
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
@@ -73,21 +71,6 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_message_list, container, false)
 
-        messageList.observe(viewLifecycleOwner, Observer {})
-
-        // Set the adapter
-        if (view.message_list is RecyclerView) {
-            with(view.message_list) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                        .apply {
-                            reverseLayout = true
-                        }
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = MessagingRecyclerViewAdapter(messageList/*, listener*/)
-            }
-        }
         return view
     }
 
@@ -101,6 +84,18 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
                 Pair(R.id.menu_item_home, R.id.action_messageFragment_pop)
             )
         )
+        message_list.apply {
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
+            adapter = MessagingRecyclerViewAdapter(messageList/*, listener*/)
+        }
+//        messageList.observe(viewLifecycleOwner, Observer {  })
+        messageList.observeForever { }
+
+        button_send.setOnClickListener {
+            viewModel.sendMessage(edit_text_send.text.toString())
+            edit_text_send.text.clear()
+        }
+
     }
 
     override fun onAttach(context: Context) {

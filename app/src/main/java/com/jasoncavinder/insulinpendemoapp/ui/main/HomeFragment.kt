@@ -91,7 +91,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
             val message = Message(
                 messageId = 0,
-                timeStamp = Calendar.getInstance().timeInMillis,
+                timeStamp = Calendar.getInstance(),
                 providerId = providerId,
                 userId = userId,
                 content = sampleMessageContent.shuffled().first(),

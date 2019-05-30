@@ -21,15 +21,12 @@ class MessageSummaryAdapter(
 ) :
     RecyclerView.Adapter<MessageSummaryAdapter.MessageSummaryViewHolder>() {
 
-    class MessageSummaryViewHolder(val messageSummaryView: RelativeLayout) : RecyclerView.ViewHolder(messageSummaryView)
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageSummaryViewHolder {
         val messageSummaryView = LayoutInflater.from(parent.context)
             .inflate(R.layout.content_message_summary, parent, false) as RelativeLayout
 
         return MessageSummaryViewHolder(messageSummaryView)
     }
-
 
     override fun onBindViewHolder(holder: MessageSummaryViewHolder, position: Int) {
         holder.messageSummaryView.message_from.text =
@@ -40,8 +37,6 @@ class MessageSummaryAdapter(
 
     override fun getItemCount(): Int = messageSummaryList.value?.size ?: 0
 
-//    fun updateMessageList(newList: List<MainViewModel.MessageSummary>) {
-//        this.messageSummaryList.postValue(newList)
-//        notifyDataSetChanged()
-//    }
+    inner class MessageSummaryViewHolder(val messageSummaryView: RelativeLayout) :
+        RecyclerView.ViewHolder(messageSummaryView)
 }

@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 class Migrations : ArrayList<Migration>() {
     val from46to47 = object : Migration(46, 47) {
         override fun migrate(database: SupportSQLiteDatabase) {
-//        database.execSQL("")
+            // No Schema Changes
         }
     }
 
@@ -20,4 +20,9 @@ class Migrations : ArrayList<Migration>() {
         for (migration in this) this.add(migration)
     }
 
+    val MIGRATION_1_2: Migration = object : Migration(1, 2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            // Since we didn't alter the table, there's nothing else to do here.
+        }
+    }
 }
