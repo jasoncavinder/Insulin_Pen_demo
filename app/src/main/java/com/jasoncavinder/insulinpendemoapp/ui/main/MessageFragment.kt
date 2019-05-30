@@ -13,9 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,12 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jasoncavinder.insulinpendemoapp.R
 import com.jasoncavinder.insulinpendemoapp.adapters.MessagingRecyclerViewAdapter
-import com.jasoncavinder.insulinpendemoapp.database.entities.message.Message
+import com.jasoncavinder.insulinpendemoapp.database.entities.message.MessageList
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoAction
 import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragment
-import com.jasoncavinder.insulinpendemoapp.utilities.TwoSourceMediatorLiveData
 import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
+import kotlinx.android.synthetic.main.fragment_message_list.view.*
 
 class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
     private val TAG by lazy { this::class.java.simpleName }
@@ -38,11 +36,10 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     private lateinit var updateToolbarListener: UpdateToolbarListener
 
-    lateinit var messageList: LiveData<List<Message>>
+    lateinit var messageList: MessageList
 
     private var columnCount = 1
 //    private var listener: OnListFragmentInteractionListener? = null
-
 
     /* BEGIN: Required for Demo Actions */
     private var _demoActions: ArrayList<DemoAction> = arrayListOf(
@@ -61,23 +58,14 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
         viewModel = ViewModelProviders.of(requireActivity())
             .get(MainViewModel::class.java)
-        messageList = Transformations.switchMap(
-            TwoSourceMediatorLiveData(viewModel.messages, viewModel.provider)
-        ) {
-            val (messages, provider) = it
-            MutableLiveData<List<Message>>(
-                messages
-                    ?.filter { message -> message.providerId == provider?.providerId }
-                    ?.sortedBy { message -> message.timeStamp }
-            )
-        }
+
+        messageList = MessageList(viewModel.messages, viewModel.provider)
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
-
-
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,11 +73,16 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_message_list, container, false)
 
+        messageList.observe(viewLifecycleOwner, Observer {})
+
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
+        if (view.message_list is RecyclerView) {
+            with(view.message_list) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
+                        .apply {
+                            reverseLayout = true
+                        }
                     else -> GridLayoutManager(context, columnCount)
                 }
                 adapter = MessagingRecyclerViewAdapter(messageList/*, listener*/)
@@ -108,7 +101,6 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
                 Pair(R.id.menu_item_home, R.id.action_messageFragment_pop)
             )
         )
-
     }
 
     override fun onAttach(context: Context) {
