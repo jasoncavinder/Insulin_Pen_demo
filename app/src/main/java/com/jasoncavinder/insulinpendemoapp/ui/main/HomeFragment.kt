@@ -514,9 +514,10 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                         when (doseType) {
                             DoseType.BASAL ->
                                 setPositiveButton("Save") { _, _ ->
-                                    var timeText: String = binding.editTextDoseTime.text.toString()
-                                    if (timeText[1] == ':') timeText = "0".plus(timeText)
-                                    val localTime = LocalTime.parse(timeText)
+                                    val localTime = LocalTime.of(
+                                        binding.spinnerDoseHour.selectedItem.toString().toInt(),
+                                        binding.spinnerDoseMinute.selectedItem.toString().toInt()
+                                    )
                                     val localDate =
                                         LocalDate.now().plusDays(if (localTime.isBefore(LocalTime.now())) 1L else 0L)
 

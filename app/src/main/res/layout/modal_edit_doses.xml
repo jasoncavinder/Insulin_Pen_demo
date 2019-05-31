@@ -86,36 +86,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:labelFor="@id/edit_text_dose_time"
             android:text="@string/please_enter_a_time"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/primaryTextColor"
-            app:layout_constraintBaseline_toBaselineOf="@id/edit_text_dose_time"
-            app:layout_constraintEnd_toStartOf="@+id/edit_text_dose_time"
+            app:layout_constraintBottom_toBottomOf="@id/spinner_dose_hour"
+            app:layout_constraintEnd_toStartOf="@+id/spinner_dose_hour"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/spinner_dose_hour"
             app:visibleOrGone="@{doseType == DoseType.BASAL}"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
-        <!-- TODO: Replace with TimePicker -->
-        <EditText
-            android:id="@+id/edit_text_dose_time"
+        <Spinner
+            android:id="@+id/spinner_dose_hour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:ems="5"
-            android:focusedByDefault="@{doseType == DoseType.BASAL}"
-            android:hint="@string/ex_7_00"
-            android:importantForAutofill="no"
-            android:inputType="time"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:entries="@array/hours"
+            app:layout_constraintEnd_toStartOf="@id/spinner_dose_minute"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/label_dose_time"
             app:layout_constraintTop_toBottomOf="@+id/text_guidance"
             app:visibleOrGone="@{doseType == DoseType.BASAL}"
             tools:ignore="UnusedAttribute"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
+
+        <Spinner
+            android:id="@+id/spinner_dose_minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/minutes"
+            app:layout_constraintBottom_toBottomOf="@+id/spinner_dose_hour"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/spinner_dose_hour"
+            app:layout_constraintTop_toTopOf="@+id/spinner_dose_hour"
+            app:visibleOrGone="@{doseType == DoseType.BASAL}"
+            tools:ignore="UnusedAttribute"
+            tools:visibility="visible" />
+
 
         <TextView
             android:id="@+id/label_blood_sugar"
@@ -132,7 +142,8 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:visibleOrGone="@{doseType == DoseType.BOLUS}" />
+            app:visibleOrGone="@{doseType == DoseType.BOLUS}"
+            tools:visibility="gone" />
 
         <EditText
             android:id="@+id/edit_text_blood_sugar"
@@ -148,7 +159,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@id/label_blood_sugar"
-            app:layout_constraintTop_toBottomOf="@id/text_guidance" />
+            app:layout_constraintTop_toBottomOf="@id/text_guidance"
+            tools:visibility="gone" />
 
         <TextView
             android:id="@+id/label_carbs"
@@ -164,7 +176,8 @@
             app:layout_constraintEnd_toStartOf="@id/edit_text_carbs"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="gone" />
 
         <EditText
             android:id="@+id/edit_text_carbs"
@@ -180,7 +193,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@id/label_carbs"
-            app:layout_constraintTop_toBottomOf="@id/edit_text_blood_sugar" />
+            app:layout_constraintTop_toBottomOf="@id/edit_text_blood_sugar"
+            tools:visibility="gone" />
 
         <TextView
             android:id="@+id/text_view_calc_result"
@@ -193,7 +207,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_text_carbs"
-            tools:text="Your Dose: 1U" />
+            tools:text="Your Dose: 1U"
+            tools:visibility="gone" />
         <!--android:focusedByDefault="@{doseType == DoseType.BASAL ? true : false }"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
