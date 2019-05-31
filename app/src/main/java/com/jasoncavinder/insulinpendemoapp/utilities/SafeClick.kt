@@ -24,7 +24,7 @@ class SafeClick(val function: () -> Unit) : View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        if (SystemClock.elapsedRealtime() - lastClickTime < 1000) return
+        if (SystemClock.elapsedRealtime() - lastClickTime < 250) return
         lastClickTime = SystemClock.elapsedRealtime()
 
         run(this.function)
@@ -37,7 +37,7 @@ class MenuSafeClick(val function: () -> Unit) : MenuItem.OnMenuItemClickListener
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
-        if (SystemClock.elapsedRealtime() - lastClickTime < 1000) return false
+        if (SystemClock.elapsedRealtime() - lastClickTime < 250) return false
         lastClickTime = SystemClock.elapsedRealtime()
 
         run(this.function)
