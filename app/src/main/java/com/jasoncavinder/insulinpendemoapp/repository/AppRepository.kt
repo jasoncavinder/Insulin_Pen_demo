@@ -308,6 +308,12 @@ class AppRepository private constructor(
         }
     }
 
+    suspend fun updateMessage(message: Message) {
+        withContext(IO) {
+            messageDao.update(message)
+        }
+    }
+
     companion object {
 
         @Volatile

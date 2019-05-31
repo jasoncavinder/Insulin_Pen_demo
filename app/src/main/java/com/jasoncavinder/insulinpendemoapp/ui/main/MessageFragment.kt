@@ -26,6 +26,7 @@ import com.jasoncavinder.insulinpendemoapp.utilities.UpdateToolbarListener
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_message_list.*
 
+
 class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
     private val TAG by lazy { this::class.java.simpleName }
 
@@ -87,10 +88,29 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
         message_list.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
             adapter = MessagingRecyclerViewAdapter(messageList/*, listener*/)
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val firstVisibleItem =
+                        (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                    val lastVisibleItem =
+                        (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                    Log.d(TAG, "Items Visible: $firstVisibleItem to $lastVisibleItem")
+                    for (position in firstVisibleItem..lastVisibleItem) {
+                        Log.d(
+                            TAG,
+                            "Message at position $position with ID ${messageList.value?.get(position)?.messageId}"
+                        )
+                        messageList.value?.get(position)?.run {
+                            viewModel.updateMessage(this.copy(read = true))
+                        }
+                    }
 
+                }
+            })
         }
 //        messageList.observe(viewLifecycleOwner, Observer {  })
-        messageList.observeForever { }
+        messageList.observeForever {}
 
         button_send.setOnClickListener {
             viewModel.sendMessage(edit_text_send.text.toString())

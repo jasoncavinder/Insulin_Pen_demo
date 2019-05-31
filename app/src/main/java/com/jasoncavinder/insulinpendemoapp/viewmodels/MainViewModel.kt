@@ -379,6 +379,10 @@ class MainViewModel internal constructor(
         }
     }
 
+    fun updateMessage(message: Message) {
+        viewModelScope.launch { withContext(IO) { repository.updateMessage(message) } }
+    }
+
 
     class Dosage(
         val userWeightInPounds: Int = 160,
