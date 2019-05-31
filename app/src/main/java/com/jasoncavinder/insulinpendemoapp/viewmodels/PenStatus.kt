@@ -70,13 +70,13 @@ class PenStatus : Observable() {
     private val chargeBattery = object : Runnable {
         override fun run() {
             _batteryCharge.postValue(_batteryCharge.value?.run { if (this < 100) this.inc() else 100 } ?: 100)
-            _batteryCharge.value?.let { if (it != 100) batteryChargeHandler.postDelayed(this, 1500) }
+            _batteryCharge.value?.let { if (it != 100) batteryChargeHandler.postDelayed(this, 7500) }
         }
     }
     private val dischargeBattery = object : Runnable {
         override fun run() {
             _batteryCharge.postValue(_batteryCharge.value?.run { if (this > 0) this.dec() else 0 } ?: 0)
-            _batteryCharge.value?.let { if (it == 0) disconnect() else batteryChargeHandler.postDelayed(this, 3000) }
+            _batteryCharge.value?.let { if (it == 0) disconnect() else batteryChargeHandler.postDelayed(this, 15000) }
         }
     }
 
