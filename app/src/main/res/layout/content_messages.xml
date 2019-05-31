@@ -74,12 +74,12 @@
             android:layout_marginBottom="16dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/next_message"
-            app:layout_constraintStart_toEndOf="@id/prev_message"
+            app:layout_constraintEnd_toStartOf="@+id/button_next_message"
+            app:layout_constraintStart_toEndOf="@id/button_prev_message"
             app:layout_constraintTop_toBottomOf="@+id/barrier3" />
 
         <TextView
-            android:id="@+id/empty_recycler"
+            android:id="@+id/text_view_empty_recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center"
@@ -88,13 +88,13 @@
             android:textColor="@color/secondaryTextColor"
             android:visibility="@{(safeUnbox(noMessages) ? View.VISIBLE : View.GONE)}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/next_message"
-            app:layout_constraintStart_toEndOf="@id/prev_message"
+            app:layout_constraintEnd_toStartOf="@+id/button_next_message"
+            app:layout_constraintStart_toEndOf="@id/button_prev_message"
             app:layout_constraintTop_toBottomOf="@+id/barrier3" />
         <!--android:visibility="@{unreadMessages.size()}"-->
 
         <ImageButton
-            android:id="@+id/next_message"
+            android:id="@+id/button_next_message"
             style="@android:style/Widget.Material.Light.ImageButton"
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -107,7 +107,7 @@
             app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
 
         <ImageButton
-            android:id="@+id/prev_message"
+            android:id="@+id/button_prev_message"
             style="@android:style/Widget.Material.Light.ImageButton"
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -123,7 +123,7 @@
             android:id="@+id/group_message_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="next_message,prev_message,recycler_messages" />
+            app:constraint_referenced_ids="button_next_message,button_prev_message,recycler_messages" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

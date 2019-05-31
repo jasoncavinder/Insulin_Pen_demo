@@ -75,6 +75,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         DemoAction("Simulate receive message", this::simulateReceiveMessage),
         DemoAction("Simulate dose alert", this::simulateDoseAlert)
     )
+
     private fun simulateConnectPen() = viewModel.penStatus.connect()
     private fun simulateDisconnectPen() = viewModel.penStatus.disconnect()
     private fun simulatePutPenOnCharger() = viewModel.penStatus.charge()
@@ -107,6 +108,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         }
 
     }
+
     private fun simulateTempAlert() {
         val builder: AlertDialog.Builder? = activity?.let {
             AlertDialog.Builder(it)
@@ -122,6 +124,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
     }
+
     private fun simulateDoseAlert() {
         val builder: AlertDialog.Builder? = activity?.let {
             AlertDialog.Builder(it)
@@ -140,6 +143,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
     }
+
     private fun simulateBolusDose() {
         viewModel.nextBolusDose.value?.let {
             viewModel.injectDose(it)
@@ -156,6 +160,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             })
         }
     }
+
     override fun onDemoActionClicked(position: Int) {
         _demoActions[position].action()
     }
@@ -330,6 +335,18 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         }
         button_change_bolus.setOnClickListener {
             showEditDosesDialog(dose = viewModel.nextBolusDose.value)
+        }
+        button_next_message.setOnClickListener {
+            (recycler_messages.layoutManager as LinearLayoutManager).let {
+                if (it.findFirstVisibleItemPosition() < it.itemCount)
+                    recycler_messages.smoothScrollToPosition(it.findFirstVisibleItemPosition().inc())
+            }
+        }
+        button_prev_message.setOnClickListener {
+            (recycler_messages.layoutManager as LinearLayoutManager).let {
+                if (it.findFirstVisibleItemPosition() > 0)
+                    recycler_messages.smoothScrollToPosition(it.findFirstVisibleItemPosition().dec())
+            }
         }
     }
 
