@@ -24,6 +24,8 @@ class MessageSummaryAdapter(
 ) :
     RecyclerView.Adapter<MessageSummaryAdapter.MessageSummaryViewHolder>() {
 
+    private val TAG by lazy { this::class.java.simpleName }
+
     private val onClickListener: View.OnClickListener = View.OnClickListener { listener?.onMessageSummaryInteraction() }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageSummaryViewHolder {
@@ -35,9 +37,11 @@ class MessageSummaryAdapter(
 
     override fun onBindViewHolder(holder: MessageSummaryViewHolder, position: Int) {
         holder.messageSummaryView.message_from.text =
-            providers.value?.get(messageSummaryList.value?.get(position)?.from) ?: "Error Loading Providers"
+            providers.value?.get(messageSummaryList.value?.get(position)?.from)
+                ?: "Error loading providers"
         holder.messageSummaryView.message_content.text =
             messageSummaryList.value?.get(position)?.content
+                ?: "Error loading message summary"
         holder.messageSummaryView.setOnClickListener(onClickListener)
     }
 

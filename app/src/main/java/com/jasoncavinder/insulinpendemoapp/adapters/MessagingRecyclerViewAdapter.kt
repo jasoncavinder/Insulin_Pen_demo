@@ -24,6 +24,7 @@ class MessagingRecyclerViewAdapter(
 //    private val listener: OnListFragmentInteractionListener?,
 ) : RecyclerView.Adapter<MessagingRecyclerViewAdapter.ViewHolder>() {
 
+    private val TAG by lazy { this::class.java.simpleName }
 //    private val onClickListener: View.OnClickListener
 
     init {
@@ -67,13 +68,19 @@ class MessagingRecyclerViewAdapter(
         }
 
     }
-/*
-     with(holder.view)
-     {
-         tag = message
-//            setOnClickListener(onClickListener)
-     }
-*/
+
+    /*
+         with(holder.view)
+         {
+             tag = message
+    //            setOnClickListener(onClickListener)
+         }
+    */
+//    override fun onViewAttachedToWindow(holder: MessageSummaryViewHolder) {
+//        super.onViewAttachedToWindow(holder)
+//        Log.d(TAG, "${messageSummaryList.value?.get(holder.adapterPosition)}")
+//    }
+
 
     override fun getItemCount(): Int = messageList.value?.size ?: 0
 

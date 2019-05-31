@@ -34,7 +34,7 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     private lateinit var updateToolbarListener: UpdateToolbarListener
 
-    lateinit var messageList: MessageList
+    private lateinit var messageList: MessageList
 
     private var columnCount = 1 // TODO: No Columns
 //    private var listener: OnListFragmentInteractionListener? = null
@@ -87,6 +87,7 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
         message_list.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
             adapter = MessagingRecyclerViewAdapter(messageList/*, listener*/)
+
         }
 //        messageList.observe(viewLifecycleOwner, Observer {  })
         messageList.observeForever { }

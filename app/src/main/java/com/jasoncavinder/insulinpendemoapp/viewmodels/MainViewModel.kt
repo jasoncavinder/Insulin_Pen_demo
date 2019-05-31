@@ -282,15 +282,15 @@ class MainViewModel internal constructor(
 
         val messagesVM = ArrayList<MessageSummary>()
 
-        var messageSummary: MessageSummary
-
         for (message in list) {
-            messageSummary = MessageSummary(
-                message.timeStamp,
-                if (message.sent) "Me" else message.providerId,
-                if (message.content.length < 60) message.content else message.content.substring(0..60) + "..."
-            )
-            messagesVM.add(messageSummary)
+            if (!message.read)
+                messagesVM.add(
+                    MessageSummary(
+                        message.timeStamp,
+                        message.providerId,
+                        if (message.content.length < 60) message.content else message.content.substring(0..60) + "..."
+                    )
+                )
         }
         return messagesVM
     }
