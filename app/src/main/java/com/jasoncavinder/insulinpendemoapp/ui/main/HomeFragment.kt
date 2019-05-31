@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -69,13 +70,14 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     private var sampleMessageContent: ArrayList<String> = arrayListOf()
 
+    private var listener: OnMessageSummaryInteractionListener? = null
+
 
     /* BEGIN: Required for Demo Actions */
     private var _demoActions: ArrayList<DemoAction> = arrayListOf(
         DemoAction("Simulate receive message", this::simulateReceiveMessage),
         DemoAction("Simulate dose alert", this::simulateDoseAlert)
     )
-
     private fun simulateConnectPen() = viewModel.penStatus.connect()
     private fun simulateDisconnectPen() = viewModel.penStatus.disconnect()
     private fun simulatePutPenOnCharger() = viewModel.penStatus.charge()
@@ -108,7 +110,6 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         }
 
     }
-
     private fun simulateTempAlert() {
         val builder: AlertDialog.Builder? = activity?.let {
             AlertDialog.Builder(it)
@@ -124,7 +125,6 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
     }
-
     private fun simulateDoseAlert() {
         val builder: AlertDialog.Builder? = activity?.let {
             AlertDialog.Builder(it)
@@ -143,7 +143,6 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         val dialog: AlertDialog? = builder?.create()
         dialog?.show()
     }
-
     private fun simulateBolusDose() {
         viewModel.nextBolusDose.value?.let {
             viewModel.injectDose(it)
@@ -160,7 +159,6 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             })
         }
     }
-
     override fun onDemoActionClicked(position: Int) {
         _demoActions[position].action()
     }
@@ -245,6 +243,8 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "Entered onViewCreated")
 
+        navController = findNavController()
+
         updateToolbarListener.updateToolbar(
             "At a Glance",
             R.menu.menu_home_left,
@@ -281,7 +281,11 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
         /* Messages Recycler */
         messagesManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        messagesAdapter = MessageSummaryAdapter(viewModel.unreadMessages, providers = viewModel.providers)
+        messagesAdapter = MessageSummaryAdapter(
+            listener = listener,
+            messageSummaryList = viewModel.unreadMessages,
+            providers = viewModel.providers
+        )
 
         recycler_messages.apply {
             setHasFixedSize(true)
@@ -357,9 +361,25 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
             updateToolbarListener = context as UpdateToolbarListener
         } catch (castException: ClassCastException) {
             /** The activity does not implement the listener. */
-            Log.d(TAG, context.toString() + " must implement OnFragmentInteractionListener")
+            Log.d(TAG, "$context must implement OnFragmentInteractionListener")
         }
+        if (context is OnMessageSummaryInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
+        }
+
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    interface OnMessageSummaryInteractionListener {
+        fun onMessageSummaryInteraction()
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -433,7 +453,7 @@ class HomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
         )
     }
 
-    fun showEditDosesDialog(
+    private fun showEditDosesDialog(
         dose: Dose? = null,
         doseType: DoseType = dose!!.type
     ) {

@@ -36,7 +36,7 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     lateinit var messageList: MessageList
 
-    private var columnCount = 1
+    private var columnCount = 1 // TODO: No Columns
 //    private var listener: OnListFragmentInteractionListener? = null
 
     /* BEGIN: Required for Demo Actions */
@@ -131,8 +131,8 @@ class MessageFragment : Fragment(), DemoActionListDialogFragment.Listener {
      * for more information.
      */
 //    interface OnListFragmentInteractionListener {
-//         TODO: Update argument type and name
-//        fun onListFragmentInteraction(message: Message)
+//          TODO: Update argument type and name
+//        fun onMessageSummaryInteraction(message: Message)
 //    }
 
     companion object {

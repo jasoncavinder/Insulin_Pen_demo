@@ -32,7 +32,7 @@ class MessagingRecyclerViewAdapter(
 //            val message = v.tag as Message
         // Notify the active callbacks interface (the activity, if the fragment is attached to
         // one) that an item has been selected.
-//            listener?.onListFragmentInteraction(message)
+//            listener?.onMessageSummaryInteraction(message)
 //        }
     }
 
@@ -67,20 +67,13 @@ class MessagingRecyclerViewAdapter(
         }
 
     }
-    /*
-    fun ImageView.setPhotoResource(photo: String?) {
-when (photo) {
-    null -> Log.d("setImageResource (Binding Adapter)", "photo was null")
-    else -> setImageResource(context.resources.getIdentifier(photo, "raw", context.packageName))
-}
-}
-
-     */
-    /* with(holder.view)
+/*
+     with(holder.view)
      {
          tag = message
 //            setOnClickListener(onClickListener)
-     }*/
+     }
+*/
 
     override fun getItemCount(): Int = messageList.value?.size ?: 0
 

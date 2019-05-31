@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.jasoncavinder.insulinpendemoapp.ui.main.HomeFragment
 import com.jasoncavinder.insulinpendemoapp.utilities.AUTHORIZE_USER
 import com.jasoncavinder.insulinpendemoapp.utilities.MenuSafeClick
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
@@ -25,7 +26,7 @@ import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.custom_toolbar.*
 
 
-class MainActivity : AppCompatActivity(), UpdateToolbarListener {
+class MainActivity : AppCompatActivity(), UpdateToolbarListener, HomeFragment.OnMessageSummaryInteractionListener {
 
     val TAG: String by lazy { this::class.java.simpleName }
 
@@ -93,19 +94,6 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
     }
 
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        when (requestCode) {
-//            AUTHORIZE_USER -> when (resultCode) {
-//                Activity.RESULT_OK -> {
-//                } // TODO
-//                else -> {
-//                } // TODO
-//            }
-//        }
-//    }
-
     override fun onResumeFragments() {
         super.onResumeFragments()
 
@@ -129,14 +117,11 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
         menuInflater.inflate(rightMenu, menu_right.menu)
         menu_right.menu.forEach { attachAction(it) }
 
-
-//        menu_left.menu.forEach { menuItem ->
-//            menuItem.setOnMenuItemClickListener { item ->
-//                onMenuItemClicked(item)
-//            }
-//        }
-
         return true
+    }
+
+    override fun onMessageSummaryInteraction() {
+        navController.navigate(R.id.action_homeFragment_to_messageFragment)
     }
 
     override fun updateToolbar(title: String, left_menu: Int, right_menu: Int, menu_actions: Map<Int, Int>) {
@@ -149,35 +134,3 @@ class MainActivity : AppCompatActivity(), UpdateToolbarListener {
     }
 
 }
-//view.back_button.setOnClickListener(
-//Navigation.createNavigateOnClickListener(
-//R.id.action_dest_createUserFragment_pop, null))
-//view.button_create_user.setOnClickListener(
-//Navigation.createNavigateOnClickListener(
-//R.id.action_global_home,null))
-//
-// setup toolbar
-//nav_right.visibility = View.GONE
-//if (action_bar_nav_left.hasOnClickListeners()) action_bar_nav_left.setOnClickListener { null }
-//action_bar_nav_left.setImageDrawable(R.drawable.ic_arrow_back_black_24dp)
-////        view.button_fingerprint.setOnClickListener(
-////            Navigation.createNavigateOnClickListener(
-////                R.id.action_global_home, null))
-//
-// Setup toggle listeners
-//view.findViewById<ImageView>(R.id.icon_message_toggle)
-//.setOnClickListener {
-//    toggleVisibility(
-//        group_message_display,
-//        R.drawable.more_unfold_24dp,
-//        R.drawable.less_unfold_24dp,
-//        it as ImageView )}
-//view.findViewById<ImageView>(R.id.icon_report_toggle)
-//.setOnClickListener {
-//    toggleVisibility(
-//        group_report_long,
-//        R.drawable.more_unfold_24dp,
-//        R.drawable.less_unfold_24dp,
-//        it as ImageView)
-//    toggleVisibility(
-//        group_report_short,null,null,null) }
