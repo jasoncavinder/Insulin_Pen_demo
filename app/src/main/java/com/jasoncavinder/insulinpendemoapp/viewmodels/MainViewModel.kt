@@ -81,6 +81,7 @@ class MainViewModel internal constructor(
     /* State, Public */
     val loginFormState: LiveData<LoginFormState> = _loginFormState
     val createUserFormState: LiveData<CreateUserFormState> = _createUserFormState
+    val touchLoginAvailable = repository.touchLoginAvailable
 
 
     /* Asynchronous results, Private */
@@ -212,9 +213,12 @@ class MainViewModel internal constructor(
 //        }
     }
 
-    fun login(email: String, password: String) {
+    fun login(email: String = "", password: String = "", touch: Boolean = false) {
         viewModelScope.launch {
-            repository.login(email, HashUtils.sha512(password))
+            when {
+                touch -> repository.touchLoginSim()
+                else -> repository.login(email, HashUtils.sha512(password))
+            }
         }
     }
 

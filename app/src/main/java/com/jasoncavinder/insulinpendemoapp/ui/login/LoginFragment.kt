@@ -24,17 +24,33 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.jasoncavinder.insulinpendemoapp.MainActivity
 import com.jasoncavinder.insulinpendemoapp.R
+import com.jasoncavinder.insulinpendemoapp.utilities.DemoAction
+import com.jasoncavinder.insulinpendemoapp.utilities.DemoActionListDialogFragment
 import com.jasoncavinder.insulinpendemoapp.utilities.Result
 import com.jasoncavinder.insulinpendemoapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_login_login.*
 
 
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
     private val TAG by lazy { this::class.java.simpleName }
 
     private lateinit var _viewModel: MainViewModel
     private lateinit var _navController: NavController
+
+    /* BEGIN: Required for Demo Actions */
+    private var _demoActions = arrayListOf(
+        DemoAction(
+            "Simulate touch login",
+            this::doLogin
+        )
+    )
+
+    override fun onDemoActionClicked(position: Int) {
+        _demoActions[position].action()
+    }
+    /* END: Required for Demo Actions */
+
 
     /*
     // TODO: setup biometrics
@@ -57,6 +73,10 @@ class LoginFragment : Fragment() {
         _navController = findNavController()
 
         _viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
+        _viewModel.touchLoginAvailable.observe(
+            viewLifecycleOwner,
+            Observer { available -> fab_demo_actions_login.visibility = if (available) View.VISIBLE else View.GONE })
 
         _viewModel.loginFormState.observe(this, Observer {
             val loginState = it ?: return@Observer
@@ -112,15 +132,15 @@ class LoginFragment : Fragment() {
             _navController.navigateUp()
         }
 
-        button_do_login.setOnClickListener {
-            loading_bar.visibility = View.VISIBLE
-            group_form_login.visibility = View.GONE
-            _viewModel.login(
-                edit_text_email.text.toString(),
-                edit_text_pass.text.toString()
-            )
-            hideKeyboard()
+        button_do_login.setOnClickListener { doLogin() }
+
+        /* BEGIN: Required for Demo Actions */
+        fab_demo_actions_login.setOnClickListener {
+            DemoActionListDialogFragment.newInstance(_demoActions)
+                .show(childFragmentManager, "demoActionsDialog")
         }
+        /* END: Required for Demo Actions */
+
     }
 
     override fun onAttach(context: Context) {
@@ -136,6 +156,21 @@ class LoginFragment : Fragment() {
                 }
             }
         )
+    }
+
+    private fun doLogin() {
+        loading_bar.visibility = View.VISIBLE
+        group_form_login.visibility = View.GONE
+        val email = edit_text_email.text.toString()
+        val password = edit_text_pass.toString()
+        if (email.isNotBlank() && password.isNotBlank())
+            _viewModel.login(
+                edit_text_email.text.toString(),
+                edit_text_pass.text.toString()
+            )
+        else _viewModel.login(touch = true)
+        hideKeyboard()
+
     }
 
     private fun showLoginFailed(msg: String) {
@@ -154,6 +189,7 @@ class LoginFragment : Fragment() {
             imm.hideSoftInputFromWindow(v.windowToken, 0)
         }
     }
+
 
     companion object {
         fun newInstance() = LoginFragment()

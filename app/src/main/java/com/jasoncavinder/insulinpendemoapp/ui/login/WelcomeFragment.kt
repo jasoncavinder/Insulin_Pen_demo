@@ -69,7 +69,6 @@ class WelcomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
 
         viewModel = requireActivity().run { ViewModelProviders.of(this).get(MainViewModel::class.java) }
 
-
         viewModel.localUsers.observe(this, Observer {
             when (it) {
                 0 -> {
@@ -129,7 +128,6 @@ class WelcomeFragment : Fragment(), DemoActionListDialogFragment.Listener {
                 .show(childFragmentManager, "demoActionsDialog")
         }
         /* END: Required for Demo Actions */
-        Log.d(TAG, "Resumed successfully")
     }
 
 

@@ -9,6 +9,7 @@ package com.jasoncavinder.insulinpendemoapp.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.jasoncavinder.insulinpendemoapp.database.entities.alert.AlertDao
 import com.jasoncavinder.insulinpendemoapp.database.entities.dose.Dose
 import com.jasoncavinder.insulinpendemoapp.database.entities.dose.DoseDao
@@ -44,6 +45,10 @@ class AppRepository private constructor(
     /* Manage and Cache Login Status */
     var user = LoggedInUser()
         private set
+    private val _mostRecentUserId: LiveData<String> =
+        Transformations.map(userDao.getAllUsers()) { users -> users.sortedBy { user -> user.created }.first().userId }
+    val touchLoginAvailable: LiveData<Boolean> =
+        Transformations.map(_mostRecentUserId) { userId -> userId.isNotBlank() }
 
     private val _userIdLiveData = MutableLiveData<String>()
     val userIdLiveData: LiveData<String> = _userIdLiveData
@@ -109,6 +114,17 @@ class AppRepository private constructor(
             )
         }
     }
+
+    fun touchLoginSim() {
+        user.id = _mostRecentUserId.value ?: ""
+        _loginResult.postValue(
+            when (user.isLoggedIn()) {
+                true -> Result.Success(user.id)
+                false -> Result.Error(Exception("No valid recent user found"))
+            }
+        )
+    }
+
 
     suspend fun createUser(user: User): Result<String> {
         withContext(IO) {

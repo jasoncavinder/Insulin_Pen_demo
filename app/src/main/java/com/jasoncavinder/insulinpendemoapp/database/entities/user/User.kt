@@ -14,7 +14,12 @@ import java.util.*
 @Entity(
     tableName = "users",
     foreignKeys = [
-        ForeignKey(entity = Provider::class, parentColumns = ["id"], childColumns = ["providerId"])
+        ForeignKey(
+            entity = Provider::class,
+            parentColumns = ["id"],
+            childColumns = ["providerId"],
+            onDelete = ForeignKey.CASCADE
+        )
     ],
     indices = [
         Index(value = ["email"], unique = true),
